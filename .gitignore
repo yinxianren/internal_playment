@@ -1,0 +1,13 @@
+/db/db.iml
+/.idea/
+/api/target/
+/cross/cross.iml
+/cross/target/
+/inward/inward.iml
+/pay/pay.iml
+
+/web/web.iml
+/internal_playment.iml
+/web/merchant/merchant.iml
+/web/agent/agent.iml
+/web/admin/admin.iml
