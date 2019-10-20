@@ -16,7 +16,7 @@ import java.util.Date;
 @Data
 @TableName("systemOrderTrackTable")
 public class SystemOrderTrackTable implements Serializable {
-    private String id;//表主键
+    private Long id;//表主键
     private String merId;//商户号
     private String merOrderId;//商户订单号
     private String platformOrderId;//平台订单号
