@@ -13,12 +13,12 @@ dubbo:
     name: cross
   registry:
     #注册中心
-    address: zookeeper://192.168.1.111:2181
+    address: @pay.dubbo.registry_addr@
   protocol:
     #协议名称
     name: dubbo
     #服务暴露端口
-    port: 20880
+    port: 20885
   scan:
       #扫描服务注册bean
       basePackages: com.internal.playment.cross.impl
