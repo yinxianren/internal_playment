@@ -1,5 +1,5 @@
 server:
-  port: 8006
+  port: 8005
   servlet:
     context-path: /
 
@@ -13,4 +13,4 @@ dubbo:
     name: task2
   registry:
     #注册中心
-    address: zookeeper://192.168.1.111:2181
+    address: @pay.dubbo.registry_addr@

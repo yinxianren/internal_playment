@@ -14,3 +14,17 @@ dubbo:
   registry:
     #注册中心
     address: @pay.dubbo.registry_addr@
+
+
+spring:
+  jms:
+    pub-sub-domain: true
+  activemq:
+    broker-url: @pay.activemq.broker-url@
+    user: @pay.activemq.user@
+    password: @pay.activemq.password@
+    in-memory: true
+    pool:
+      enabled: true
+      max-connections: 50
+

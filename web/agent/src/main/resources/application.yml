@@ -13,4 +13,4 @@ dubbo:
     name: agent
   registry:
     #注册中心
-    address: zookeeper://192.168.1.111:2181
+    address: @pay.dubbo.registry_addr@

@@ -1,5 +1,5 @@
 server:
-  port: 8002
+  port: 8003
   servlet:
     context-path: /
 
@@ -13,4 +13,16 @@ dubbo:
     name: inward
   registry:
     #注册中心
-    address: zookeeper://192.168.1.111:2181
+    address: @pay.dubbo.registry_addr@
+
+spring:
+  jms:
+    pub-sub-domain: true
+  activemq:
+    broker-url: @pay.activemq.broker-url@
+    user: @pay.activemq.user@
+    password: @pay.activemq.password@
+    in-memory: true
+    pool:
+      enabled: true
+      max-connections: 50

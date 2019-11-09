@@ -1,5 +1,5 @@
 server:
-  port: 8003
+  port: 8002
   servlet:
     context-path: /
 
@@ -18,7 +18,7 @@ dubbo:
     #协议名称
     name: dubbo
     #服务暴露端口
-    port: 20885
+    port: 20882
   scan:
       #扫描服务注册bean
       basePackages: com.internal.playment.cross.impl
