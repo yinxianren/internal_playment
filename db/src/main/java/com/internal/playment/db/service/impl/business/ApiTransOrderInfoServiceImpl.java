@@ -2,8 +2,11 @@ package com.internal.playment.db.service.impl.business;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.internal.playment.api.db.business.ApiTransOrderInfoService;
 import com.internal.playment.common.inner.NewPayAssert;
+import com.internal.playment.common.table.business.PayOrderInfoTable;
 import com.internal.playment.common.table.business.TransOrderInfoTable;
 import com.internal.playment.db.service.db.business.TransOrderInfoDBService;
 import lombok.AllArgsConstructor;
@@ -60,5 +63,21 @@ public class ApiTransOrderInfoServiceImpl implements ApiTransOrderInfoService, N
     public boolean updateById(TransOrderInfoTable tit) {
         if(isNull(tit)) return false;
         return transOrderInfoDBService.updateById(tit);
+    }
+
+    @Override
+    public IPage page(TransOrderInfoTable transOrderInfoTable) {
+        if(isNull(transOrderInfoTable)) return new Page();
+        IPage page = new Page(transOrderInfoTable.getPageNum(),transOrderInfoTable.getPageSize());
+        LambdaQueryWrapper<TransOrderInfoTable> queryWrapper = new LambdaQueryWrapper();
+        if ( isBlank(transOrderInfoTable.getMerchantId())) queryWrapper.eq(TransOrderInfoTable::getMerchantId,transOrderInfoTable.getMerchantId());
+        if ( isBlank(transOrderInfoTable.getPlatformOrderId())) queryWrapper.eq(TransOrderInfoTable::getPlatformOrderId,transOrderInfoTable.getPlatformOrderId());
+//            if (StringUtils.isNotEmpty(pit.getOrganizationId())) queryWrapper.setChannelId(searchInfo.getExpressName());
+        if ( !isNull(transOrderInfoTable.getStatus())) queryWrapper.eq(TransOrderInfoTable::getStatus,transOrderInfoTable.getStatus());
+        if ( !isNull (transOrderInfoTable.getSettleStatus())) queryWrapper.eq(TransOrderInfoTable::getSettleStatus,transOrderInfoTable.getSettleStatus());
+        if ( isBlank(transOrderInfoTable.getProductId())) queryWrapper.eq(TransOrderInfoTable::getProductId,transOrderInfoTable.getProductId());
+        if ( !isNull(transOrderInfoTable.getBeginTime())) queryWrapper.ge(TransOrderInfoTable::getCreateTime,transOrderInfoTable.getBeginTime());
+        if ( !isNull(transOrderInfoTable.getEndTime())) queryWrapper.le(TransOrderInfoTable::getUpdateTime,transOrderInfoTable.getEndTime());
+        return transOrderInfoDBService.page(page,queryWrapper);
     }
 }

@@ -49,4 +49,16 @@ public class ApiBankRateServiceImpl implements ApiBankRateService, NewPayAssert 
         if(isNull(brt)) return false;
         return bankRateDbService.save(brt);
     }
+
+    @Override
+    public boolean saveOrUpdate(BankRateTable brt) {
+        if(isNull(brt)) return false;
+        return bankRateDbService.saveOrUpdate(brt);
+    }
+
+    @Override
+    public boolean batchDelByIds(List<String> ids) {
+        if(isHasNotElement(ids)) return false;
+        return bankRateDbService.removeByIds(ids);
+    }
 }
