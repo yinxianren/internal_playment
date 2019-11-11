@@ -164,6 +164,7 @@ public class SicPayApiTransOrderCrossComponentImpl implements ApiTransOrderCross
                         String payMsgId = headMap.get("payMsgId");
 //                        bankResult.setChannelOrderId(payMsgId);
                         bankResult.setCrossStatusCode(StatusEnum._0.getStatus());
+                        bankResult.setCrossStatusMsg(StatusEnum._0.getRemark());
                         bankResult.setCrossResponseMsg("交易成功");
                         bankResult.setChannelResponseMsg(content);
                         bankResult =  payment(trade);
@@ -172,6 +173,7 @@ public class SicPayApiTransOrderCrossComponentImpl implements ApiTransOrderCross
                         break;
                     case "100001":
                         bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
+                        bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                         bankResult.setCrossResponseMsg("报文不合法");
                         bankResult.setChannelResponseMsg(content);
                         bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
@@ -179,6 +181,7 @@ public class SicPayApiTransOrderCrossComponentImpl implements ApiTransOrderCross
                         break;
                     case "100003":
                         bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
+                        bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                         bankResult.setCrossResponseMsg("验证签名失败");
                         bankResult.setChannelResponseMsg(content);
                         bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
@@ -186,6 +189,7 @@ public class SicPayApiTransOrderCrossComponentImpl implements ApiTransOrderCross
                         break;
                     default:
                         bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
+                        bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                         bankResult.setCrossResponseMsg("交易失败:" + headMap.get("respMsg"));
                         bankResult.setChannelResponseMsg(content);
                         bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
@@ -195,6 +199,7 @@ public class SicPayApiTransOrderCrossComponentImpl implements ApiTransOrderCross
 
             }else if(respType.equals("R")){
                 bankResult.setCrossStatusCode(StatusEnum._3.getStatus());
+                bankResult.setCrossStatusMsg(StatusEnum._3.getRemark());
                 bankResult.setChannelResponseMsg("交易处理中:" + headMap.get("respMsg"));
                 bankResult.setChannelResponseMsg(content);
                 bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
@@ -202,6 +207,7 @@ public class SicPayApiTransOrderCrossComponentImpl implements ApiTransOrderCross
             }
             else{
                 bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
+                bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                 bankResult.setCrossResponseMsg("交易失败:" + headMap.get("respMsg"));
                 bankResult.setChannelResponseMsg(content);
                 bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
@@ -209,6 +215,7 @@ public class SicPayApiTransOrderCrossComponentImpl implements ApiTransOrderCross
             }
         }else {
             bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
+            bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
             bankResult.setCrossResponseMsg("交易失败：支付返回结果为空！");
             bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
             bankResult.setErrorMsg(ResponseCodeEnum.RXH99999.getMsg());

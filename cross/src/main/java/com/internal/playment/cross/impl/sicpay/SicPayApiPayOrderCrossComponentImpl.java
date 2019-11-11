@@ -311,6 +311,7 @@ public class SicPayApiPayOrderCrossComponentImpl implements ApiPayOrderCrossComp
                         String reqMsgId = headMap.get("reqMsgId");
                         bankResult.setChannelOrderId(payMsgId);
                         bankResult.setCrossStatusCode(StatusEnum._0.getStatus());
+                        bankResult.setCrossStatusMsg(StatusEnum._0.getRemark());
                         bankResult.setCrossStatusMsg("交易成功");
                         bankResult.setChannelResponseMsg(content);
                         if (headMap.get("tranCode").equals("IFP004")){
@@ -325,11 +326,13 @@ public class SicPayApiPayOrderCrossComponentImpl implements ApiPayOrderCrossComp
                         break;
                     case "100001":
                         bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
+                        bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                         bankResult.setCrossStatusMsg("报文不合法");
                         bankResult.setChannelResponseMsg(content);
                         break;
                     case "100003":
                         bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
+                        bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                         bankResult.setCrossStatusMsg("验证签名失败");
                         bankResult.setChannelResponseMsg(content);
                         break;
@@ -337,21 +340,25 @@ public class SicPayApiPayOrderCrossComponentImpl implements ApiPayOrderCrossComp
                         bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
                         bankResult.setCrossStatusMsg("交易失败:" + headMap.get("respMsg"));
                         bankResult.setChannelResponseMsg(content);
+                        bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                         break;
                 }
 
             }else if(respType.equals("R")){
                 bankResult.setCrossStatusCode(StatusEnum._3.getStatus());
+                bankResult.setCrossStatusMsg(StatusEnum._3.getRemark());
                 bankResult.setCrossStatusMsg("交易处理中:" + headMap.get("respMsg"));
                 bankResult.setChannelOrderId(headMap.get("payMsgId"));
                 bankResult.setChannelResponseMsg(content);
             }else {
                 bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
+                bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                 bankResult.setCrossStatusMsg("交易失败:" + headMap.get("respMsg"));
                 bankResult.setChannelResponseMsg(content);
             }
         }else {
             bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
+            bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
             bankResult.setCrossStatusMsg("交易失败：支付返回结果为空！");
         }
         return bankResult;

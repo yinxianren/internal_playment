@@ -40,6 +40,7 @@ public class AllinPayApiIntoPiecesOfInformationCrossComponentImpl implements Api
         CrossResponseMsgDTO crossResponseMsgDTO = new CrossResponseMsgDTO();
         crossResponseMsgDTO.setCrossStatusCode(StatusEnum._0.getStatus());
         crossResponseMsgDTO.setCrossResponseMsg(StatusEnum._0.getRemark());
+        crossResponseMsgDTO.setCrossStatusMsg(StatusEnum._0.getRemark());
         return crossResponseMsgDTO;
     }
 
@@ -48,6 +49,7 @@ public class AllinPayApiIntoPiecesOfInformationCrossComponentImpl implements Api
         CrossResponseMsgDTO crossResponseMsgDTO = new CrossResponseMsgDTO();
         crossResponseMsgDTO.setCrossStatusCode(StatusEnum._0.getStatus());
         crossResponseMsgDTO.setCrossResponseMsg(StatusEnum._0.getRemark());
+        crossResponseMsgDTO.setCrossStatusMsg(StatusEnum._0.getRemark());
         return crossResponseMsgDTO;
     }
 
@@ -87,12 +89,14 @@ public class AllinPayApiIntoPiecesOfInformationCrossComponentImpl implements Api
                     bankResult.setCrossStatusCode(StatusEnum._0.getStatus());
                     bankResult.setCrossResponseMsg("进件成功");
                     bankResult.setChannelResponseMsg(content);
+                    bankResult.setCrossStatusMsg(StatusEnum._0.getRemark());
                 }else {
                     bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
                     bankResult.setCrossResponseMsg("进件异常:签名验证不一致");
                     bankResult.setChannelResponseMsg(content);
                     bankResult.setErrorMsg(ResponseCodeEnum.RXH99999.getMsg());
                     bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
+                    bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                 }
             }else {
                 bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
@@ -100,6 +104,7 @@ public class AllinPayApiIntoPiecesOfInformationCrossComponentImpl implements Api
                 bankResult.setChannelResponseMsg(content);
                 bankResult.setErrorMsg(ResponseCodeEnum.RXH99999.getMsg());
                 bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
+                bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
             }
         }else {
             bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
@@ -107,6 +112,7 @@ public class AllinPayApiIntoPiecesOfInformationCrossComponentImpl implements Api
             bankResult.setChannelResponseMsg(content);
             bankResult.setErrorMsg(ResponseCodeEnum.RXH99999.getMsg());
             bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
+            bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
         }
         log.info("進件请求返回payment：{}", JSON.toJSONString(bankResult));
         return bankResult;

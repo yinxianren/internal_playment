@@ -144,23 +144,28 @@ public class YaColPayApiPayOrderCrossComponentImpl implements ApiPayOrderCrossCo
                             case "WAIT_PAY" :
                                 bankResult.setCrossResponseMsg("提交成功,等待付款");
                                 bankResult.setCrossStatusCode(StatusEnum._0.getStatus());
+                                bankResult.setCrossStatusMsg(StatusEnum._0.getRemark());
                                 break;
                             case "PAY_FINISHED" :
                                 bankResult.setCrossStatusCode(StatusEnum._0.getStatus());
+                                bankResult.setCrossStatusMsg(StatusEnum._0.getRemark());
                                 bankResult.setCrossResponseMsg("提交成功,已付款");
                                 break;
                             case "TRADE_FAILED" :
                                 bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
+                                bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                                 bankResult.setCrossResponseMsg("交易失败");
                                 bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
                                 bankResult.setErrorMsg(ResponseCodeEnum.RXH99999.getMsg());
                                 break;
                             case "TRADE_FINISHED" :
                                 bankResult.setCrossStatusCode(StatusEnum._0.getStatus());
+                                bankResult.setCrossStatusMsg(StatusEnum._0.getRemark());
                                 bankResult.setCrossResponseMsg("提交成功,交易结束");
                                 break;
                             case "TRADE_CLOSED" :
                                 bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
+                                bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                                 bankResult.setCrossResponseMsg("交易关闭");
                                 bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
                                 bankResult.setErrorMsg(ResponseCodeEnum.RXH99999.getMsg());
@@ -171,6 +176,7 @@ public class YaColPayApiPayOrderCrossComponentImpl implements ApiPayOrderCrossCo
                         break;
                     case "ADVANCE_FAILED" :
                         bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
+                        bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                         bankResult.setCrossResponseMsg("短信发送失败");
                         bankResult.setChannelResponseMsg(JSONObject.toJSONString(content));
                         bankResult.setErrorCode(ResponseCodeEnum.RXH00005.getCode());
@@ -178,6 +184,7 @@ public class YaColPayApiPayOrderCrossComponentImpl implements ApiPayOrderCrossCo
                         break;
                     default:
                         bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
+                        bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                         bankResult.setCrossResponseMsg("交易失败:"+content.get("error_message"));
                         bankResult.setChannelResponseMsg(JSONObject.toJSONString(content));
                         bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
@@ -186,6 +193,7 @@ public class YaColPayApiPayOrderCrossComponentImpl implements ApiPayOrderCrossCo
                 }
             } else {
                 bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
+                bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                 bankResult.setCrossResponseMsg("交易失败,验签不通过");
                 bankResult.setChannelResponseMsg(JSONObject.toJSONString(content));
                 bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
@@ -194,6 +202,7 @@ public class YaColPayApiPayOrderCrossComponentImpl implements ApiPayOrderCrossCo
         } catch (Exception e) {
             e.printStackTrace();
             bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
+            bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
             bankResult.setCrossResponseMsg("交易失败，系统错误");
             bankResult.setChannelResponseMsg(e.getMessage());
             bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
@@ -244,11 +253,13 @@ public class YaColPayApiPayOrderCrossComponentImpl implements ApiPayOrderCrossCo
                 switch (responseCode){
                     case "APPLY_SUCCESS" :
                         bankResult.setCrossStatusCode(StatusEnum._0.getStatus());
+                        bankResult.setCrossStatusMsg(StatusEnum._0.getRemark());
                         bankResult.setCrossResponseMsg("短信发送成功");
                         bankResult.setChannelResponseMsg(JSONObject.toJSONString(content));
                         break;
                     case "ADVANCE_FAILED" :
                         bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
+                        bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                         bankResult.setCrossResponseMsg("短信发送失败");
                         bankResult.setChannelResponseMsg(JSONObject.toJSONString(content));
                         bankResult.setErrorCode(ResponseCodeEnum.RXH00005.getCode());
@@ -256,6 +267,7 @@ public class YaColPayApiPayOrderCrossComponentImpl implements ApiPayOrderCrossCo
                         break;
                     case "PAY_SMS_FAILED" :
                         bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
+                        bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                         bankResult.setCrossResponseMsg("短信重发失败");
                         bankResult.setChannelResponseMsg(JSONObject.toJSONString(content));
                         bankResult.setErrorCode(ResponseCodeEnum.RXH00005.getCode());
@@ -263,6 +275,7 @@ public class YaColPayApiPayOrderCrossComponentImpl implements ApiPayOrderCrossCo
                         break;
                     default:
                         bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
+                        bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                         bankResult.setCrossResponseMsg("交易失败:"+content.get("error_message"));
                         bankResult.setChannelResponseMsg(JSONObject.toJSONString(content));
                         bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
@@ -271,6 +284,7 @@ public class YaColPayApiPayOrderCrossComponentImpl implements ApiPayOrderCrossCo
                 }
             } else {
                 bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
+                bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                 bankResult.setCrossResponseMsg("交易失败,验签不通过");
                 bankResult.setChannelResponseMsg(JSONObject.toJSONString(content));
                 bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
@@ -279,6 +293,7 @@ public class YaColPayApiPayOrderCrossComponentImpl implements ApiPayOrderCrossCo
         } catch (Exception e) {
             e.printStackTrace();
             bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
+            bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
             bankResult.setCrossResponseMsg("交易失败，系统错误");
             bankResult.setChannelResponseMsg(e.getMessage());
             bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
@@ -331,11 +346,13 @@ public class YaColPayApiPayOrderCrossComponentImpl implements ApiPayOrderCrossCo
                 switch (responseCode){
                     case "APPLY_SUCCESS" :
                         bankResult.setCrossStatusCode(StatusEnum._0.getStatus());
+                        bankResult.setCrossStatusMsg(StatusEnum._0.getRemark());
                         bankResult.setCrossResponseMsg("交易成功");
                         bankResult.setChannelResponseMsg(JSONObject.toJSONString(content));
                         break;
                     case "ADVANCE_FAILED" :
                         bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
+                        bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                         bankResult.setCrossResponseMsg("短信发送失败");
                         bankResult.setChannelResponseMsg(JSONObject.toJSONString(content));
                         bankResult.setErrorCode(ResponseCodeEnum.RXH00005.getCode());
@@ -343,6 +360,7 @@ public class YaColPayApiPayOrderCrossComponentImpl implements ApiPayOrderCrossCo
                         break;
                     default:
                         bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
+                        bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                         bankResult.setCrossResponseMsg("交易失败:"+content.get("error_message"));
                         bankResult.setChannelResponseMsg(JSONObject.toJSONString(content));
                         bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
@@ -351,6 +369,7 @@ public class YaColPayApiPayOrderCrossComponentImpl implements ApiPayOrderCrossCo
                 }
             } else {
                 bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
+                bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                 bankResult.setCrossResponseMsg("交易失败,验签不通过");
                 bankResult.setChannelResponseMsg(JSONObject.toJSONString(content));
                 bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
@@ -359,6 +378,7 @@ public class YaColPayApiPayOrderCrossComponentImpl implements ApiPayOrderCrossCo
         } catch (Exception e) {
             e.printStackTrace();
             bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
+            bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
             bankResult.setCrossResponseMsg("交易失败，系统错误");
             bankResult.setChannelResponseMsg(e.getMessage());
             bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
