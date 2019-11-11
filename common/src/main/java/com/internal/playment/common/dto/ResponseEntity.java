@@ -14,6 +14,7 @@ import java.io.Serializable;
 @Getter
 public class ResponseEntity  implements Serializable {
     private String merId;
+    private String terMerId;
     private String merOrderId;
     private String platformOrderId;
     private Integer status;
@@ -23,6 +24,11 @@ public class ResponseEntity  implements Serializable {
     private String errorCode;
     private String errorMsg;
     private String channelTab;
+
+    public ResponseEntity setTerMerId(String terMerId) {
+        this.terMerId = terMerId;
+        return this;
+    }
 
     public ResponseEntity setChannelTab(String channelTab) {
         this.channelTab = channelTab;

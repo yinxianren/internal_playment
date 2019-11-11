@@ -498,8 +498,8 @@ public class NewIntoPiecesOfInformationServiceImp extends CommonServiceAbstract 
         rct.setMerchantId(ipo.getMerId());
         rct.setTerminalMerId(ipo.getTerMerId());
         rct.setMerOrderId(merOrderId);
-        rct = dbCommonRPCComponent.apiRegisterCollectService.getOne(rct);
-        isNotNull(rct,
+        List<RegisterCollectTable> list = dbCommonRPCComponent.apiRegisterCollectService.getList(rct);
+        isHasElement(list,
                 ResponseCodeEnum.RXH00009.getCode(),
                 format("%s-->商户号：%s；终端号：%s；错误信息: %s ；代码所在位置：%s",ipo.getBussType(),ipo.getMerId(),ipo.getTerMerId(),ResponseCodeEnum.RXH00009.getMsg(),localPoint),
                 format(" %s",ResponseCodeEnum.RXH00009.getMsg()));

@@ -107,14 +107,14 @@ public class NewIntoPiecesOfInformationController extends NewAbstractCommonContr
             //获取组织机构信息
             OrganizationInfoTable organizationInfoTable = newIntoPiecesOfInformationService.getOrganizationInfo(channelInfoTable.getOrganizationId(),ipo);
             Class  clz=Class.forName(organizationInfoTable.getApplicationClassObj().trim());
+            //生成通道处理对象
+            CommonChannelHandlePortComponent commonChannelHandlePortComponent = (CommonChannelHandlePortComponent) SpringContextUtil.getBean(clz);
             //保存进件信息
             tuple = newIntoPiecesOfInformationService.saveByRegister(mbirDTO,channelInfoTable,ipo);
             sotTable.setPlatformOrderId(tuple._2.getPlatformOrderId());
             //封装请求cross必要参数
             requestCrossMsgDTO = newIntoPiecesOfInformationService.getRequestCrossMsgDTO(new Tuple4(channelInfoTable,extraInfoTable,tuple._1,tuple._2));
             requestCrossMsgDTO.setIP(sotTable.getIp());
-            //生成通道处理对象
-            CommonChannelHandlePortComponent commonChannelHandlePortComponent = (CommonChannelHandlePortComponent) SpringContextUtil.getBean(clz);
             //调用业务申请
             crossResponseMsgDTO = commonChannelHandlePortComponent.addCusInfo(requestCrossMsgDTO,ipo);
             crossResponseMsg =  null == crossResponseMsgDTO ? null : crossResponseMsgDTO.toString();
