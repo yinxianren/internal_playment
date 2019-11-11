@@ -53,11 +53,11 @@
                 <dubbo.protocol.cross.port>20882</dubbo.protocol.cross.port>
                 <dubbo.protocol.db.port>20881</dubbo.protocol.db.port>
                 <!--   zookeeper 地址-->
-                <pay.dubbo.registry_addr>zookeeper://192.168.1.111:2183</pay.dubbo.registry_addr>
+                <pay.dubbo.registry_addr>zookeeper://192.168.1.111:2181</pay.dubbo.registry_addr>
                 <!--   mysql 地址-->
                 <pay.datasource.username>root</pay.datasource.username>
                 <pay.datasource.password>rxh@2019</pay.datasource.password>
-                <pay.datasource.url>jdbc:mysql://192.168.1.68/new_cross?characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;useSSL=false&amp;allowMultiQueries=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=Asia/Shanghai</pay.datasource.url>
+                <pay.datasource.url>jdbc:mysql://192.168.1.68/internal_playment?characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;useSSL=false&amp;allowMultiQueries=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=Asia/Shanghai</pay.datasource.url>
                 <redis.database>6</redis.database>
                 <!--   redis 地址-->
                 <redis.host>192.168.1.129</redis.host>

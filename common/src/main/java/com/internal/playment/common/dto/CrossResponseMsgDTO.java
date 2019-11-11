@@ -3,6 +3,7 @@ package com.internal.playment.common.dto;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -14,7 +15,8 @@ import java.util.Date;
  */
 @ToString
 @Getter
-public class CrossResponseMsgDTO {
+public class CrossResponseMsgDTO implements Serializable {
+
     private Integer crossStatusCode ;//cross返回的状态码
     private String  crossStatusMsg;//cross返回的状态码信息
     private String  crossResponseMsg;//cross返回信息信息

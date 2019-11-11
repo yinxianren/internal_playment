@@ -27,6 +27,7 @@ public interface CommonServiceInterface {
      */
     MerchantInfoTable getOneMerInfo(InnerPrintLogObject ipo) throws NewPayException;
 
+
     /**
      *
      * @param organizationId
@@ -34,7 +35,6 @@ public interface CommonServiceInterface {
      * @return
      */
     OrganizationInfoTable getOrganizationInfo(String organizationId, InnerPrintLogObject ipo) throws NewPayException;
-
 
     /**
      *  获取商户所有通道配置信息

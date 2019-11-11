@@ -29,13 +29,11 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
-@ConfigurationProperties(prefix = "application.queue")
 public class AllinPayChannelHandlePortComponentImpl implements AllinPayChannelHandlePortComponent {
 
-
-    @Value(" pay-order")
+    @Value("${application.queue.pay-order}")
     private String payOrder;
-    @Value("trans-order")
+    @Value("${application.queue.trans-order}")
     private String transOrder;
 
     @Reference(version = "${application.version}", group = "allinPay", timeout = 30000)
