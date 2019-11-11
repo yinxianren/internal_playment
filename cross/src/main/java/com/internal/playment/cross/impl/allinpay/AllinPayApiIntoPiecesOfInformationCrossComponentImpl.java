@@ -156,7 +156,7 @@ public class AllinPayApiIntoPiecesOfInformationCrossComponentImpl implements Api
         postData.put("key", param.get("key"));
         final JSONArray prodList = new JSONArray();
 
-        final HashMap<String, Object> receiver1 = new HashMap<>();
+//        final HashMap<String, Object> receiver1 = new HashMap<>();
 		/*receiver1.put("trxcode", "QUICKPAY_OF_HP");
 		receiver1.put("feerate", trade.getRegisterCollectTable().getMerchantRateTableCollect().getPayFee());*/
 
@@ -165,34 +165,40 @@ public class AllinPayApiIntoPiecesOfInformationCrossComponentImpl implements Api
 //		receiver2.put("feerate",trade.getTradeObjectSquare().getPayFee());
 
 
-        final HashMap<String, Object> receiver3 = new HashMap<>();
+//        final HashMap<String, Object> receiver3 = new HashMap<>();
 		/*receiver3.put("trxcode", "TRX_PAY");
 		receiver3.put("feerate", trade.getTradeObjectSquare().getBackFee());*/
 
-        final HashMap<String, Object> receiver4 = new HashMap<>();
+//        final HashMap<String, Object> receiver4 = new HashMap<>();
 		/*receiver4.put("trxcode", "QUICKPAY_NOSMS");
 		receiver4.put("feerate", trade.getTradeObjectSquare().getPayFee());*/
 
         for (MerchantRateTable merchantRateTable : trade.getRegisterCollectTable().getMerchantRateTableCollect()){
             switch (merchantRateTable.getProductId()){
                 case "RH_QUICKPAY_SMALL_NOSMS" :
+                    final HashMap<String, Object> receiver1 = new HashMap<>();
                     receiver1.put("trxcode", "QUICKPAY_NOSMS");
                     receiver1.put("feerate", merchantRateTable.getRateFee());
+                    prodList.add(receiver1);
                     break;
                 case "RH_TRX_PAY" :
+                    final HashMap<String, Object> receiver3 = new HashMap<>();
                     receiver3.put("trxcode", "TRX_PAY");
                     receiver3.put("feerate", merchantRateTable.getRateFee());
+                    prodList.add(receiver3);
                     break;
                 case "RH_QUICKPAY_SMALL" :
-                    receiver4.put("trxcode", "TRX_PAY");
+                    final HashMap<String, Object> receiver4 = new HashMap<>();
+                    receiver4.put("trxcode", "QUICKPAY_OF_HP");
                     receiver4.put("feerate", merchantRateTable.getRateFee());
+                    prodList.add(receiver4);
                     break;
             }
         }
-        prodList.add(receiver1);
+//        prodList.add(receiver1);
 //		prodList.add(receiver2);
-        prodList.add(receiver3);
-        prodList.add(receiver4);
+//        prodList.add(receiver3);
+//        prodList.add(receiver4);
 
 
         postData.put("prodlist", prodList);
