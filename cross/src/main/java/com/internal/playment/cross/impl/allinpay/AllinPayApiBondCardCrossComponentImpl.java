@@ -291,7 +291,7 @@ public class AllinPayApiBondCardCrossComponentImpl implements ApiBondCardCrossCo
 
         } else {
             String status = result.getString("retmsg");
-            if (status.contains("验证码不符")){
+            if (status.contains("验证码不符") || status.contains("验证码错误")){
                 bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
                 bankResult.setCrossResponseMsg("短信验证码错误 ");
                 bankResult.setChannelResponseMsg(content);
