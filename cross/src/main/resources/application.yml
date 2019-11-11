@@ -1,11 +1,11 @@
 server:
-  port: 8002
+  port: @server.cross.port@
   servlet:
     context-path: /
 
 application:
   #版本号
-  version: 1.0.0
+  version: @application.version@
 
 dubbo:
   application:
@@ -18,7 +18,7 @@ dubbo:
     #协议名称
     name: dubbo
     #服务暴露端口
-    port: 20882
+    port: @dubbo.protocol.cross.port@
   scan:
       #扫描服务注册bean
       basePackages: com.internal.playment.cross.impl

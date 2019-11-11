@@ -1,11 +1,11 @@
 server:
-  port: 8003
+  port: @server.inward.port@
   servlet:
     context-path: /
 
 application:
   #版本号
-  version: 1.0.0
+  version: @application.version@
 
 dubbo:
   application:

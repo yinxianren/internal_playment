@@ -8,11 +8,14 @@ import com.internal.playment.api.cross.ApiTransOrderCrossComponent;
 import com.internal.playment.api.cross.allinpay.ApiNoAuthenticationPayOrderCrossComponent;
 import com.internal.playment.common.dto.CrossResponseMsgDTO;
 import com.internal.playment.common.dto.RequestCrossMsgDTO;
+import com.internal.playment.common.enums.StatusEnum;
 import com.internal.playment.common.inner.InnerPrintLogObject;
 import com.internal.playment.common.table.business.PayOrderInfoTable;
 import com.internal.playment.common.table.business.TransOrderInfoTable;
 import com.internal.playment.common.tuple.Tuple2;
 import com.internal.playment.pay.channel.AllinPayChannelHandlePortComponent;
+import com.internal.playment.pay.component.ActiveMqOrderProducerComponent;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -37,7 +40,8 @@ public class AllinPayChannelHandlePortComponentImpl implements AllinPayChannelHa
     private ApiTransOrderCrossComponent apiTransOrderCrossComponent;
     @Reference(version = "${application.version}", group = "allinPay", timeout = 30000)
     private ApiNoAuthenticationPayOrderCrossComponent apiNoAuthenticationPayOrderCrossComponent;
-
+    @Autowired
+    private ActiveMqOrderProducerComponent ActiveMqOrderProducerComponent;
     @Override
     public CrossResponseMsgDTO addCusInfo(RequestCrossMsgDTO requestCrossMsgDTO, InnerPrintLogObject ipo) throws Exception {
 
@@ -94,18 +98,17 @@ public class AllinPayChannelHandlePortComponentImpl implements AllinPayChannelHa
 
     public Tuple2 channelDifferBusinessHandleByPayOrder(RequestCrossMsgDTO requestCrossMsgDTO, CrossResponseMsgDTO crossResponseMsgDTO) {
         PayOrderInfoTable payOrderInfoTable = requestCrossMsgDTO.getPayOrderInfoTable();
-//        if(crossResponseMsgDTO.getCrossStatusCode() == StatusEnum._0.getStatus())
-//            payMessageSend.sendObjectMessageToPayOderMsgMQ(payOrderInfoTable);
+        if(crossResponseMsgDTO.getCrossStatusCode() == StatusEnum._0.getStatus())
+            ActiveMqOrderProducerComponent.sendMessage("order.queue.payOrderInfoTable",payOrderInfoTable);
         return null;
     }
 
     public Tuple2 channelDifferBusinessHandleByTransOrder(RequestCrossMsgDTO requestCrossMsgDTO, CrossResponseMsgDTO crossResponseMsgDTO) {
         TransOrderInfoTable transOrderInfoTable = requestCrossMsgDTO.getTransOrderInfoTable();
-//        if(crossResponseMsgDTO.getCrossStatusCode() == StatusEnum._0.getStatus())
-//            payMessageSend.sendObjectMessageToTransOderMsgMQ(transOrderInfoTable);
+        if(crossResponseMsgDTO.getCrossStatusCode() == StatusEnum._0.getStatus())
+            ActiveMqOrderProducerComponent.sendMessage("order.queue.transOrderInfoTable",transOrderInfoTable);
         return null;
     }
-
 
 
 }

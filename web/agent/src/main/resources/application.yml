@@ -1,11 +1,11 @@
 server:
-  port: 8008
+  port: @server.web.agent.port@
   servlet:
     context-path: /
 
 application:
   #版本号
-  version: 1.0.0
+  version: @application.version@
 
 dubbo:
   application:

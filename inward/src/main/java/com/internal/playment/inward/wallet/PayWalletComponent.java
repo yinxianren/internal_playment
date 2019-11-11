@@ -1,11 +1,12 @@
-//package com.internal.playment.inward.wallet;
-//
-//import org.apache.activemq.command.ActiveMQObjectMessage;
-//
-//public interface PayWalletComponent {
-//
-//    void payOrderWallet(ActiveMQObjectMessage objectMessage);
-//
-//    void transOrderWallet(ActiveMQObjectMessage objectMessage);
-//
-//}
+package com.internal.playment.inward.wallet;
+
+import com.internal.playment.common.table.business.PayOrderInfoTable;
+import com.internal.playment.common.table.business.TransOrderInfoTable;
+
+public interface PayWalletComponent {
+
+    void payOrderWallet(PayOrderInfoTable payOrderInfoTable);
+
+    void transOrderWallet(TransOrderInfoTable transOrderInfoTable);
+
+}

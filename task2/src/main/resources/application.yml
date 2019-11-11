@@ -1,11 +1,11 @@
 server:
-  port: 8005
+  port: @server.task2.port@
   servlet:
     context-path: /
 
 application:
   #版本号
-  version: 1.0.0
+  version: @application.version@
 
 dubbo:
   application:

@@ -22,6 +22,7 @@ public class ActiveMqOrderProducerComponent {
     private  final JmsMessagingTemplate jmsTemplate; //用来发送消息到broker的对象
     private final Topic payMsgTopic;
 
+
     /**
      *
      * @param queueName 队列名称

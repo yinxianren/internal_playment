@@ -1,12 +1,12 @@
 server:
-  port: 8001
+  port: @server.db.port@
   servlet:
     context-path: /
 
 application:
   #版本号
-  version: 1.0.0
-  timeout: 30000
+  version: @application.version@
+
 
 dubbo:
   application:
@@ -20,7 +20,7 @@ dubbo:
     #协议名称
     name: dubbo
     #服务暴露端口
-    port: 20881
+    port: @dubbo.protocol.db.port@
   scan:
       #扫描服务注册bean
       basePackages: com.internal.playment.db.service.impl

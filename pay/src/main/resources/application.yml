@@ -1,12 +1,13 @@
 server:
-  port: 8081
+  port: @server.pay.port@
   servlet:
     context-path: /
 
 application:
   #版本号
-  version: 1.0.0
-
+  version: @application.version@
+  queue:
+    pay-order:
 dubbo:
   application:
     #应用名称，每个dubbo应用的名称都是唯一的

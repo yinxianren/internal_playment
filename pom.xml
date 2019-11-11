@@ -40,6 +40,20 @@
             <id>dev</id>
             <properties>
                 <env>dev</env>
+                 <!--   服务端口号   -->
+                <server.cross.port>8002</server.cross.port>
+                <server.db.port>8001</server.db.port>
+                <server.inward.port>8003</server.inward.port>
+                <server.pay.port>8081</server.pay.port>
+                <server.task2.port>8005</server.task2.port>
+                <server.web.admin.port>8009</server.web.admin.port>
+                <server.web.agent.port>8008</server.web.agent.port>
+                <server.web.merchant.port>8007</server.web.merchant.port>
+
+                <!--   dubbo端口号   -->
+                <dubbo.protocol.cross.port>20882</dubbo.protocol.cross.port>
+                <dubbo.protocol.db.port>20881</dubbo.protocol.db.port>
+
                 <pay.dubbo.registry_addr>zookeeper://192.168.1.111:2183</pay.dubbo.registry_addr>
                 <pay.datasource.username>root</pay.datasource.username>
                 <pay.datasource.password>rxh@2019</pay.datasource.password>
@@ -51,6 +65,9 @@
                 <pay.activemq.broker-url>tcp://192.168.1.64:61616</pay.activemq.broker-url>
                 <pay.activemq.user>admin</pay.activemq.user>
                 <pay.activemq.password>admin</pay.activemq.password>
+                <application.version>1.0.0</application.version>
+                <application.queue.pay-order>order.queue.payOrderInfoTable</application.queue.pay-order>
+                <application.queue.trans-order>order.queue.transOrderInfoTable</application.queue.trans-order>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
