@@ -20,7 +20,6 @@ import java.util.List;
  * Time: 下午4:33   timeout
  * Description:
  */
-@AllArgsConstructor
 @Service(version = "${application.version}" , timeout = 30000 )
 public class ApiProductTypeSettingServiceImpl implements ApiProductTypeSettingService, NewPayAssert {
 
