@@ -370,6 +370,7 @@ public class SicPayApiBondCardCrossComponentImpl implements ApiBondCardCrossComp
                                 bankResult.setChannelResponseMsg(content);
                                 Map map = new HashMap();
                                 map.put("bindId",bodyMap.get("bindId"));
+                                bankResult.setCrossStatusMsg(StatusEnum._0.getRemark());
                                 break;
                             case "100001":
                                 bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
@@ -377,6 +378,7 @@ public class SicPayApiBondCardCrossComponentImpl implements ApiBondCardCrossComp
                                 bankResult.setChannelResponseMsg(content);
                                 bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
                                 bankResult.setErrorMsg(ResponseCodeEnum.RXH99999.getMsg());
+                                bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                                 break;
                             case "100003":
                                 bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
@@ -384,6 +386,7 @@ public class SicPayApiBondCardCrossComponentImpl implements ApiBondCardCrossComp
                                 bankResult.setChannelResponseMsg(content);
                                 bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
                                 bankResult.setErrorMsg(ResponseCodeEnum.RXH99999.getMsg());
+                                bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                                 break;
                             default:
                                 bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
@@ -391,6 +394,7 @@ public class SicPayApiBondCardCrossComponentImpl implements ApiBondCardCrossComp
                                 bankResult.setChannelResponseMsg(content);
                                 bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
                                 bankResult.setErrorMsg(ResponseCodeEnum.RXH99999.getMsg());
+                                bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                                 break;
                         }
 
@@ -407,6 +411,7 @@ public class SicPayApiBondCardCrossComponentImpl implements ApiBondCardCrossComp
                                 bankResult.setChannelResponseMsg(content);
                                 trade.getMerchantCardTable().setId(Long.valueOf(reqMsgId));
                                 bankResult = reGetBondCode(trade);
+                                bankResult.setCrossStatusMsg(StatusEnum._0.getRemark());
                                 break;
                             case "100001":
                                 bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
@@ -414,6 +419,7 @@ public class SicPayApiBondCardCrossComponentImpl implements ApiBondCardCrossComp
                                 bankResult.setChannelResponseMsg(content);
                                 bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
                                 bankResult.setErrorMsg(ResponseCodeEnum.RXH99999.getMsg());
+                                bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                                 break;
                             case "100003":
                                 bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
@@ -421,6 +427,7 @@ public class SicPayApiBondCardCrossComponentImpl implements ApiBondCardCrossComp
                                 bankResult.setChannelResponseMsg(content);
                                 bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
                                 bankResult.setErrorMsg(ResponseCodeEnum.RXH99999.getMsg());
+                                bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                                 break;
                             default:
                                 bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
@@ -428,6 +435,7 @@ public class SicPayApiBondCardCrossComponentImpl implements ApiBondCardCrossComp
                                 bankResult.setChannelResponseMsg(content);
                                 bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
                                 bankResult.setErrorMsg(ResponseCodeEnum.RXH99999.getMsg());
+                                bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                                 break;
 
                         }
@@ -439,6 +447,7 @@ public class SicPayApiBondCardCrossComponentImpl implements ApiBondCardCrossComp
                         bankResult.setChannelResponseMsg(content);
                         bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
                         bankResult.setErrorMsg(ResponseCodeEnum.RXH99999.getMsg());
+                        bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                     }
                     break;
                 case "IFP010":
@@ -454,6 +463,7 @@ public class SicPayApiBondCardCrossComponentImpl implements ApiBondCardCrossComp
                                 bankResult.setCrossStatusCode(StatusEnum._0.getStatus());
                                 bankResult.setCrossResponseMsg("短信发送成功");
                                 bankResult.setChannelResponseMsg(content);
+                                bankResult.setCrossStatusMsg(StatusEnum._0.getRemark());
                                 break;
                             case "100001":
                                 bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
@@ -461,6 +471,7 @@ public class SicPayApiBondCardCrossComponentImpl implements ApiBondCardCrossComp
                                 bankResult.setChannelResponseMsg(content);
                                 bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
                                 bankResult.setErrorMsg(ResponseCodeEnum.RXH99999.getMsg());
+                                bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                                 break;
                             case "100003":
                                 bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
@@ -468,6 +479,7 @@ public class SicPayApiBondCardCrossComponentImpl implements ApiBondCardCrossComp
                                 bankResult.setChannelResponseMsg(content);
                                 bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
                                 bankResult.setErrorMsg(ResponseCodeEnum.RXH99999.getMsg());
+                                bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                                 break;
                             default:
                                 bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
@@ -475,6 +487,7 @@ public class SicPayApiBondCardCrossComponentImpl implements ApiBondCardCrossComp
                                 bankResult.setChannelResponseMsg(content);
                                 bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
                                 bankResult.setErrorMsg(ResponseCodeEnum.RXH99999.getMsg());
+                                bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                                 break;
                         }
 
@@ -484,6 +497,7 @@ public class SicPayApiBondCardCrossComponentImpl implements ApiBondCardCrossComp
                         bankResult.setChannelResponseMsg(content);
                         bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
                         bankResult.setErrorMsg(ResponseCodeEnum.RXH99999.getMsg());
+                        bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                     }
                     break;
                 case "IFP011":
@@ -500,6 +514,7 @@ public class SicPayApiBondCardCrossComponentImpl implements ApiBondCardCrossComp
                                 bankResult.setCrossStatusCode(StatusEnum._0.getStatus());
                                 bankResult.setCrossResponseMsg("短信验证成功");
                                 bankResult.setChannelResponseMsg(content);;
+                                bankResult.setCrossStatusMsg(StatusEnum._0.getRemark());
                                 break;
                             case "100001":
                                 bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
@@ -507,6 +522,7 @@ public class SicPayApiBondCardCrossComponentImpl implements ApiBondCardCrossComp
                                 bankResult.setChannelResponseMsg(content);
                                 bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
                                 bankResult.setErrorMsg(ResponseCodeEnum.RXH99999.getMsg());
+                                bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                                 break;
                             case "100003":
                                 bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
@@ -514,6 +530,7 @@ public class SicPayApiBondCardCrossComponentImpl implements ApiBondCardCrossComp
                                 bankResult.setChannelResponseMsg(content);
                                 bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
                                 bankResult.setErrorMsg(ResponseCodeEnum.RXH99999.getMsg());
+                                bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                                 break;
                             default:
                                 bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
@@ -521,6 +538,7 @@ public class SicPayApiBondCardCrossComponentImpl implements ApiBondCardCrossComp
                                 bankResult.setChannelResponseMsg(content);
                                 bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
                                 bankResult.setErrorMsg(ResponseCodeEnum.RXH99999.getMsg());
+                                bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                                 break;
                         }
 
@@ -536,6 +554,7 @@ public class SicPayApiBondCardCrossComponentImpl implements ApiBondCardCrossComp
                                 bankResult.setCrossResponseMsg("短信验证中");
                                 bankResult.setChannelResponseMsg(content);
                                 bankResult = new ApiSicPayOtherBusinessCrossComponentImpl().queryBondCard(trade);
+                                bankResult.setCrossStatusMsg(StatusEnum._3.getRemark());
                                 break;
                             case "100001":
                                 bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
@@ -543,6 +562,7 @@ public class SicPayApiBondCardCrossComponentImpl implements ApiBondCardCrossComp
                                 bankResult.setChannelResponseMsg(content);
                                 bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
                                 bankResult.setErrorMsg(ResponseCodeEnum.RXH99999.getMsg());
+                                bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                                 break;
                             case "100003":
                                 bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
@@ -550,6 +570,7 @@ public class SicPayApiBondCardCrossComponentImpl implements ApiBondCardCrossComp
                                 bankResult.setChannelResponseMsg(content);
                                 bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
                                 bankResult.setErrorMsg(ResponseCodeEnum.RXH99999.getMsg());
+                                bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                                 break;
                             default:
                                 bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
@@ -557,6 +578,7 @@ public class SicPayApiBondCardCrossComponentImpl implements ApiBondCardCrossComp
                                 bankResult.setChannelResponseMsg(content);
                                 bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
                                 bankResult.setErrorMsg(ResponseCodeEnum.RXH99999.getMsg());
+                                bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                                 break;
 
                         }
@@ -568,6 +590,7 @@ public class SicPayApiBondCardCrossComponentImpl implements ApiBondCardCrossComp
                         bankResult.setChannelResponseMsg(content);
                         bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
                         bankResult.setErrorMsg(ResponseCodeEnum.RXH99999.getMsg());
+                        bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                     }
                     break;
                 case "IFP023":
@@ -583,12 +606,14 @@ public class SicPayApiBondCardCrossComponentImpl implements ApiBondCardCrossComp
                                 if (oriRespCode.equals("<![CDATA[000000]]>")){
                                     bankResult.setCrossStatusCode(StatusEnum._0.getStatus());
                                     bankResult.setCrossResponseMsg("绑卡成功");
+                                    bankResult.setCrossStatusMsg(StatusEnum._0.getRemark());
                                     map.put("bindId",headMap.get("bindId"));
                                 }else {
                                     bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
                                     bankResult.setCrossResponseMsg("绑卡失败："+oriRespMsg);
                                     bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
                                     bankResult.setErrorMsg(ResponseCodeEnum.RXH99999.getMsg());
+                                    bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                                 }
                                 bankResult.setChannelResponseTime(dateFormat.parse(respDate));
                                 bankResult.setChannelResponseMsg(content);
@@ -600,6 +625,7 @@ public class SicPayApiBondCardCrossComponentImpl implements ApiBondCardCrossComp
                                 bankResult.setChannelResponseMsg(content);
                                 bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
                                 bankResult.setErrorMsg(ResponseCodeEnum.RXH99999.getMsg());
+                                bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                                 break;
                             case "100003":
                                 bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
@@ -607,6 +633,7 @@ public class SicPayApiBondCardCrossComponentImpl implements ApiBondCardCrossComp
                                 bankResult.setChannelResponseMsg(content);
                                 bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
                                 bankResult.setErrorMsg(ResponseCodeEnum.RXH99999.getMsg());
+                                bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                                 break;
                             default:
                                 bankResult.setCrossStatusCode(StatusEnum._3.getStatus());
@@ -614,6 +641,7 @@ public class SicPayApiBondCardCrossComponentImpl implements ApiBondCardCrossComp
                                 bankResult.setChannelResponseMsg(content);
                                 bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
                                 bankResult.setErrorMsg(ResponseCodeEnum.RXH99999.getMsg());
+                                bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                                 break;
                         }
 
@@ -623,6 +651,7 @@ public class SicPayApiBondCardCrossComponentImpl implements ApiBondCardCrossComp
                         bankResult.setChannelResponseMsg(content);
                         bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
                         bankResult.setErrorMsg(ResponseCodeEnum.RXH99999.getMsg());
+                        bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                     }
                     break;
                 default:
@@ -632,6 +661,7 @@ public class SicPayApiBondCardCrossComponentImpl implements ApiBondCardCrossComp
             bankResult.setCrossResponseMsg("绑卡失败：支付返回结果为空！");
             bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
             bankResult.setErrorMsg(ResponseCodeEnum.RXH99999.getMsg());
+            bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
         }
         return bankResult;
     }

@@ -34,12 +34,20 @@ import java.util.Map;
 public class YaColPayApiIntoPiecesOfInformationCrossComponentImpl implements ApiIntoPiecesOfInformationCrossComponent {
     @Override
     public CrossResponseMsgDTO addCusInfo(RequestCrossMsgDTO requestCrossMsgDTO) {
-        return null;
+        CrossResponseMsgDTO crossResponseMsgDTO = new CrossResponseMsgDTO();
+        crossResponseMsgDTO.setCrossStatusCode(StatusEnum._0.getStatus());
+        crossResponseMsgDTO.setCrossResponseMsg(StatusEnum._0.getRemark());
+        crossResponseMsgDTO.setCrossStatusMsg(StatusEnum._0.getRemark());
+        return crossResponseMsgDTO;
     }
 
     @Override
     public CrossResponseMsgDTO bankCardBind(RequestCrossMsgDTO requestCrossMsgDTO) {
-        return null;
+        CrossResponseMsgDTO crossResponseMsgDTO = new CrossResponseMsgDTO();
+        crossResponseMsgDTO.setCrossStatusCode(StatusEnum._0.getStatus());
+        crossResponseMsgDTO.setCrossResponseMsg(StatusEnum._0.getRemark());
+        crossResponseMsgDTO.setCrossStatusMsg(StatusEnum._0.getRemark());
+        return crossResponseMsgDTO;
     }
 
     @Override
@@ -70,11 +78,13 @@ public class YaColPayApiIntoPiecesOfInformationCrossComponentImpl implements Api
             if (responseCode.equals("APPLY_SUCCESS")){
                 bankResult.setChannelResponseMsg("进件成功");
                 bankResult.setCrossStatusCode(StatusEnum._0.getStatus());
+                bankResult.setCrossStatusMsg(StatusEnum._0.getRemark());
             }else {
                 bankResult.setChannelResponseMsg("进件失败："+responseMessage);
                 bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
                 bankResult.setErrorMsg(ResponseCodeEnum.RXH99999.getMsg());
                 bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
+                bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
             }
             bankResult.setChannelResponseMsg(JSONObject.toJSONString(content));
         }else {
@@ -83,6 +93,7 @@ public class YaColPayApiIntoPiecesOfInformationCrossComponentImpl implements Api
             bankResult.setChannelResponseMsg(JSONObject.toJSONString(content));
             bankResult.setErrorMsg(ResponseCodeEnum.RXH99999.getMsg());
             bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
+            bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
         }
         return bankResult;
     }

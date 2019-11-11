@@ -46,6 +46,7 @@ public class YaColPayApiBondCardCrossComponentImpl extends AbstractYaColIPay imp
                 bankResult.setChannelResponseMsg(null);
                 bankResult.setErrorMsg(ResponseCodeEnum.RXH99999.getMsg());
                 bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
+                bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                 log.info("【酷宝支付-绑定银行卡】响应给peayment工程信息：{}", JsonUtils.objectToJson(bankResult));
                 return bankResult;
             }
@@ -67,8 +68,10 @@ public class YaColPayApiBondCardCrossComponentImpl extends AbstractYaColIPay imp
                         bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
                         bankResult.setErrorMsg(ResponseCodeEnum.RXH99999.getMsg());
                         bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
+                        bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                     }else {
                         bankResult.setCrossStatusCode(StatusEnum._0.getStatus());
+                        bankResult.setCrossStatusMsg(StatusEnum._0.getRemark());
                     }
                     bankResult.setCrossResponseMsg("绑卡申请提交成功");
                     bankResult.setChannelResponseMsg(result);
@@ -80,6 +83,7 @@ public class YaColPayApiBondCardCrossComponentImpl extends AbstractYaColIPay imp
                     bankResult.setChannelResponseMsg(result);
                     bankResult.setErrorMsg(ResponseCodeEnum.RXH99999.getMsg());
                     bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
+                    bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                     log.info("【酷宝支付-绑定银行卡】响应给peayment工程信息：{}",JsonUtils.objectToJson(bankResult));
                     return bankResult;
                 }
@@ -89,6 +93,7 @@ public class YaColPayApiBondCardCrossComponentImpl extends AbstractYaColIPay imp
                 bankResult.setChannelResponseMsg(result);
                 bankResult.setErrorMsg(ResponseCodeEnum.RXH99999.getMsg());
                 bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
+                bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                 log.info("【酷宝支付-绑定银行卡】响应给peayment工程信息：{}",JsonUtils.objectToJson(bankResult));
                 return bankResult;
             }
@@ -101,6 +106,7 @@ public class YaColPayApiBondCardCrossComponentImpl extends AbstractYaColIPay imp
             bankResult.setChannelResponseMsg(e.getMessage());
             bankResult.setErrorMsg(ResponseCodeEnum.RXH99999.getMsg());
             bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
+            bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
             log.info("【酷宝支付-绑定银行卡】响应给peayment工程信息：{}",JsonUtils.objectToJson(bankResult));
             return bankResult;
         }
@@ -275,6 +281,7 @@ public class YaColPayApiBondCardCrossComponentImpl extends AbstractYaColIPay imp
                 bankResult.setChannelResponseMsg(null);
                 bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
                 bankResult.setErrorMsg(ResponseCodeEnum.RXH99999.getMsg());
+                bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                 log.info("【酷宝支付-绑卡短信重发】响应给peayment工程信息：{}", JsonUtils.objectToJson(bankResult));
                 return bankResult;
             }
@@ -292,6 +299,7 @@ public class YaColPayApiBondCardCrossComponentImpl extends AbstractYaColIPay imp
                     bankResult.setCrossStatusCode(StatusEnum._0.getStatus());
                     bankResult.setCrossResponseMsg(content.get("response_message").toString());
                     bankResult.setChannelResponseMsg(result);
+                    bankResult.setCrossStatusMsg(StatusEnum._0.getRemark());
 //                    String bankData="{\"card_id\":\""+card_id+"\"}";
                     log.info("【酷宝支付-绑卡短信重发】响应给peayment工程信息：{}", JsonUtils.objectToJson(bankResult));
                     return bankResult;
@@ -302,10 +310,12 @@ public class YaColPayApiBondCardCrossComponentImpl extends AbstractYaColIPay imp
                     log.info("【酷宝支付-绑卡短信重发】响应给peayment工程信息：{}",JsonUtils.objectToJson(bankResult));
                     bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
                     bankResult.setErrorMsg(ResponseCodeEnum.RXH99999.getMsg());
+                    bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                     return bankResult;
                 }
             }else{
                 bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
+                bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                 bankResult.setCrossResponseMsg("验证酷宝返回参数不通过");
                 bankResult.setChannelResponseMsg(result);
                 log.info("【酷宝支付-绑卡短信重发】响应给peayment工程信息：{}",JsonUtils.objectToJson(bankResult));
@@ -317,6 +327,7 @@ public class YaColPayApiBondCardCrossComponentImpl extends AbstractYaColIPay imp
         }catch (Exception e){
             e.printStackTrace();
             bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
+            bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
             bankResult.setCrossResponseMsg("cross 工程处理请求过程中发生异常");
             bankResult.setChannelResponseMsg(e.getMessage());
             bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
@@ -385,6 +396,7 @@ public class YaColPayApiBondCardCrossComponentImpl extends AbstractYaColIPay imp
             Map<String,String> bondParam = getSendSMSParam(squareTrade);
             if(null == bondParam){
                 bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
+                bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                 bankResult.setCrossResponseMsg("cross 工程封装参数异常");
                 bankResult.setChannelResponseMsg(null);
                 log.info("【酷宝支付-绑定银行卡短信验证】响应给peayment工程信息：{}", JsonUtils.objectToJson(bankResult));
@@ -404,12 +416,14 @@ public class YaColPayApiBondCardCrossComponentImpl extends AbstractYaColIPay imp
                 if("APPLY_SUCCESS".equalsIgnoreCase(content.get("response_code").toString())){
                     String card_id= content.get("card_id").toString();
                     bankResult.setCrossStatusCode(StatusEnum._0.hashCode());
+                    bankResult.setCrossStatusMsg(StatusEnum._0.getRemark());
                     bankResult.setCrossResponseMsg("绑卡成功");
                     bankResult.setChannelResponseMsg(result);
                     log.info("【酷宝支付-绑定银行卡短信验证】响应给peayment工程信息：{}",JsonUtils.objectToJson(bankResult));
                     return bankResult;
                 }else {
                     bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
+                    bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                     bankResult.setCrossResponseMsg(content.get("error_message")==null?content.get("errorMessage").toString():content.get("error_message").toString());
                     bankResult.setChannelResponseMsg(result);
                     log.info("【酷宝支付-绑定银行卡短信验证】响应给peayment工程信息：{}",JsonUtils.objectToJson(bankResult));
@@ -417,6 +431,7 @@ public class YaColPayApiBondCardCrossComponentImpl extends AbstractYaColIPay imp
                 }
             }else{
                 bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
+                bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                 bankResult.setCrossResponseMsg("验证酷宝返回参数不通过");
                 bankResult.setChannelResponseMsg(result);
                 log.info("【酷宝支付-绑定银行卡短信验证】响应给peayment工程信息：{}",JsonUtils.objectToJson(bankResult));
@@ -426,6 +441,7 @@ public class YaColPayApiBondCardCrossComponentImpl extends AbstractYaColIPay imp
         }catch (Exception e){
             e.printStackTrace();
             bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
+            bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
             bankResult.setCrossResponseMsg("cross 工程处理请求过程中发生异常");
             bankResult.setChannelResponseMsg(e.getMessage());
             log.info("【酷宝支付-绑定银行卡短信验证】响应给peayment工程信息：{}", JsonUtils.objectToJson(bankResult));

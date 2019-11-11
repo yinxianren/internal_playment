@@ -54,17 +54,20 @@ public class AllinPayApiTransOrderCrossComponentImpl implements ApiTransOrderCro
             switch (trxstatus){
                 case "0000":
                     bankResult.setCrossStatusCode(StatusEnum._0.getStatus());
+                    bankResult.setCrossStatusMsg(StatusEnum._0.getRemark());
                     bankResult.setCrossResponseMsg("付款成功");
                     bankResult.setChannelOrderId(result.getString("trxid"));
                     bankResult.setChannelResponseMsg(content);
                     break;
                 case "2000":
                     bankResult.setCrossStatusCode(StatusEnum._0.getStatus());
+                    bankResult.setCrossStatusMsg(StatusEnum._0.getRemark());
                     bankResult.setCrossResponseMsg("交易已受理");
                     bankResult.setChannelResponseMsg(content);
                     break;
                 case "0003":
                     bankResult.setCrossStatusCode(StatusEnum._3.getStatus());
+                    bankResult.setCrossStatusMsg(StatusEnum._3.getRemark());
                     bankResult.setCrossResponseMsg("交易异常,请查询交易");
                     bankResult.setChannelResponseMsg(content);
                     bankResult.setErrorCode(ResponseCodeEnum.RXH00007.getCode());
@@ -72,6 +75,7 @@ public class AllinPayApiTransOrderCrossComponentImpl implements ApiTransOrderCro
                     break;
                 case "3999":
                     bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
+                    bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                     bankResult.setCrossResponseMsg("其他错误");
                     bankResult.setChannelResponseMsg(content);
                     bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
@@ -79,6 +83,7 @@ public class AllinPayApiTransOrderCrossComponentImpl implements ApiTransOrderCro
                     break;
                 default:
                     bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
+                    bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                     bankResult.setCrossResponseMsg("付款失败"+result.getString("errmsg"));
                     bankResult.setChannelResponseMsg(content);
                     bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
@@ -87,6 +92,7 @@ public class AllinPayApiTransOrderCrossComponentImpl implements ApiTransOrderCro
             }
         }else {
             bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
+            bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
             bankResult.setCrossResponseMsg("付款失败:"+result.getString("errmsg"));
             bankResult.setChannelResponseMsg(content);
             bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());

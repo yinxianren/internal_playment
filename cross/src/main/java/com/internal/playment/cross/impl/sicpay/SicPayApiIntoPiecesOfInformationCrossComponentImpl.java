@@ -324,6 +324,7 @@ public class SicPayApiIntoPiecesOfInformationCrossComponentImpl implements ApiIn
                         bankResult.setCrossStatusCode(StatusEnum._0.getStatus());
                         bankResult.setCrossStatusMsg("交易成功");
                         bankResult.setChannelResponseMsg(content);
+                        bankResult.setCrossStatusMsg(StatusEnum._0.getRemark());
                         break;
                     case "100001":
                         bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
@@ -331,6 +332,7 @@ public class SicPayApiIntoPiecesOfInformationCrossComponentImpl implements ApiIn
                         bankResult.setChannelResponseMsg(content);
                         bankResult.setErrorMsg(ResponseCodeEnum.RXH99999.getMsg());
                         bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
+                        bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                         break;
                     case "100003":
                         bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
@@ -338,6 +340,7 @@ public class SicPayApiIntoPiecesOfInformationCrossComponentImpl implements ApiIn
                         bankResult.setChannelResponseMsg(content);
                         bankResult.setErrorMsg(ResponseCodeEnum.RXH99999.getMsg());
                         bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
+                        bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                         break;
                     default:
                         bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
@@ -345,6 +348,7 @@ public class SicPayApiIntoPiecesOfInformationCrossComponentImpl implements ApiIn
                         bankResult.setChannelResponseMsg(content);
                         bankResult.setErrorMsg(ResponseCodeEnum.RXH99999.getMsg());
                         bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
+                        bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                         break;
                 }
 
@@ -354,12 +358,14 @@ public class SicPayApiIntoPiecesOfInformationCrossComponentImpl implements ApiIn
                 bankResult.setChannelResponseMsg(content);
                 bankResult.setErrorMsg(ResponseCodeEnum.RXH99999.getMsg());
                 bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
+                bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
             }
         }else {
             bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
             bankResult.setCrossStatusMsg("交易失败：支付返回结果为空！");
             bankResult.setErrorMsg(ResponseCodeEnum.RXH99999.getMsg());
             bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
+            bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
         }
         return bankResult;
     }

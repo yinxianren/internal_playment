@@ -30,6 +30,7 @@ import java.util.TreeMap;
 @Slf4j
 @Service(version = "${application.version}" , group = "allinPay", timeout = 30000 )
 public class AllinPayApiBondCardCrossComponentImpl implements ApiBondCardCrossComponent {
+
     @Override
     public CrossResponseMsgDTO bondCardApply(RequestCrossMsgDTO trade){
         CrossResponseMsgDTO bankResult = new CrossResponseMsgDTO();
@@ -53,16 +54,19 @@ public class AllinPayApiBondCardCrossComponentImpl implements ApiBondCardCrossCo
                     bankResult.setCrossStatusCode(StatusEnum._0.getStatus());
                     bankResult.setCrossResponseMsg("绑卡成功");
                     bankResult.setChannelResponseMsg(content);
+                    bankResult.setCrossStatusMsg(StatusEnum._0.getRemark());
                     break;
                 case "3051":
                     bankResult.setCrossStatusCode(StatusEnum._0.getStatus());
                     bankResult.setCrossResponseMsg("协议已存在,请勿重复签约");
                     bankResult.setChannelResponseMsg(content);
+                    bankResult.setCrossStatusMsg(StatusEnum._0.getRemark());
                     break;
                 case "1999":
                     bankResult.setCrossStatusCode(StatusEnum._0.getStatus());
                     bankResult.setCrossResponseMsg("短信验证码已发送,请继续调用签约确认接口完成绑卡操作");
                     bankResult.setChannelResponseMsg(content);
+                    bankResult.setCrossStatusMsg(StatusEnum._0.getRemark());
                     break;
                 default:
                     String eroMsg1 = result.getString("retmsg");
@@ -71,6 +75,7 @@ public class AllinPayApiBondCardCrossComponentImpl implements ApiBondCardCrossCo
                     bankResult.setChannelResponseMsg(content);
                     bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
                     bankResult.setErrorMsg(ResponseCodeEnum.RXH99999.getMsg());
+                    bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                     break;
             }
         } else {
@@ -79,6 +84,7 @@ public class AllinPayApiBondCardCrossComponentImpl implements ApiBondCardCrossCo
             bankResult.setChannelResponseMsg(content);
             bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
             bankResult.setErrorMsg(ResponseCodeEnum.RXH99999.getMsg());
+            bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
         }
         log.info("绑卡返回结果{}",JSON.toJSONString(bankResult));
         return bankResult;
@@ -145,6 +151,7 @@ public class AllinPayApiBondCardCrossComponentImpl implements ApiBondCardCrossCo
             bankResult.setCrossStatusCode(StatusEnum._0.getStatus());
             bankResult.setCrossResponseMsg("短信验证码已发送,请继续调用签约确认接口完成绑卡操作");
             bankResult.setChannelResponseMsg(content);
+            bankResult.setCrossStatusMsg(StatusEnum._0.getRemark());
         } else {
             String eroMsg = result.getString("retmsg");
             bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
@@ -152,6 +159,7 @@ public class AllinPayApiBondCardCrossComponentImpl implements ApiBondCardCrossCo
             bankResult.setChannelResponseMsg(content);
             bankResult.setErrorCode(ResponseCodeEnum.RXH00005.getCode());
             bankResult.setErrorMsg(ResponseCodeEnum.RXH00005.getMsg());
+            bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
         }
         return bankResult;
     }
@@ -229,11 +237,13 @@ public class AllinPayApiBondCardCrossComponentImpl implements ApiBondCardCrossCo
                     bankResult.setCrossStatusCode(StatusEnum._0.getStatus());
                     bankResult.setCrossResponseMsg("绑卡成功");
                     bankResult.setChannelResponseMsg(content);
+                    bankResult.setCrossStatusMsg(StatusEnum._0.getRemark());
                     break;
                 case "3051":
                     bankResult.setCrossStatusCode(StatusEnum._0.getStatus());
                     bankResult.setCrossResponseMsg("协议已存在,请勿重复签约");
                     bankResult.setChannelResponseMsg(content);
+                    bankResult.setCrossStatusMsg(StatusEnum._0.getRemark());
                     break;
                 case "3058":
                     bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
@@ -241,6 +251,7 @@ public class AllinPayApiBondCardCrossComponentImpl implements ApiBondCardCrossCo
                     bankResult.setChannelResponseMsg(content);
                     bankResult.setErrorCode(ResponseCodeEnum.RXH00004.getCode());
                     bankResult.setErrorMsg(ResponseCodeEnum.RXH00004.getMsg());
+                    bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                     break;
                 case "3057":
                     bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
@@ -248,6 +259,7 @@ public class AllinPayApiBondCardCrossComponentImpl implements ApiBondCardCrossCo
                     bankResult.setChannelResponseMsg(content);
                     bankResult.setErrorCode(ResponseCodeEnum.RXH00003.getCode());
                     bankResult.setErrorMsg(ResponseCodeEnum.RXH00003.getMsg());
+                    bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                     break;
                 case "3059":
                     bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
@@ -255,6 +267,7 @@ public class AllinPayApiBondCardCrossComponentImpl implements ApiBondCardCrossCo
                     bankResult.setChannelResponseMsg(content);
                     bankResult.setErrorCode(ResponseCodeEnum.RXH00005.getCode());
                     bankResult.setErrorMsg(ResponseCodeEnum.RXH00005.getMsg());
+                    bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                     break;
                 default:
                     String status = result.getString("retmsg");
@@ -271,6 +284,7 @@ public class AllinPayApiBondCardCrossComponentImpl implements ApiBondCardCrossCo
                         bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
                         bankResult.setErrorMsg(ResponseCodeEnum.RXH99999.getMsg());
                     }
+                    bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                     break;
             }
 
@@ -311,6 +325,7 @@ public class AllinPayApiBondCardCrossComponentImpl implements ApiBondCardCrossCo
                 bankResult.setErrorCode(ResponseCodeEnum.RXH00055.getCode());
                 bankResult.setErrorMsg("绑卡失败：请核对卡片信息是否有误");
             }
+            bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
         }
         log.info("绑卡确认返回结果:{}",JSON.toJSONString(bankResult));
         return bankResult;
