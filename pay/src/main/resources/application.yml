@@ -7,7 +7,8 @@ application:
   #版本号
   version: @application.version@
   queue:
-    pay-order:
+    pay-order: @application.queue.pay-order@
+    trans-order: @application.queue.trans-order@
 dubbo:
   application:
     #应用名称，每个dubbo应用的名称都是唯一的

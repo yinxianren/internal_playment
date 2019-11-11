@@ -16,6 +16,8 @@ import com.internal.playment.common.tuple.Tuple2;
 import com.internal.playment.pay.channel.AllinPayChannelHandlePortComponent;
 import com.internal.playment.pay.component.ActiveMqOrderProducerComponent;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 /**
@@ -27,8 +29,14 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
+@ConfigurationProperties(prefix = "application.queue")
 public class AllinPayChannelHandlePortComponentImpl implements AllinPayChannelHandlePortComponent {
 
+
+    @Value(" pay-order")
+    private String payOrder;
+    @Value("trans-order")
+    private String transOrder;
 
     @Reference(version = "${application.version}", group = "allinPay", timeout = 30000)
     private ApiBondCardCrossComponent apiBondCardCrossComponent;
@@ -42,9 +50,10 @@ public class AllinPayChannelHandlePortComponentImpl implements AllinPayChannelHa
     private ApiNoAuthenticationPayOrderCrossComponent apiNoAuthenticationPayOrderCrossComponent;
     @Autowired
     private ActiveMqOrderProducerComponent ActiveMqOrderProducerComponent;
+
+
     @Override
     public CrossResponseMsgDTO addCusInfo(RequestCrossMsgDTO requestCrossMsgDTO, InnerPrintLogObject ipo) throws Exception {
-
         return apiIntoPiecesOfInformationCrossComponent.addCusInfo(requestCrossMsgDTO);
     }
     @Override
