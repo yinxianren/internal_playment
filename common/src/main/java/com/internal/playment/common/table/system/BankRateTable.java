@@ -27,6 +27,7 @@ public class BankRateTable  implements Serializable {
 	private Integer status;//0:可用，1：不可用
 	private Date tradeTime;//交易时间
 	private Date createTime;//创建时间
+	private String bankName;//银行名称
 
 	public BankRateTable setId(Long id) {
 		this.id = id;
@@ -66,5 +67,9 @@ public class BankRateTable  implements Serializable {
 	public BankRateTable setCreateTime(Date createTime) {
 		this.createTime = createTime;
 		return this;
+	}
+
+	public void setBankName(String bankName) {
+		this.bankName = bankName;
 	}
 }

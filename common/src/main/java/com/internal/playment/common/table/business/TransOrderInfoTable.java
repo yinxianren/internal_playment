@@ -1,6 +1,7 @@
 package com.internal.playment.common.table.business;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Getter;
@@ -61,6 +62,19 @@ public class TransOrderInfoTable implements Serializable {
     private Integer  status;//状态 0：success1:fail
     private Date createTime;//创建时间
     private Date updateTime;//更新时间
+
+    //分页参数
+    @TableField(exist = false)
+    private Integer pageNum;
+    @TableField(exist = false)
+    private Integer pageSize;
+    @TableField(exist = false)
+    private Date beginTime;
+    @TableField(exist = false)
+    private Date endTime;
+
+    public TransOrderInfoTable() {
+    }
 
     public TransOrderInfoTable setBankName(String bankName) {
         this.bankName = bankName;
@@ -253,5 +267,21 @@ public class TransOrderInfoTable implements Serializable {
     public TransOrderInfoTable setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
         return this;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+
+    public void setBeginTime(Date beginTime) {
+        this.beginTime = beginTime;
+    }
+
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    public void setPageNum(Integer pageNum) {
+        this.pageNum = pageNum;
     }
 }
