@@ -37,12 +37,22 @@ public class NewBondCardServiceImpl extends CommonServiceAbstract implements New
     @Override
     public void multipleOrder(String merOrderId, InnerPrintLogObject ipo) throws NewPayException {
         final String localPoint="multipleOrder";
-        MerchantCardTable merchantCardTable = dbCommonRPCComponent.apiMerchantCardService.getOne(new MerchantCardTable()
-                .setMerOrderId(merOrderId)
-                .setMerchantId(ipo.getMerId())
-                .setTerminalMerId(ipo.getTerMerId())
-        );
-        isNotNull(merchantCardTable,
+        List<MerchantCardTable> merchantCardTableList =null;
+        try {
+            merchantCardTableList = dbCommonRPCComponent.apiMerchantCardService.getList(new MerchantCardTable()
+                    .setMerOrderId(merOrderId)
+                    .setMerchantId(ipo.getMerId())
+                    .setTerminalMerId(ipo.getTerMerId())
+            );
+        }catch (Exception e){
+            throw new NewPayException(
+                    ResponseCodeEnum.RXH99999.getCode(),
+                    format("%s-->商户号：%s；终端号：%s；错误信息: %s ；代码所在位置：%s,异常根源：查询订单是否重复，发生异常！异常信息：%s",
+                            ipo.getBussType(), ipo.getMerId(), ipo.getTerMerId(), ResponseCodeEnum.RXH99999.getMsg(), localPoint,e.getMessage()),
+                    format(" %s", ResponseCodeEnum.RXH99999.getMsg())
+            );
+        }
+        isHasElement(merchantCardTableList,
                 ResponseCodeEnum.RXH00009.getCode(),
                 format("%s-->商户号：%s；终端号：%s；错误信息: %s ；代码所在位置：%s",ipo.getBussType(),ipo.getMerId(),ipo.getTerMerId(),ResponseCodeEnum.RXH00009.getMsg(),localPoint),
                 format(" %s",ResponseCodeEnum.RXH00009.getMsg()));
@@ -384,10 +394,10 @@ public class NewBondCardServiceImpl extends CommonServiceAbstract implements New
         LinkedList<RegisterCollectTable>  linkedList = new LinkedList<>(registerCollectTableList);
         registerCollectTableList.forEach( rc ->{
             merchantCardTableList.forEach( mc->{
-                      if(        mc.getOrganizationId().equalsIgnoreCase(rc.getOrganizationId())
-                              && mc.getBankCardNum().equalsIgnoreCase(rc.getBankCardNum())){
-                          linkedList.remove(rc);
-                      }
+                if(        mc.getOrganizationId().equalsIgnoreCase(rc.getOrganizationId())
+                        && mc.getBankCardNum().equalsIgnoreCase(rc.getBankCardNum())){
+                    linkedList.remove(rc);
+                }
             });
         });
         isHasNotElement(linkedList,

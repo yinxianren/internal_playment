@@ -325,7 +325,6 @@ public class NewIntoPiecesOfInformationServiceImp extends CommonServiceAbstract 
                     .setTerminalMerId(ipo.getTerMerId())
                     .setBussType(busiType)
                     .setStatus(StatusEnum._0.getStatus())
-
                     .setChannelId(rct.getChannelId())
                     .setBankCardNum(rct.getBankCardNum())
                     .setBankCardPhone(rct.getBankCardPhone())
@@ -449,7 +448,8 @@ public class NewIntoPiecesOfInformationServiceImp extends CommonServiceAbstract 
                 e.printStackTrace();
                 throw new NewPayException(
                         ResponseCodeEnum.RXH99999.getCode(),
-                        format("%s-->商户号：%s；终端号：%s；错误信息: %s ；代码所在位置B3：%s,异常根源：保存进件附属信息", ipo.getBussType(), ipo.getMerId(), ipo.getTerMerId(), ResponseCodeEnum.RXH99999.getMsg(), localPoint),
+                        format("%s-->商户号：%s；终端号：%s；错误信息: %s ；代码所在位置B3：%s,异常根源：保存进件附属信息,异常信息：%s",
+                                ipo.getBussType(), ipo.getMerId(), ipo.getTerMerId(), ResponseCodeEnum.RXH99999.getMsg(), localPoint,e.getMessage()),
                         format(" %s", ResponseCodeEnum.RXH99999.getMsg())
                 );
             }
@@ -494,14 +494,26 @@ public class NewIntoPiecesOfInformationServiceImp extends CommonServiceAbstract 
 
     public boolean multipleOrder(String merOrderId,InnerPrintLogObject ipo) throws NewPayException{
         final String localPoint="multipleOrder";
-        RegisterCollectTable rct = new RegisterCollectTable();
-        rct.setMerchantId(ipo.getMerId());
-        rct.setTerminalMerId(ipo.getTerMerId());
-        rct.setMerOrderId(merOrderId);
-        List<RegisterCollectTable> list = dbCommonRPCComponent.apiRegisterCollectService.getList(rct);
+        List<RegisterCollectTable> list = null;
+        try {
+            list = dbCommonRPCComponent.apiRegisterCollectService.getList(new RegisterCollectTable()
+                    .setMerchantId(ipo.getMerId())
+                    .setTerminalMerId(ipo.getTerMerId())
+                    .setMerOrderId(merOrderId)
+            );
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new NewPayException(
+                    ResponseCodeEnum.RXH99999.getCode(),
+                    format("%s-->商户号：%s；终端号：%s；错误信息: %s ；代码所在位置B3：%s,异常根源：查询订单是否重发生异常，异常信息：%s",
+                            ipo.getBussType(), ipo.getMerId(), ipo.getTerMerId(), ResponseCodeEnum.RXH99999.getMsg(), localPoint,e.getMessage()),
+                    format(" %s", ResponseCodeEnum.RXH99999.getMsg())
+            );
+        }
         isHasElement(list,
                 ResponseCodeEnum.RXH00009.getCode(),
-                format("%s-->商户号：%s；终端号：%s；错误信息: %s ；代码所在位置：%s",ipo.getBussType(),ipo.getMerId(),ipo.getTerMerId(),ResponseCodeEnum.RXH00009.getMsg(),localPoint),
+                format("%s-->商户号：%s；终端号：%s；错误信息: %s 代码所在位置：%s",
+                        ipo.getBussType(),ipo.getMerId(),ipo.getTerMerId(),ResponseCodeEnum.RXH00009.getMsg(),localPoint),
                 format(" %s",ResponseCodeEnum.RXH00009.getMsg()));
         return false;
     }

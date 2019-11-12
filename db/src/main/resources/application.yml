@@ -1,3 +1,5 @@
+
+
 server:
   port: @server.db.port@
   servlet:
@@ -6,7 +8,6 @@ server:
 application:
   #版本号
   version: @application.version@
-
 
 dubbo:
   application:
