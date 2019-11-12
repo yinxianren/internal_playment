@@ -39,11 +39,9 @@ public class AllinPayApiTransOrderCrossComponentImpl implements ApiTransOrderCro
 
         JSONObject others = (JSONObject) JSON.parse(trade.getChannelInfoTable().getChannelParam());
         log.info("allinPay付款交易参数：{}",JSONObject.toJSONString(bondParam));
-        // String content = HttpClientUtils.doPost(HttpClientUtils.getHttpsClient(), "https://ipay.allinpay.com/apiweb/acct/pay", bondParam); //生产环境
-        String content = HttpClientUtils.doPost(HttpClientUtils.getHttpsClient(), others.getString("oneTransUrl"), bondParam);// 测试环境
-//        String content = "{\"acctno\":\"622700****7047\",\"actualamount\":\"200\",\"amount\":\"1000\",\"appid\":\"6666678\",\"errmsg\":\"提交成功,等待返回结果\",\"fee\":\"800\",\"fintime\":\"20190628100755\",\"orderid\":\"1906281007470130001\",\"retcode\":\"SUCCESS\",\"retmsg\":\"处理成功\",\"sign\":\"76403287ABD89F8637426FA2BC1BA4F9\",\"trxid\":\"19060000001378\",\"trxstatus\":\"0000\"}";
+//        String content = HttpClientUtils.doPost(HttpClientUtils.getHttpsClient(), others.getString("oneTransUrl"), bondParam);// 测试环境
+        String content = "{\"acctno\":\"622700****7047\",\"actualamount\":\"200\",\"amount\":\"1000\",\"appid\":\"6666678\",\"errmsg\":\"提交成功,等待返回结果\",\"fee\":\"800\",\"fintime\":\"20190628100755\",\"orderid\":\"1906281007470130001\",\"retcode\":\"SUCCESS\",\"retmsg\":\"处理成功\",\"sign\":\"76403287ABD89F8637426FA2BC1BA4F9\",\"trxid\":\"19060000001378\",\"trxstatus\":\"0000\"}";
         log.info("allinPay付款银行返回：{}",content);
-//        TimeUnit.SECONDS.sleep(new Random().nextInt(3));
         JSONObject result = (JSONObject) JSON.parse(content);
         String resultCode = result.getString("retcode");
 

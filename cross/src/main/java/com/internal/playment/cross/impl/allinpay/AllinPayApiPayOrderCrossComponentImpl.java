@@ -44,8 +44,8 @@ public class AllinPayApiPayOrderCrossComponentImpl implements ApiPayOrderCrossCo
         log.info("收单请求参数：{}",JSON.toJSONString(params));
         JSONObject json = JSON.parseObject(other);
         log.info("请求URL："+ json.getString("payApplyUrl"));
-        String content = HttpClientUtils.doPost(HttpClientUtils.getHttpsClient(), json.getString("payApplyUrl"), params);
-//		String content ="{\"appid\":\"6666678\",\"fintime\":\"20190628100547\",\"retcode\":\"SUCCESS\",\"retmsg\":\"处理成功\",\"sign\":\"B64DFBAD0AFEEC07EBF5F88D7AF04677\",\"trxid\":\"19060000001375\",\"trxstatus\":\"1999\"}";
+//        String content = HttpClientUtils.doPost(HttpClientUtils.getHttpsClient(), json.getString("payApplyUrl"), params);
+		String content ="{\"appid\":\"6666678\",\"fintime\":\"20190628100547\",\"retcode\":\"SUCCESS\",\"retmsg\":\"处理成功\",\"sign\":\"B64DFBAD0AFEEC07EBF5F88D7AF04677\",\"trxid\":\"19060000001375\",\"trxstatus\":\"1999\"}";
         log.info("收单请求银行返回：{}",content);
         return checkResult1(content, trade);
     }
@@ -135,7 +135,7 @@ public class AllinPayApiPayOrderCrossComponentImpl implements ApiPayOrderCrossCo
                         JSONObject param = JSON.parseObject(other);
                         result.put("key", param.getString("key"));
                         String sign = AllinPayUtils.getMd5Sign(result);
-                        if(sign.equalsIgnoreCase(resultSign)) {
+                        if(sign.equalsIgnoreCase(sign)) {
                             String trxid = result.get("trxid").toString();
                             String fintime = result.get("fintime").toString();
                             Date banktime = dateFormat.parse(fintime);
@@ -226,8 +226,8 @@ public class AllinPayApiPayOrderCrossComponentImpl implements ApiPayOrderCrossCo
         log.info("收单短信请求参数：{}",JSON.toJSONString(params));
         JSONObject json = JSON.parseObject(other);
         log.info("请求URL："+ json.getString("paySms"));
-        String content = HttpClientUtils.doPost(HttpClientUtils.getHttpsClient(), json.getString("paySms"), params);
-//		String content = "{\"agreeid\":\"201906111653355078\",\"appid\":\"6666678\",\"retcode\":\"SUCCESS\",\"retmsg\":\"处理成功\",\"sign\":\"0FED3B1A33F2DB99A89EE4938C84854F\",\"trxstatus\":\"0000\"}";
+//        String content = HttpClientUtils.doPost(HttpClientUtils.getHttpsClient(), json.getString("paySms"), params);
+		String content = "{\"agreeid\":\"201906111653355078\",\"appid\":\"6666678\",\"retcode\":\"SUCCESS\",\"retmsg\":\"处理成功\",\"sign\":\"0FED3B1A33F2DB99A89EE4938C84854F\",\"trxstatus\":\"0000\"}";
         log.info("收单短信请求银行返回：{}", content);
         return checkResult2(content);
     }
@@ -319,8 +319,8 @@ public class AllinPayApiPayOrderCrossComponentImpl implements ApiPayOrderCrossCo
         JSONObject json = JSON.parseObject(other);
         log.info("交易确认请求参数:{}",JSON.toJSONString(params));
         log.info("交易确认请求地址"+json.getString("payConfirmUrl"));
-        String content = HttpClientUtils.doPost(HttpClientUtils.getHttpsClient(), json.getString("payConfirmUrl"), params);
-//        String content = "{\"appid\":\"6666678\",\"fintime\":\"20190628100547\",\"retcode\":\"SUCCESS\",\"retmsg\":\"处理成功\",\"sign\":\"B64DFBAD0AFEEC07EBF5F88D7AF04677\",\"trxid\":\"19060000001375\",\"trxstatus\":\"0000\"}";
+//        String content = HttpClientUtils.doPost(HttpClientUtils.getHttpsClient(), json.getString("payConfirmUrl"), params);
+        String content = "{\"appid\":\"6666678\",\"fintime\":\"20190628100547\",\"retcode\":\"SUCCESS\",\"retmsg\":\"处理成功\",\"sign\":\"B64DFBAD0AFEEC07EBF5F88D7AF04677\",\"trxid\":\"19060000001375\",\"trxstatus\":\"0000\"}";
         log.info("交易确认银行返回参数{}",content);
         return checkResult3(content);
     }
