@@ -50,6 +50,8 @@ public class ApiPayOrderInfoServiceImpl implements ApiPayOrderInfoService, NewPa
         if( !isBlank(pit.getMerchantId())) lambdaQueryWrapper.eq(PayOrderInfoTable::getMerchantId,pit.getMerchantId());
         if( !isBlank(pit.getTerminalMerId())) lambdaQueryWrapper.eq(PayOrderInfoTable::getTerminalMerId,pit.getTerminalMerId());
         if( !isBlank(pit.getBussType())) lambdaQueryWrapper.eq(PayOrderInfoTable::getBussType,pit.getBussType());
+        if( !isBlank(pit.getBeginTime())) lambdaQueryWrapper.ge(PayOrderInfoTable::getUpdateTime,pit.getBeginTime());
+        if( !isBlank(pit.getEndTime())) lambdaQueryWrapper.le(PayOrderInfoTable::getUpdateTime,pit.getEndTime());
         return payOrderInfoDBService.list(lambdaQueryWrapper);
     }
 

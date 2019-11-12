@@ -449,6 +449,7 @@ public class PayWalletServiceImpl extends CommonServiceAbstract implements PayWa
 //        BigDecimal incomeAmount = ( null == amw.getIncomeAmount() ? inAmount : amw.getIncomeAmount().add(inAmount) );
 
         //代理费率
+        ams =  null == ams ?  new AgentMerchantSettingTable() : ams ;
         BigDecimal rateFee = ( null == ams.getRateFee() ? new BigDecimal(0) :  ams.getRateFee().divide(new BigDecimal(100)) );
         BigDecimal singleFee = ams.getSingleFee();
         //代理商手续费

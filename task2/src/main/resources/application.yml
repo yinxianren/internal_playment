@@ -6,7 +6,9 @@ server:
 application:
   #版本号
   version: @application.version@
-
+  queue:
+    pay-order: @application.queue.pay-order@
+    trans-order: @application.queue.trans-order@
 dubbo:
   application:
     #应用名称，每个dubbo应用的名称都是唯一的
@@ -14,3 +16,16 @@ dubbo:
   registry:
     #注册中心
     address: @pay.dubbo.registry_addr@
+
+
+spring:
+  jms:
+    pub-sub-domain: true
+  activemq:
+    broker-url: @pay.activemq.broker-url@
+    user: @pay.activemq.user@
+    password: @pay.activemq.password@
+    in-memory: true
+    pool:
+      enabled: true
+      max-connections: 50
