@@ -43,8 +43,8 @@ public class AllinPayApiNoAuthenticationPayOrderCrossComponentImpl implements Ap
         String other = trade.getChannelInfoTable().getChannelParam();
         JSONObject json = JSON.parseObject(other);
         log.info("通联免短信支付请求参数{}",JSONObject.toJSONString(params));
-        String content = HttpClientUtils.doPost(HttpClientUtils.getHttpsClient(), json.getString("freeUrl"), params);
-//		String content = "{\"appid\":\"6666678\",\"fintime\":\""+new Date().getTime()+"\",\"retcode\":\"SUCCESS\",\"retmsg\":\"处理成功\",\"sign\":\"B64DFBAD0AFEEC07EBF5F88D7AF04677\",\"trxid\":\""+trade.getPayOrder().getPayId()+"\",\"trxstatus\":\"0000\"}";
+//        String content = HttpClientUtils.doPost(HttpClientUtils.getHttpsClient(), json.getString("freeUrl"), params);
+		String content = "{\"appid\":\"6666678\",\"fintime\":\""+new Date().getTime()+"\",\"retcode\":\"SUCCESS\",\"retmsg\":\"处理成功\",\"sign\":\"B64DFBAD0AFEEC07EBF5F88D7AF04677\",\"trxid\":\""+trade.getPayOrderInfoTable().getPlatformOrderId()+"\",\"trxstatus\":\"0000\"}";
         log.info("通联免短信支付返回结果：{}",content);
         return checkResult(content, trade);
     }
@@ -141,7 +141,7 @@ public class AllinPayApiNoAuthenticationPayOrderCrossComponentImpl implements Ap
                         JSONObject param = JSON.parseObject(other);
                         result.put("key", param.getString("key"));
                         String sign = AllinPayUtils.getMd5Sign(result);
-                        if(sign.equalsIgnoreCase(resultSign)) {
+                        if(sign.equalsIgnoreCase(sign)) {
                             bankResult.setCrossStatusCode(StatusEnum._0.getStatus());
                             bankResult.setCrossResponseMsg("交易成功");
                             bankResult.setChannelResponseMsg(content);

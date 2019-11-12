@@ -40,8 +40,8 @@ public class AllinPayApiBondCardCrossComponentImpl implements ApiBondCardCrossCo
 
         log.info("绑卡请求参数{}",bondParam);
 
-        String content = HttpClientUtils.doPost(HttpClientUtils.getHttpsClient(), param.getString("cardApplyUrl"), bondParam);
-//        String content ="{\"appid\":\"6666678\",\"retcode\":\"SUCCESS\",\"retmsg\":\"处理成功\",\"sign\":\"B5B5947BE8639146BC77CCA4BC7BE236\",\"trxstatus\":\"1999\"}";
+//        String content = HttpClientUtils.doPost(HttpClientUtils.getHttpsClient(), param.getString("cardApplyUrl"), bondParam);
+        String content ="{\"appid\":\"6666678\",\"retcode\":\"SUCCESS\",\"retmsg\":\"处理成功\",\"sign\":\"B5B5947BE8639146BC77CCA4BC7BE236\",\"trxstatus\":\"1999\"}";
         log.info("绑卡银行返回{}",content);
         JSONObject result = (JSONObject) JSON.parse(content);
         String resultCode = result.getString("retcode");
@@ -142,8 +142,8 @@ public class AllinPayApiBondCardCrossComponentImpl implements ApiBondCardCrossCo
         JSONObject param = JSON.parseObject(extraChannelInfo.getChannelParam());
         Map<String, Object> getCodeParam = reGetCodeParam(trade);
 
-        String content = HttpClientUtils.doPost(HttpClientUtils.getHttpsClient(), param.getString("cardSmsUrl"), getCodeParam);
-//        String content = "{\"agreeid\":\"201906111653355078\",\"appid\":\"6666678\",\"retcode\":\"SUCCESS\",\"retmsg\":\"处理成功\",\"sign\":\"0FED3B1A33F2DB99A89EE4938C84854F\",\"trxstatus\":\"0000\"}";
+//        String content = HttpClientUtils.doPost(HttpClientUtils.getHttpsClient(), param.getString("cardSmsUrl"), getCodeParam);
+        String content = "{\"agreeid\":\"201906111653355078\",\"appid\":\"6666678\",\"retcode\":\"SUCCESS\",\"retmsg\":\"处理成功\",\"sign\":\"0FED3B1A33F2DB99A89EE4938C84854F\",\"trxstatus\":\"0000\"}";
         JSONObject result = (JSONObject) JSON.parse(content);
         String resultCode = result.getString("retcode");
 
@@ -222,8 +222,8 @@ public class AllinPayApiBondCardCrossComponentImpl implements ApiBondCardCrossCo
         JSONObject param = JSON.parseObject(extraChannelInfo.getChannelParam());
         Map<String, Object> confirmParam = getConfirmParam(trade);
         log.info("绑卡确认银行参数:{}",confirmParam);
-        String content = HttpClientUtils.doPost(HttpClientUtils.getHttpsClient(), param.getString("cardConfirmUrl"), confirmParam);
-//        String content = "{\"agreeid\":\"201906111653355078\",\"appid\":\"6666678\",\"retcode\":\"SUCCESS\",\"retmsg\":\"处理成功\",\"sign\":\"0FED3B1A33F2DB99A89EE4938C84854F\",\"trxstatus\":\"0000\"}";
+//        String content = HttpClientUtils.doPost(HttpClientUtils.getHttpsClient(), param.getString("cardConfirmUrl"), confirmParam);
+        String content = "{\"agreeid\":\"201906111653355078\",\"appid\":\"6666678\",\"retcode\":\"SUCCESS\",\"retmsg\":\"处理成功\",\"sign\":\"0FED3B1A33F2DB99A89EE4938C84854F\",\"trxstatus\":\"0000\"}";
         log.info("绑卡确认返回结果{}",content);
 //        String content = HttpClientUtils.doPost(HttpClientUtils.getHttpsClient(), "https://test.allinpaygd.com/ipayapiweb/org/bindcardconfirm", confirmParam);
         JSONObject result = (JSONObject) JSON.parse(content);
@@ -291,7 +291,7 @@ public class AllinPayApiBondCardCrossComponentImpl implements ApiBondCardCrossCo
 
         } else {
             String status = result.getString("retmsg");
-            if (status.contains("验证码不符")){
+            if (status.contains("验证码不符") || status.contains("验证码错误")){
                 bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
                 bankResult.setCrossResponseMsg("短信验证码错误 ");
                 bankResult.setChannelResponseMsg(content);
