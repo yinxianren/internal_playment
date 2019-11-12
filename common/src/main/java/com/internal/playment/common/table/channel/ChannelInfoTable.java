@@ -37,6 +37,7 @@ public class ChannelInfoTable implements Serializable {
     private Integer status;//状态 0：启用 ,1:禁用,
     private Date createTime ;//创建时间,
     private Date updateTime ;//更新时间,
+    private Integer bankStatus;//大额银行启用状态 0：启用 ,1:禁用,
 
     @TableField(exist = false)
     private Collection<String>  organizationIds;
@@ -154,5 +155,9 @@ public class ChannelInfoTable implements Serializable {
     public ChannelInfoTable setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
         return this;
+    }
+
+    public void setBankStatus(Integer bankStatus) {
+        this.bankStatus = bankStatus;
     }
 }

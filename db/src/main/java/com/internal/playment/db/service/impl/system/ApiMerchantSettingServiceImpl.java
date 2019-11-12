@@ -35,6 +35,7 @@ public class ApiMerchantSettingServiceImpl implements ApiMerchantSettingService,
                 .eq(MerchantSettingTable::getStatus, StatusEnum._0.getStatus()); //默认取可用的
 
         if( !isBlank(mst.getMerchantId()) ) lambdaQueryWrapper.eq(MerchantSettingTable::getMerchantId,mst.getMerchantId());
+        lambdaQueryWrapper.orderByAsc(MerchantSettingTable::getStatus);
         return merchantSettingDbService.list(lambdaQueryWrapper);
     }
 
