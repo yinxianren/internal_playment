@@ -1512,6 +1512,8 @@ signMsg
 
 
         //平台收入 = 商户费用-通道费用-代理商费用
+        agentMerRate = (null == agentMerRate ? new BigDecimal(0) : agentMerRate);
+        agentMerFree = (null == agentMerFree ? new BigDecimal(0) : agentMerFree);
         BigDecimal platformIncome = merFree.subtract(channelFeeAmount).subtract(agentMerFree);
         state( platformIncome.compareTo(new BigDecimal(0)) == -1,
                 ResponseCodeEnum.RXH00044.getCode(),
@@ -1537,7 +1539,8 @@ signMsg
                 .setAmount(amount)                                                          .setInAmount(inAmount)
                 .setTerFee(terFee)                                                          .setPayFee(new BigDecimal(merPayOrderApplyDTO.getPayFee()))
                 .setChannelRate(channelInfoTable.getChannelRateFee())                       .setChannelFee(channelFeeAmount)
-                .setAgentRate(agentMerchantSettingTable.getRateFee())                       .setAgentFee(agentMerFree)
+                .setAgentRate(null == agentMerchantSettingTable ? null : agentMerchantSettingTable.getRateFee() )
+                .setAgentFee(agentMerFree)
                 .setMerRate( merchantRateTable.getRateFee())                                .setMerFee(merFree)
                 .setPlatformIncome(platformIncome)                                          .setSettleCycle(merchantRateTable.getSettleCycle())
                 .setSettleStatus(1)                                                         .setStatus(StatusEnum._2.getStatus())

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.io.Serializable;
@@ -22,7 +23,9 @@ import java.util.Date;
 @ToString
 @TableName("8_pay_order_info_table")
 @Getter
+@NoArgsConstructor
 public class PayOrderInfoTable implements Serializable {
+
     @TableId(type= IdType.INPUT)
     private Long id ;// 表主键,
     private String platformOrderId;// 平台订单号,
@@ -66,24 +69,40 @@ public class PayOrderInfoTable implements Serializable {
     private Integer status;// 状态 0：success,1:fail,
     private Date createTime;// 创建时间,
     private Date updateTime;// 更新时间,
+
     @TableField(exist = false)
-    private String smsCode;
+    private String smsCode; //收到的短信验证码
     @TableField(exist = false)
     private Collection<String> merOrderIdCollect; //支持多订单查找
     @TableField(exist = false)
     private Collection<Integer> statusCollect; //支持多状态查找
+
+
+    @TableField(exist = false)
+    private String beginTime; //查询开始时间
+    @TableField(exist = false)
+    private String endTime; //查询结束时间
+
+    @TableField(exist = false)
+    private String organizationId;
+
+
     //分页参数
     @TableField(exist = false)
     private Integer pageNum;
     @TableField(exist = false)
     private Integer pageSize;
-    @TableField(exist = false)
-    private Date beginTime;
-    @TableField(exist = false)
-    private Date endTime;
-    @TableField(exist = false)
-    private String organizationId;
 
+
+    public PayOrderInfoTable setBeginTime(String beginTime) {
+        this.beginTime = beginTime;
+        return this;
+    }
+
+    public PayOrderInfoTable setEndTime(String endTime) {
+        this.endTime = endTime;
+        return this;
+    }
 
     public PayOrderInfoTable setSmsCode(String smsCode) {
         this.smsCode = smsCode;
@@ -316,14 +335,6 @@ public class PayOrderInfoTable implements Serializable {
 
     public void setPageNum(Integer pageNum) {
         this.pageNum = pageNum;
-    }
-
-    public void setBeginTime(Date beginTime) {
-        this.beginTime = beginTime;
-    }
-
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
     }
 
     public void setOrganizationId(String organizationId) {
