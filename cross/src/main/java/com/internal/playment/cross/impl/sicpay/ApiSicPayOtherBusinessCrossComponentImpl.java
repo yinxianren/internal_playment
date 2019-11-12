@@ -69,7 +69,7 @@ public class ApiSicPayOtherBusinessCrossComponentImpl implements ApiSicPayOtherB
         sBuilder.append("</body>");
         sBuilder.append("</merchant>");
         String plainXML = sBuilder.toString();
-        log.info("高汇通绑卡业务查询请求报文："+plainXML);
+        log.info("高汇通绑卡业务查询请求报文：{}",plainXML);
         byte[] plainBytes = plainXML.getBytes("UTF-8");
         String keyStr = AllinPayUtils.getRandomSecretkey();
         byte[] keyBytes = keyStr.getBytes("UTF-8");
@@ -91,9 +91,9 @@ public class ApiSicPayOtherBusinessCrossComponentImpl implements ApiSicPayOtherB
         HttpClient4Util httpClient4Util = new HttpClient4Util();
         byte[] retBytes = httpClient4Util.doPost(param.get("bindCardUrl").toString(), null, nvps, null);
         String response = new String(retBytes, "UTF-8");
-        System.out.println("回调结果： " + new String(retBytes, "UTF-8"));
+        log.info("回调结果：{} " , new String(retBytes, "UTF-8"));
         SicEncype t = new SicEncype();
-        log.info("明文结果: " + t.respDecryption(response));
+        log.info("明文结果: {}" ,t.respDecryption(response));
         return new SicPayApiBondCardCrossComponentImpl().checkResult(t.respDecryption(response),trade);
     }
 }

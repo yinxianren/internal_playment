@@ -58,10 +58,10 @@ public class YaColPayApiIntoPiecesOfInformationCrossComponentImpl implements Api
         String publicCheckKey = others.getString("publicCheckKey");
         Map<String, String> map = getValidate(squareTrade);
         String params = YaColIPayTools.createLinkString(map, true);
-        log.info("雅酷支付小微商户注册请求参数: "+params);
+        log.info("雅酷支付小微商户注册请求参数: {}",params);
         String result = URLDecoder.decode(CallServiceUtil.sendPost(others.getString("url"),params), "UTF-8");
 //        String result = HttpClientUtils.doPost(HttpClientUtils.getHttpsClient(), "http://test.gate.yacolpay.com/mgs/gateway.do", new TreeMap<>(map));
-        log.info("雅酷支付小微商户注册返回参数: "+result);
+        log.info("雅酷支付小微商户注册返回参数: {}",result);
         Map content = JSON.parseObject(result, Map.class);
         String sign_result = content.get("sign").toString();
         String sign_type_result = content.get("sign_type").toString();

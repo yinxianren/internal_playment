@@ -83,7 +83,7 @@ public class SicPayApiTransOrderCrossComponentImpl implements ApiTransOrderCross
         sBuilder.append("</merchant>");
 
         String plainXML = sBuilder.toString();
-        System.out.println("请求报文："+plainXML);
+        log.info("请求报文：{}",plainXML);
         byte[] plainBytes = plainXML.getBytes("UTF-8");
         String keyStr = getRandomSecretkey(16);
         byte[] keyBytes = keyStr.getBytes("UTF-8");
@@ -104,9 +104,9 @@ public class SicPayApiTransOrderCrossComponentImpl implements ApiTransOrderCross
         byte[] retBytes = httpClient4Util.doPost(String.valueOf(others.get("repayUrl")), null, nvps, null);
 
         String response = new String(retBytes, "UTF-8");
-        System.out.println("回调结果： " + new String(retBytes, "UTF-8"));
+        log.info("回调结果：{} " ,new String(retBytes, "UTF-8"));
         SicEncype t = new SicEncype();
-        System.out.println("明文结果: " + t.respDecryption(response));
+        log.info("明文结果: {}" , t.respDecryption(response));
 
         return checkResult(t.respDecryption(response),trade);
     }

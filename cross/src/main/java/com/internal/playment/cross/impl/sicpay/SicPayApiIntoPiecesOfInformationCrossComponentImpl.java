@@ -98,7 +98,7 @@ public class SicPayApiIntoPiecesOfInformationCrossComponentImpl implements ApiIn
         sBuilder.append("</body>");
         sBuilder.append("</merchant>");
         String plainXML = sBuilder.toString();
-        log.info("高汇通商户登记请求报文："+plainXML);
+        log.info("高汇通商户登记请求报文：{}",plainXML);
 
         byte[] plainBytes = plainXML.getBytes("UTF-8");
         String keyStr = AllinPayUtils.getRandomSecretkey();
@@ -123,7 +123,7 @@ public class SicPayApiIntoPiecesOfInformationCrossComponentImpl implements ApiIn
         String response = new String(retBytes, "UTF-8");
         System.out.println("回调结果： " + new String(retBytes, "UTF-8"));
         SicEncype t = new SicEncype();
-        log.info("明文结果: " + t.respDecryption(response));
+        log.info("明文结果: {}" ,t.respDecryption(response));
         return  checkResult(t.respDecryption(response),trade);
     }
 
@@ -174,7 +174,7 @@ public class SicPayApiIntoPiecesOfInformationCrossComponentImpl implements ApiIn
         sBuilder.append("</body>");
         sBuilder.append("</merchant>");
         String plainXML = sBuilder.toString();
-        log.info("高汇通银行卡登记请求报文："+plainXML);
+        log.info("高汇通银行卡登记请求报文：{}",plainXML);
 
         byte[] plainBytes = plainXML.getBytes("UTF-8");
         String keyStr = AllinPayUtils.getRandomSecretkey();
@@ -199,7 +199,7 @@ public class SicPayApiIntoPiecesOfInformationCrossComponentImpl implements ApiIn
         String response = new String(retBytes, "UTF-8");
         System.out.println("回调结果： " + new String(retBytes, "UTF-8"));
         SicEncype t = new SicEncype();
-        log.info("明文结果: " + t.respDecryption(response));
+        log.info("明文结果: {}" ,t.respDecryption(response));
         return checkResult(t.respDecryption(response),trade);
     }
 
@@ -251,7 +251,7 @@ public class SicPayApiIntoPiecesOfInformationCrossComponentImpl implements ApiIn
         sBuilder.append("</body>");
         sBuilder.append("</merchant>");
         String plainXML = sBuilder.toString();
-        log.info("高汇通开通业务请求报文："+plainXML);
+        log.info("高汇通开通业务请求报文：{}",plainXML);
 
         byte[] plainBytes = plainXML.getBytes("UTF-8");
         String keyStr = AllinPayUtils.getRandomSecretkey();
@@ -276,7 +276,7 @@ public class SicPayApiIntoPiecesOfInformationCrossComponentImpl implements ApiIn
         String response = new String(retBytes, "UTF-8");
         System.out.println("回调结果： " + new String(retBytes, "UTF-8"));
         SicEncype t = new SicEncype();
-        log.info("明文结果: " + t.respDecryption(response));
+        log.info("明文结果: {}" , t.respDecryption(response));
         return checkResult(t.respDecryption(response),trade);
     }
 

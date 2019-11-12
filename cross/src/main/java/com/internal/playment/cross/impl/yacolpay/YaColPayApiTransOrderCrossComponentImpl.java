@@ -107,7 +107,7 @@ public class YaColPayApiTransOrderCrossComponentImpl implements ApiTransOrderCro
         postData.put("phone_no",phone_no_encrypt);//银行预留手机号
 
         String contents = YaColIPayTools.createLinkString(postData,false);
-        log.info("雅酷代付申请签名前postDatas:"+postData.toString());
+        log.info("雅酷代付申请签名前postDatas:{}",postData.toString());
         //签名
         try {
             postData.put("sign", YaColPayRSAUtil.sign(contents,signKey,"utf-8"));
@@ -117,11 +117,11 @@ public class YaColPayApiTransOrderCrossComponentImpl implements ApiTransOrderCro
         postData.put("sign_type",sign_type);
 
         String postDatas = YaColIPayTools.createLinkString(postData, true);
-        log.info("雅酷代付申请postDatas:"+postDatas);
+        log.info("雅酷代付申请postDatas:{}",postDatas);
         try {
             String result = URLDecoder.decode(
                     CallServiceUtil.sendPost(others.getString("masRequestUrl"), postDatas),"UTF-8");
-            log.info("雅酷代付申请result:"+result);
+            log.info("雅酷代付申请result:{}",result);
             Map<String, String> content = JSON.parseObject(result,Map.class);
             String sign_result = content.get("sign");
             String sign_type_result = content.get("sign_type");

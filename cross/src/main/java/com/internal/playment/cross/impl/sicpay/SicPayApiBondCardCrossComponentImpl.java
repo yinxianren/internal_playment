@@ -115,7 +115,7 @@ public class SicPayApiBondCardCrossComponentImpl implements ApiBondCardCrossComp
         sBuilder.append("</body>");
         sBuilder.append("</merchant>");
         String plainXML = sBuilder.toString();
-        log.info("高汇通鉴权绑卡业务请求报文："+plainXML);
+        log.info("高汇通鉴权绑卡业务请求报文：{}",plainXML);
         byte[] plainBytes = plainXML.getBytes("UTF-8");
         String keyStr = AllinPayUtils.getRandomSecretkey();
         byte[] keyBytes = keyStr.getBytes("UTF-8");
@@ -132,13 +132,13 @@ public class SicPayApiBondCardCrossComponentImpl implements ApiBondCardCrossComp
         nvps.add(new BasicNameValuePair("signData", signData));
         nvps.add(new BasicNameValuePair("tranCode", "IFP001"));
         nvps.add(new BasicNameValuePair("callBack", "http://www.baidu.com"));
-        log.info("高汇通鉴权绑卡业务请求地址："+param.get("bindCardUrl").toString());
+        log.info("高汇通鉴权绑卡业务请求地址：{}",param.get("bindCardUrl").toString());
         HttpClient4Util httpClient4Util = new HttpClient4Util();
         byte[] retBytes = httpClient4Util.doPost(param.get("bindCardUrl").toString(), null, nvps, null);
         String response = new String(retBytes, "UTF-8");
-        System.out.println("回调结果： " + new String(retBytes, "UTF-8"));
+        log.info("回调结果：{} " , new String(retBytes, "UTF-8"));
         SicEncype t = new SicEncype();
-        log.info("明文结果: " + t.respDecryption(response));
+        log.info("明文结果: {}" ,t.respDecryption(response));
         return checkResult(t.respDecryption(response),trade);
     }
 
@@ -202,7 +202,7 @@ public class SicPayApiBondCardCrossComponentImpl implements ApiBondCardCrossComp
         sBuilder.append("</body>");
         sBuilder.append("</merchant>");
         String plainXML = sBuilder.toString();
-        log.info("高汇通短信发送业务请求报文："+plainXML);
+        log.info("高汇通短信发送业务请求报文：{}",plainXML);
         byte[] plainBytes = plainXML.getBytes("UTF-8");
         String keyStr = AllinPayUtils.getRandomSecretkey();
         byte[] keyBytes = keyStr.getBytes("UTF-8");
@@ -224,9 +224,9 @@ public class SicPayApiBondCardCrossComponentImpl implements ApiBondCardCrossComp
         HttpClient4Util httpClient4Util = new HttpClient4Util();
         byte[] retBytes = httpClient4Util.doPost(param.get("bindCardUrl").toString(), null, nvps, null);
         String response = new String(retBytes, "UTF-8");
-        System.out.println("回调结果： " + new String(retBytes, "UTF-8"));
+        log.info("回调结果：{} " ,new String(retBytes, "UTF-8"));
         SicEncype t = new SicEncype();
-        log.info("明文结果: " + t.respDecryption(response));
+        log.info("明文结果: {}" ,t.respDecryption(response));
         return checkResult(t.respDecryption(response),trade);
     }
 
@@ -292,7 +292,7 @@ public class SicPayApiBondCardCrossComponentImpl implements ApiBondCardCrossComp
         sBuilder.append("</body>");
         sBuilder.append("</merchant>");
         String plainXML = sBuilder.toString();
-        log.info("高汇通绑卡确认业务请求报文："+plainXML);
+        log.info("高汇通绑卡确认业务请求报文：{}",plainXML);
         byte[] plainBytes = plainXML.getBytes("UTF-8");
         String keyStr = AllinPayUtils.getRandomSecretkey();
         byte[] keyBytes = keyStr.getBytes("UTF-8");
@@ -314,9 +314,9 @@ public class SicPayApiBondCardCrossComponentImpl implements ApiBondCardCrossComp
         HttpClient4Util httpClient4Util = new HttpClient4Util();
         byte[] retBytes = httpClient4Util.doPost(param.get("bindCardUrl").toString(), null, nvps, null);
         String response = new String(retBytes, "UTF-8");
-        System.out.println("回调结果： " + new String(retBytes, "UTF-8"));
+        log.info("回调结果： {}" ,new String(retBytes, "UTF-8"));
         SicEncype t = new SicEncype();
-        log.info("明文结果: " + t.respDecryption(response));
+        log.info("明文结果: {}" ,t.respDecryption(response));
         return checkResult(t.respDecryption(response),trade);
     }
 
