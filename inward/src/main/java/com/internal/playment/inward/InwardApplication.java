@@ -2,6 +2,7 @@ package com.internal.playment.inward;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,7 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * Description:
  *
  */
-
+//@EnableScheduling
 @SpringBootApplication
 public class InwardApplication {
     public static void main(String[] args) {

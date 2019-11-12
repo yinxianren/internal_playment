@@ -25,6 +25,7 @@ import com.internal.playment.inward.component.DbCommonRPCComponent;
 import com.internal.playment.inward.service.PayWalletService;
 import com.internal.playment.inward.wallet.PayWalletComponent;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -36,12 +37,15 @@ import java.util.Date;
  * Time: 下午5:12
  * Description:
  */
-@AllArgsConstructor
+
 @Component
 public class PayWalletComponentComponentImpl implements PayWalletComponent, NewPayAssert {
 
-    private final PayWalletService payWalletService;
-    private final DbCommonRPCComponent dbCommonRPCComponent;
+    @Autowired
+    private  PayWalletService payWalletService;
+    @Autowired
+    private  DbCommonRPCComponent dbCommonRPCComponent;
+    private final Object  lock = new Object();
 
     @Override
     public void payOrderWallet( PayOrderInfoTable poi) {
@@ -54,30 +58,32 @@ public class PayWalletComponentComponentImpl implements PayWalletComponent, NewP
             MerchantInfoTable mit = payWalletService.getMerInfo(ipo);
             //获取商户产品费率
             MerchantRateTable mrt = payWalletService.getMerRate(ipo,poi.getProductId());
-            //获取商户钱包
-            MerchantWalletTable mwt = payWalletService.getMerWallet(ipo);
-            //更新商户钱包 ,保存商户钱包明细
-            Tuple2<MerchantWalletTable, MerchantsDetailsTable> merWalletTuple = payWalletService.updateMerWalletByPayOrder(mwt,poi,mrt);
-            //获取终端商户钱包
-            TerminalMerchantsWalletTable tmw = payWalletService.getTerMerWallet(ipo);
-            //更新终端商户钱包 保存终端商户钱包明细
-            Tuple2<TerminalMerchantsWalletTable, TerminalMerchantsDetailsTable> terMerWalletTuple = payWalletService.updateTerMerWalletByPayOrder(tmw,poi,mrt);
             //获取通道信息
             ChannelInfoTable cit = payWalletService.getChannelInfo(poi.getChannelId(),ipo);
-            //获取通道钱包
-            ChannelWalletTable cwt = payWalletService.getChanWallet(poi.getChannelId(),ipo);
-            //更新通道钱包 保存通道钱包明细
-            Tuple2<ChannelWalletTable, ChannelDetailsTable> chanWalletTuple = payWalletService.updateChannelWalletByPayOrder(cwt,cit,poi,mrt);
             //获取代理商设置
             AgentMerchantSettingTable ams = payWalletService.getAgentMerSet(mit.getAgentMerchantId(),poi.getProductId(),ipo);
-            //获取代理商钱包
-            AgentMerchantWalletTable amw = payWalletService.getAgentMerWallet(mit.getAgentMerchantId(),ipo);
-            //更新代理商钱包 保存代理商钱包明细
-            Tuple2<AgentMerchantWalletTable, AgentMerchantsDetailsTable> agentMerWalletTuple = payWalletService.updateAgentMerWalletByPayOrder(amw,ams,poi);
-            //更新订单状态，从队列处理中该为成功
-            poi = poi.setStatus(StatusEnum._0.getStatus());
-            //执行事务处理
-            dbCommonRPCComponent.apiPayOrderBusinessTransactionService.updateOrSavePayOrderBussInfo(merWalletTuple,terMerWalletTuple,chanWalletTuple,agentMerWalletTuple,poi);
+            synchronized (lock) {
+                //获取商户钱包
+                MerchantWalletTable mwt = payWalletService.getMerWallet(ipo);
+                //更新商户钱包 ,保存商户钱包明细
+                Tuple2<MerchantWalletTable, MerchantsDetailsTable> merWalletTuple = payWalletService.updateMerWalletByPayOrder(mwt, poi, mrt);
+                //获取终端商户钱包
+                TerminalMerchantsWalletTable tmw = payWalletService.getTerMerWallet(ipo);
+                //更新终端商户钱包 保存终端商户钱包明细
+                Tuple2<TerminalMerchantsWalletTable, TerminalMerchantsDetailsTable> terMerWalletTuple = payWalletService.updateTerMerWalletByPayOrder(tmw, poi, mrt);
+                //获取通道钱包
+                ChannelWalletTable cwt = payWalletService.getChanWallet(poi.getChannelId(), ipo);
+                //更新通道钱包 保存通道钱包明细
+                Tuple2<ChannelWalletTable, ChannelDetailsTable> chanWalletTuple = payWalletService.updateChannelWalletByPayOrder(cwt, cit, poi, mrt);
+                //获取代理商钱包
+                AgentMerchantWalletTable amw = payWalletService.getAgentMerWallet(mit.getAgentMerchantId(), ipo);
+                //更新代理商钱包 保存代理商钱包明细
+                Tuple2<AgentMerchantWalletTable, AgentMerchantsDetailsTable> agentMerWalletTuple = payWalletService.updateAgentMerWalletByPayOrder(amw, ams, poi);
+                //更新订单状态，从队列处理中该为成功
+                poi = poi.setStatus(StatusEnum._0.getStatus());
+                //执行事务处理
+                dbCommonRPCComponent.apiPayOrderBusinessTransactionService.updateOrSavePayOrderBussInfo(merWalletTuple, terMerWalletTuple, chanWalletTuple, agentMerWalletTuple, poi);
+            }
         }catch (Exception e){
             e.printStackTrace();
             if( !isNull(poi) ){
@@ -115,30 +121,32 @@ public class PayWalletComponentComponentImpl implements PayWalletComponent, NewP
             MerchantInfoTable mit = payWalletService.getMerInfo(ipo);
             //获取商户产品费率
             MerchantRateTable mrt = payWalletService.getMerRate(ipo,toit.getProductId());
-            //获取商户钱包
-            MerchantWalletTable mwt = payWalletService.getMerWallet(ipo);
-            //更新商户钱包 ,保存商户钱包明细
-            Tuple2<MerchantWalletTable, MerchantsDetailsTable>  merWalletTuple = payWalletService.updateMerWalletByTransOrder(mwt,toit,mrt);
-            //获取终端商户钱包
-            TerminalMerchantsWalletTable tmw = payWalletService.getTerMerWallet(ipo);
-            //更新终端商户钱包 保存终端商户钱包明细
-            Tuple2<TerminalMerchantsWalletTable, TerminalMerchantsDetailsTable> terMerWalletTuple = payWalletService.updateTerMerWalletByTransOrder(tmw,toit,mrt);
             //获取通道信息
             ChannelInfoTable  cit = payWalletService.getChannelInfo(toit.getChannelId(),ipo);
-            //获取通道钱包
-            ChannelWalletTable cwt = payWalletService.getChanWallet(toit.getChannelId(),ipo);
-            //更新通道钱包 保存通道钱包明细
-            Tuple2<ChannelWalletTable, ChannelDetailsTable> chanWalletTuple = payWalletService.updateChannelWalletByTransOrder(cwt,cit,toit,mrt);
             //获取代理商设置
             AgentMerchantSettingTable ams = payWalletService.getAgentMerSet(mit.getAgentMerchantId(),toit.getProductId(),ipo);
-            //获取代理商钱包
-            AgentMerchantWalletTable amw = payWalletService.getAgentMerWallet(mit.getAgentMerchantId(),ipo);
-            //更新代理商钱包 保存代理商钱包明细
-            Tuple2<AgentMerchantWalletTable, AgentMerchantsDetailsTable> agentMerWalletTuple = payWalletService.updateAgentMerWalletByTransOrder(amw,ams,toit);
-            //更新订单状态，从队列处理中该为成功
-            toit= toit.setStatus(StatusEnum._0.getStatus());
-            //执行事务处理
-            dbCommonRPCComponent.apiPayOrderBusinessTransactionService.updateOrSaveTransOrderBussInfo(merWalletTuple,terMerWalletTuple,chanWalletTuple,agentMerWalletTuple,toit);
+            synchronized (lock) {
+                //获取商户钱包
+                MerchantWalletTable mwt = payWalletService.getMerWallet(ipo);
+                //更新商户钱包 ,保存商户钱包明细
+                Tuple2<MerchantWalletTable, MerchantsDetailsTable> merWalletTuple = payWalletService.updateMerWalletByTransOrder(mwt, toit, mrt);
+                //获取终端商户钱包
+                TerminalMerchantsWalletTable tmw = payWalletService.getTerMerWallet(ipo);
+                //更新终端商户钱包 保存终端商户钱包明细
+                Tuple2<TerminalMerchantsWalletTable, TerminalMerchantsDetailsTable> terMerWalletTuple = payWalletService.updateTerMerWalletByTransOrder(tmw, toit, mrt);
+                //获取通道钱包
+                ChannelWalletTable cwt = payWalletService.getChanWallet(toit.getChannelId(), ipo);
+                //更新通道钱包 保存通道钱包明细
+                Tuple2<ChannelWalletTable, ChannelDetailsTable> chanWalletTuple = payWalletService.updateChannelWalletByTransOrder(cwt, cit, toit, mrt);
+                //获取代理商钱包
+                AgentMerchantWalletTable amw = payWalletService.getAgentMerWallet(mit.getAgentMerchantId(), ipo);
+                //更新代理商钱包 保存代理商钱包明细
+                Tuple2<AgentMerchantWalletTable, AgentMerchantsDetailsTable> agentMerWalletTuple = payWalletService.updateAgentMerWalletByTransOrder(amw, ams, toit);
+                //更新订单状态，从队列处理中该为成功
+                toit = toit.setStatus(StatusEnum._0.getStatus());
+                //执行事务处理
+                dbCommonRPCComponent.apiPayOrderBusinessTransactionService.updateOrSaveTransOrderBussInfo(merWalletTuple, terMerWalletTuple, chanWalletTuple, agentMerWalletTuple, toit);
+            }
         }catch (Exception e){
             e.printStackTrace();
             if( !isNull(toit) ){
@@ -163,7 +171,4 @@ public class PayWalletComponentComponentImpl implements PayWalletComponent, NewP
             }
         }
     }
-
-
-
 }
