@@ -28,6 +28,8 @@ public class BankRateTable  implements Serializable {
 	private Date tradeTime;//交易时间
 	private Date createTime;//创建时间
 	private String bankName;//银行名称
+	private BigDecimal singleMoney;//单笔限额
+	private BigDecimal dayMoney;//单日限额
 
 	public BankRateTable setId(Long id) {
 		this.id = id;
@@ -71,5 +73,13 @@ public class BankRateTable  implements Serializable {
 
 	public void setBankName(String bankName) {
 		this.bankName = bankName;
+	}
+
+	public void setSingleMoney(BigDecimal singleMoney) {
+		this.singleMoney = singleMoney;
+	}
+
+	public void setDayMoney(BigDecimal dayMoney) {
+		this.dayMoney = dayMoney;
 	}
 }
