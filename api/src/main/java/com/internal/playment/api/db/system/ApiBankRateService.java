@@ -16,4 +16,6 @@ public interface ApiBankRateService {
     boolean saveOrUpdate(BankRateTable brt);
 
     boolean batchDelByIds(List<String> ids);
+
+    boolean batchDelByOrganIds(List<String> ids);
 }

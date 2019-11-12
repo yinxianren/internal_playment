@@ -61,4 +61,12 @@ public class ApiBankRateServiceImpl implements ApiBankRateService, NewPayAssert 
         if(isHasNotElement(ids)) return false;
         return bankRateDbService.removeByIds(ids);
     }
+
+    @Override
+    public boolean batchDelByOrganIds(List<String> ids) {
+        if(isHasNotElement(ids)) return false;
+        LambdaQueryWrapper<BankRateTable> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.in(BankRateTable::getOrganizationId,ids);
+        return bankRateDbService.remove(queryWrapper);
+    }
 }
