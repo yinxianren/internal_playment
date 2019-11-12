@@ -16,4 +16,6 @@ public interface ApiProductTypeSettingService {
      ProductSettingTable  getOne(ProductSettingTable productSettingTable);
 
      Boolean batchUpdate(List<ProductSettingTable> productSettingTableList);
+
+     Boolean delByOrganizationId(String organizationId);
 }

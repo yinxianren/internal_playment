@@ -63,4 +63,12 @@ public class ApiProductTypeSettingServiceImpl implements ApiProductTypeSettingSe
         if(isHasNotElement(productSettingTableList)) return false;
         return productTypeSettingDBService.updateBatchById(productSettingTableList);
     }
+
+    @Override
+    public Boolean delByOrganizationId(String organizationId) {
+        if (isBlank(organizationId)) return false;
+        LambdaQueryWrapper<ProductSettingTable> queryWrapper = new LambdaQueryWrapper();
+        queryWrapper.eq(ProductSettingTable::getOrganizationId,organizationId);
+        return productTypeSettingDBService.remove(queryWrapper);
+    }
 }
