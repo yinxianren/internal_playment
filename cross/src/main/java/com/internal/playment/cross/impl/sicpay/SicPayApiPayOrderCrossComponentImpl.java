@@ -90,7 +90,7 @@ public class SicPayApiPayOrderCrossComponentImpl implements ApiPayOrderCrossComp
         sBuilder.append("</body>");
         sBuilder.append("</merchant>");
         String plainXML = sBuilder.toString();
-        log.info("高汇通支付请求报文："+plainXML);
+        log.info("高汇通支付请求报文：{}",plainXML);
 
         byte[] plainBytes = plainXML.getBytes("UTF-8");
         String keyStr = getRandomSecretkey(16);
@@ -115,7 +115,7 @@ public class SicPayApiPayOrderCrossComponentImpl implements ApiPayOrderCrossComp
         String response = new String(retBytes, "UTF-8");
         System.out.println("回调结果： " + new String(retBytes, "UTF-8"));
         SicEncype t = new SicEncype();
-        log.info("明文结果: " + t.respDecryption(response));
+        log.info("明文结果: {}" ,t.respDecryption(response));
 
         return checkResult(t.respDecryption(response),trade);
     }
@@ -154,7 +154,7 @@ public class SicPayApiPayOrderCrossComponentImpl implements ApiPayOrderCrossComp
         sBuilder.append("</body>");
         sBuilder.append("</merchant>");
         String plainXML = sBuilder.toString();
-        log.info("高汇通支付短信请求报文："+plainXML);
+        log.info("高汇通支付短信请求报文：{}",plainXML);
 
         byte[] plainBytes = plainXML.getBytes("UTF-8");
         String keyStr = getRandomSecretkey(16);
@@ -179,7 +179,7 @@ public class SicPayApiPayOrderCrossComponentImpl implements ApiPayOrderCrossComp
         String response = new String(retBytes, "UTF-8");
         System.out.println("回调结果： " + new String(retBytes, "UTF-8"));
         SicEncype t = new SicEncype();
-        log.info("明文结果: " + t.respDecryption(response));
+        log.info("明文结果: {}" ,t.respDecryption(response));
 
         return checkResult(t.respDecryption(response),trade);
     }
@@ -220,7 +220,7 @@ public class SicPayApiPayOrderCrossComponentImpl implements ApiPayOrderCrossComp
         sBuilder.append("</body>");
         sBuilder.append("</merchant>");
         String plainXML = sBuilder.toString();
-        log.info("高汇通确认支付请求报文："+plainXML);
+        log.info("高汇通确认支付请求报文：{}",plainXML);
 
         byte[] plainBytes = plainXML.getBytes("UTF-8");
         String keyStr = getRandomSecretkey(16);
@@ -245,7 +245,7 @@ public class SicPayApiPayOrderCrossComponentImpl implements ApiPayOrderCrossComp
         String response = new String(retBytes, "UTF-8");
         System.out.println("回调结果： " + new String(retBytes, "UTF-8"));
         SicEncype t = new SicEncype();
-        log.info("明文结果: " + t.respDecryption(response));
+        log.info("明文结果: {}" , t.respDecryption(response));
 
         return checkResult(t.respDecryption(response),trade);
     }

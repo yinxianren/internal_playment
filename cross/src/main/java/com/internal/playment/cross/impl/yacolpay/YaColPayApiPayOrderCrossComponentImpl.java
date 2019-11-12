@@ -120,7 +120,7 @@ public class YaColPayApiPayOrderCrossComponentImpl implements ApiPayOrderCrossCo
         param.put("sign_type","RSA");//加密方式
 
         String params = YaColIPayTools.createLinkString(param, true);
-        log.info("雅酷支付申请param:"+param);
+        log.info("雅酷支付申请param:{}",param);
         try {
             String result = URLDecoder.decode(
                     CallServiceUtil.sendPost(others.getString("bankCardPayUrl"), params), "UTF-8");
@@ -233,11 +233,11 @@ public class YaColPayApiPayOrderCrossComponentImpl implements ApiPayOrderCrossCo
         param.put("ticket",trxidJson.getString("ticket"));
         param.put("sign", URLEncoder.encode(YacolPayUtil.getSign(param,signKey),"utf-8"));
         param.put("sign_type","RSA");//加密方式
-        log.info("雅酷支付短信重发param:"+param);
+        log.info("雅酷支付短信重发param:{}",param);
         try {
             String result = URLDecoder.decode(
                     HttpClientUtils.doPost(HttpClientUtils.getHttpsClient(),others.getString("bankCardPayUrl"), param), "UTF-8");
-            log.info("雅酷支付短信重发result:"+result);
+            log.info("雅酷支付短信重发result:{}",result);
             Map content = JSON.parseObject(result,Map.class);
             String sign_result = content.get("sign").toString();
             String sign_type_result = content.get("sign_type").toString();
@@ -326,11 +326,11 @@ public class YaColPayApiPayOrderCrossComponentImpl implements ApiPayOrderCrossCo
         param.put("user_ip",squareTrade.getIP());
         param.put("sign", URLEncoder.encode(YacolPayUtil.getSign(param,signKey),"utf-8"));
         param.put("sign_type","RSA");//加密方式
-        log.info("雅酷支付确认param:"+param);
+        log.info("雅酷支付确认param:{}",param);
         try {
             String result = URLDecoder.decode(
                     HttpClientUtils.doPost(HttpClientUtils.getHttpsClient(),others.getString("bankCardPayUrl"), param), "UTF-8");
-            log.info("雅酷支付确认result:"+result);
+            log.info("雅酷支付确认result:{}",result);
             Map content = JSON.parseObject(result,Map.class);
             String sign_result = content.get("sign").toString();
             String sign_type_result = content.get("sign_type").toString();
