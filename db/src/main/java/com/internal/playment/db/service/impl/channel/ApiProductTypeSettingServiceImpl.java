@@ -59,9 +59,9 @@ public class ApiProductTypeSettingServiceImpl implements ApiProductTypeSettingSe
     }
 
     @Override
-    public Boolean batchUpdate(List<ProductSettingTable> productSettingTableList) {
+    public Boolean saveOrUpdateBatch(List<ProductSettingTable> productSettingTableList) {
         if(isHasNotElement(productSettingTableList)) return false;
-        return productTypeSettingDBService.updateBatchById(productSettingTableList);
+        return productTypeSettingDBService.saveOrUpdateBatch(productSettingTableList);
     }
 
     @Override
