@@ -71,12 +71,12 @@ public class ApiPayOrderInfoServiceImpl implements ApiPayOrderInfoService, NewPa
     public IPage page(PayOrderInfoTable pit) {
         if (isNull(pit)) return new Page();
         LambdaQueryWrapper<PayOrderInfoTable> queryWrapper = new QueryWrapper<PayOrderInfoTable>().lambda();
-        if ( isBlank(pit.getMerchantId())) queryWrapper.eq(PayOrderInfoTable::getMerchantId,pit.getMerchantId());
-        if ( isBlank(pit.getPlatformOrderId())) queryWrapper.eq(PayOrderInfoTable::getPlatformOrderId,pit.getPlatformOrderId());
+        if ( !isBlank(pit.getMerchantId())) queryWrapper.eq(PayOrderInfoTable::getMerchantId,pit.getMerchantId());
+        if ( !isBlank(pit.getPlatformOrderId())) queryWrapper.eq(PayOrderInfoTable::getPlatformOrderId,pit.getPlatformOrderId());
 //            if (StringUtils.isNotEmpty(pit.getOrganizationId())) queryWrapper.setChannelId(searchInfo.getExpressName());
         if ( !isNull(pit.getStatus())) queryWrapper.eq(PayOrderInfoTable::getStatus,pit.getStatus());
         if ( !isNull (pit.getSettleStatus())) queryWrapper.eq(PayOrderInfoTable::getSettleStatus,pit.getSettleStatus());
-        if ( isBlank(pit.getProductId())) queryWrapper.eq(PayOrderInfoTable::getProductId,pit.getProductId());
+        if ( !isBlank(pit.getProductId())) queryWrapper.eq(PayOrderInfoTable::getProductId,pit.getProductId());
         if ( !isNull(pit.getBeginTime())) queryWrapper.ge(PayOrderInfoTable::getCreateTime,pit.getBeginTime());
         if ( !isNull(pit.getEndTime())) queryWrapper.le(PayOrderInfoTable::getUpdateTime,pit.getEndTime());
         IPage<PayOrderInfoTable> iPage = new Page(pit.getPageNum(),pit.getPageSize());
