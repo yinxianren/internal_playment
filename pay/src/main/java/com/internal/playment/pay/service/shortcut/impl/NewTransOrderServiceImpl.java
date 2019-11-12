@@ -622,4 +622,15 @@ public class NewTransOrderServiceImpl extends CommonServiceAbstract implements N
             );
         }
     }
+
+    @Override
+    public void checkProductTypeByB11(MerTransOrderApplyDTO merTransOrderApplyDTO, InnerPrintLogObject ipo) throws NewPayException {
+        final String localPoint="checkProductTypeByB11";
+        String productType = merTransOrderApplyDTO.getProductType();
+        state( !productType.equalsIgnoreCase(ProductTypeEnum.RH_TRX_PAY.getProductId()),
+                ResponseCodeEnum.RXH00057.getCode(),
+                format("%s-->商户号：%s；终端号：%s；错误信息: %s ；产品类型:%s,代码所在位置：%s;",
+                        ipo.getBussType(),ipo.getMerId(),ipo.getTerMerId(),ResponseCodeEnum.RXH00057.getMsg(),productType,localPoint),
+                format(" %s",ResponseCodeEnum.RXH00057.getMsg()));
+    }
 }

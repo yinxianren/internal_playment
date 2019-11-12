@@ -356,4 +356,18 @@ public interface NewPayOrderService extends CommonServiceInterface {
      */
     PayOrderInfoTable savePayOrderByNoAuth(MerchantInfoTable merInfoTable, MerNoAuthPayOrderApplyDTO merNoAuthPayOrderApplyDTO, ChannelInfoTable channelInfoTable, RegisterCollectTable registerCollectTable, MerchantCardTable merchantCardTable, InnerPrintLogObject ipo) throws NewPayException;
 
+    /**
+     *
+     * @param merNoAuthPayOrderApplyDTO
+     * @param ipo
+     * @throws NewPayException
+     */
+    void checkProductTypeByB10(MerNoAuthPayOrderApplyDTO merNoAuthPayOrderApplyDTO, InnerPrintLogObject ipo) throws NewPayException;
+
+    /**
+     *
+     * @param merPayOrderApplyDTO
+     * @param ipo
+     */
+    void checkProductTypeByB7(MerPayOrderApplyDTO merPayOrderApplyDTO, InnerPrintLogObject ipo) throws NewPayException;
 }

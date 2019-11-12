@@ -153,4 +153,11 @@ public interface PayWalletService {
      * @return
      */
     Tuple2<AgentMerchantWalletTable, AgentMerchantsDetailsTable> updateAgentMerWalletByTransOrder(AgentMerchantWalletTable amw, AgentMerchantSettingTable ams, TransOrderInfoTable toit);
+
+    /**
+     *
+     * @param poi
+     * @param ipo
+     */
+    void checkPayOrderOperability(PayOrderInfoTable poi, InnerPrintLogObject ipo) throws Exception;
 }

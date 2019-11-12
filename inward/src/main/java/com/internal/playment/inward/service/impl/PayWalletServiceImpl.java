@@ -24,9 +24,7 @@ import com.internal.playment.inward.service.PayWalletService;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -452,6 +450,7 @@ public class PayWalletServiceImpl extends CommonServiceAbstract implements PayWa
         ams =  null == ams ?  new AgentMerchantSettingTable() : ams ;
         BigDecimal rateFee = ( null == ams.getRateFee() ? new BigDecimal(0) :  ams.getRateFee().divide(new BigDecimal(100)) );
         BigDecimal singleFee = ams.getSingleFee();
+        singleFee = null == singleFee ? new BigDecimal(0) : singleFee;
         //代理商手续费
         BigDecimal agentMerFee = amount.multiply(rateFee).setScale(2,BigDecimal.ROUND_UP);
         agentMerFee = agentMerFee.add(singleFee);
@@ -803,4 +802,24 @@ public class PayWalletServiceImpl extends CommonServiceAbstract implements PayWa
         return new Tuple2(amw,amdt);
     }
 
+    @Override
+    public void checkPayOrderOperability(PayOrderInfoTable poi, InnerPrintLogObject ipo) throws Exception {
+        PayOrderInfoTable payOrderInfoTable =  dbCommonRPCComponent.apiPayOrderInfoService.getOne(
+                new PayOrderInfoTable()
+                        .setMerchantId(poi.getMerchantId())
+                        .setTerminalMerId(poi.getTerminalMerId())
+                        .setMerOrderId(poi.getMerOrderId())
+                        .setPlatformOrderId(poi.getPlatformOrderId())
+        );
+        if(isNull(payOrderInfoTable))
+            throw  new Exception(format("该订单在数据库中不存在：[%s]",poi.toString()));
+        Set<Integer> set = new HashSet(Arrays.asList(StatusEnum._7.getStatus(),StatusEnum._8.getStatus()));
+        if( !set.contains(payOrderInfoTable.getStatus()) )
+            throw  new Exception(format("\n====================================================================\n" +
+                            "该订单不在钱包处理范围:\n" +
+                            "队列中的订单:[%s]\n" +
+                            "数据库的订单:[%s]\n" +
+                            "====================================================================\n",
+                    poi.toString(),payOrderInfoTable.toString()));
+    }
 }

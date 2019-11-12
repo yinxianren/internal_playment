@@ -105,4 +105,11 @@ public interface NewTransOrderService extends CommonServiceInterface {
      * @param ipo
      */
     void batchUpdateTransOderCorrelationInfo(TransOrderInfoTable transOrderInfoTable, List<PayOrderInfoTable> payOrderInfoTableList, InnerPrintLogObject ipo) throws NewPayException;
+
+    /**
+     *
+     * @param merTransOrderApplyDTO
+     * @param ipo
+     */
+    void checkProductTypeByB11(MerTransOrderApplyDTO merTransOrderApplyDTO, InnerPrintLogObject ipo) throws NewPayException;
 }
