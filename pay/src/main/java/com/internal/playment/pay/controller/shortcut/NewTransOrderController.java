@@ -65,7 +65,7 @@ public class NewTransOrderController extends NewAbstractCommonController {
      */
     @PostMapping(value = "/payment", produces = "text/html;charset=UTF-8")
     public String payment(HttpServletRequest request, @RequestBody(required = false) String param){
-        final String bussType = "【快捷免验证支付】";
+        final String bussType = "【快捷付款】";
         String errorMsg,errorCode,printErrorMsg,respResult=null;
         SystemOrderTrackTable sotTable = null;
         MerTransOrderApplyDTO merTransOrderApplyDTO=null;
