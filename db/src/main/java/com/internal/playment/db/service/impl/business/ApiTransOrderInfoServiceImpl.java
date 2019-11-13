@@ -75,8 +75,8 @@ public class ApiTransOrderInfoServiceImpl implements ApiTransOrderInfoService, N
 //            if (StringUtils.isNotEmpty(pit.getOrganizationId())) queryWrapper.setChannelId(searchInfo.getExpressName());
         if ( !isNull(transOrderInfoTable.getStatus())) queryWrapper.eq(TransOrderInfoTable::getStatus,transOrderInfoTable.getStatus());
         if ( !isNull (transOrderInfoTable.getSettleStatus())) queryWrapper.eq(TransOrderInfoTable::getSettleStatus,transOrderInfoTable.getSettleStatus());
-        if ( isBlank(transOrderInfoTable.getProductId())) queryWrapper.eq(TransOrderInfoTable::getProductId,transOrderInfoTable.getProductId());
-        if ( !isNull(transOrderInfoTable.getBeginTime())) queryWrapper.ge(TransOrderInfoTable::getCreateTime,transOrderInfoTable.getBeginTime());
+        if ( !isBlank(transOrderInfoTable.getProductId())) queryWrapper.eq(TransOrderInfoTable::getProductId,transOrderInfoTable.getProductId());
+        if ( !isNull(transOrderInfoTable.getBeginTime())) queryWrapper.ge(TransOrderInfoTable::getUpdateTime,transOrderInfoTable.getBeginTime());
         if ( !isNull(transOrderInfoTable.getEndTime())) queryWrapper.le(TransOrderInfoTable::getUpdateTime,transOrderInfoTable.getEndTime());
         return transOrderInfoDBService.page(page,queryWrapper);
     }

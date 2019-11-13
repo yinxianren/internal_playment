@@ -67,9 +67,9 @@ public class TransOrderInfoTable implements Serializable {
     @TableField(exist = false)
     private Integer pageSize;
     @TableField(exist = false)
-    private Date beginTime;
+    private String beginTime;
     @TableField(exist = false)
-    private Date endTime;
+    private String endTime;
 
     public TransOrderInfoTable() {
     }
@@ -259,11 +259,11 @@ public class TransOrderInfoTable implements Serializable {
         return this;
     }
 
-    public void setEndTime(Date endTime) {
+    public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
 
-    public void setBeginTime(Date beginTime) {
+    public void setBeginTime(String beginTime) {
         this.beginTime = beginTime;
     }
 
