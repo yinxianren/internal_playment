@@ -27,7 +27,7 @@ public class ApiMerchantBankRateServiceImpl implements ApiMerchantBankRateSerrvi
 
     @Override
     public Boolean batchSaveOrUpdate(List<MerchantBankRateTable> list) {
-        if (isHasElement(list)) return false;
+        if (isHasNotElement(list)) return false;
         return merchantBankRateDBService.saveOrUpdateBatch(list);
     }
 }
