@@ -274,6 +274,8 @@ public class NewTransOrderServiceImpl extends CommonServiceAbstract implements N
                             ipo.getBussType(), ipo.getMerId(), ipo.getTerMerId(), ResponseCodeEnum.RXH00051.getMsg(), localPoint),
                     format(" %s", ResponseCodeEnum.RXH00051.getMsg()));
 
+        }else{
+            merTransOrderApplyDTO.setAmount(totalInAmount.toString());
         }
         return totalInAmount;
     }
@@ -438,7 +440,7 @@ public class NewTransOrderServiceImpl extends CommonServiceAbstract implements N
 
 
             //订单金额
-            BigDecimal amount = new BigDecimal(merTransOrderApplyDTO.getAmount());
+            BigDecimal amount = new BigDecimal( merTransOrderApplyDTO.getAmount());
             //终端代付费用
             String backFee = merTransOrderApplyDTO.getBackFee();
             BigDecimal terFee = new BigDecimal( null == backFee ? "0" : backFee);

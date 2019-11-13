@@ -540,8 +540,8 @@ public class PayWalletServiceImpl extends CommonServiceAbstract implements PayWa
         BigDecimal totalFeeProfit = mwt.getFeeProfit();
         totalFeeProfit = null == totalFeeProfit ? new BigDecimal(0) : totalFeeProfit ;
         totalFeeProfit = totalFeeProfit.add(feeProfit);
-        //单笔出账金额
-        BigDecimal singleOutAmount = amount.subtract(merFee);
+        //单笔出账金额 = 订单金额-商户单笔利润
+        BigDecimal singleOutAmount = amount.subtract(feeProfit);
         //总出帐金额
         BigDecimal outAmount = mwt.getOutAmount();
         outAmount = null == outAmount ? new BigDecimal(0) : outAmount ;
@@ -555,11 +555,11 @@ public class PayWalletServiceImpl extends CommonServiceAbstract implements PayWa
         List<String>  settleCycleList= Arrays.asList("d0","D0","t0","T0");
         String settleCycle = isBlank(mrt.getSettleCycle()) ? "T7"  :  mrt.getSettleCycle().trim() ;
         if( !settleCycleList.contains(settleCycle) ){
-            totalFreezeAmount = totalFreezeAmount.add(amount);
-            totalAvailableAmount = totalAvailableAmount.subtract(amount);
+            totalFreezeAmount = totalFreezeAmount.add(singleOutAmount);
+            totalAvailableAmount = totalAvailableAmount.subtract(singleOutAmount);
         }else{
-            totalAvailableAmount = totalAvailableAmount.subtract(amount);
-            totalBalance = totalBalance.subtract(amount);
+            totalAvailableAmount = totalAvailableAmount.subtract(singleOutAmount);
+            totalBalance = totalBalance.subtract(singleOutAmount);
         }
         mwt
                 .setOutAmount(outAmount)                        .setTotalFee(totalMerFee)
@@ -688,8 +688,10 @@ public class PayWalletServiceImpl extends CommonServiceAbstract implements PayWa
         //总费用
         BigDecimal totalFee = cwt.getTotalFee();
         totalFee = totalFee == null ? totalSingleFee : totalFee.add(totalSingleFee);
-        //单笔输出金额
-        BigDecimal singleOutAmount = amount.subtract(totalSingleFee);
+        //子商户出账金额
+        BigDecimal terOutAmount = amount.subtract(toit.getBackFee());
+        //单笔输出金额 = 子商户出账金额 - 通道单笔所有费用
+        BigDecimal singleOutAmount = terOutAmount.subtract(totalSingleFee);
         //总输出金额
         BigDecimal totalOutAmount = cwt.getOutAmount();
         totalOutAmount = null == totalOutAmount ? singleOutAmount : totalOutAmount.add(singleOutAmount);
@@ -702,11 +704,11 @@ public class PayWalletServiceImpl extends CommonServiceAbstract implements PayWa
         List<String>  settleCycleList= Arrays.asList("d0","D0","t0","T0");
         String settleCycle = isBlank(cit.getSettleCycle()) ? "T7"  :  cit.getSettleCycle().trim() ;
         if( !settleCycleList.contains(settleCycle) ){
-            totalFreezeAmount = totalFreezeAmount.add(amount);
-            totalAvailableAmount = totalAvailableAmount.subtract(amount);
+            totalFreezeAmount = totalFreezeAmount.add(singleOutAmount);
+            totalAvailableAmount = totalAvailableAmount.subtract(singleOutAmount);
         }else{
-            totalAvailableAmount = totalAvailableAmount.subtract(amount);
-            totalBalance = totalBalance.subtract(amount);
+            totalAvailableAmount = totalAvailableAmount.subtract(singleOutAmount);
+            totalBalance = totalBalance.subtract(singleOutAmount);
         }
         cwt
                 .setTotalAmount(cwt.getTotalAmount())
