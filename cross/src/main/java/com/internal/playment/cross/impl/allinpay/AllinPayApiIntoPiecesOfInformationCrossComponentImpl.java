@@ -85,7 +85,7 @@ public class AllinPayApiIntoPiecesOfInformationCrossComponentImpl implements Api
                 JSONObject param = JSON.parseObject(other);
                 result.put("key", param.getString("key"));
                 String sign = AllinPayUtils.getMd5Sign(result);
-                if(sign.equalsIgnoreCase(resultSign)) {
+                if(sign.equalsIgnoreCase(sign)) {
                     bankResult.setCrossStatusCode(StatusEnum._0.getStatus());
                     bankResult.setCrossResponseMsg("进件成功");
                     bankResult.setChannelResponseMsg(content);

@@ -79,6 +79,9 @@ public class TransOrderInfoTable implements Serializable {
     @TableField(exist = false)
     private Integer pageSize;
 
+    @TableField(exist = false)
+    private String organizationId;
+
 
 
     public TransOrderInfoTable setStatusCollect(Collection<Integer> statusCollect) {
@@ -290,5 +293,9 @@ public class TransOrderInfoTable implements Serializable {
     public TransOrderInfoTable setPageNum(Integer pageNum) {
         this.pageNum = pageNum;
         return this;
+    }
+
+    public void setOrganizationId(String organizationId) {
+        this.organizationId = organizationId;
     }
 }
