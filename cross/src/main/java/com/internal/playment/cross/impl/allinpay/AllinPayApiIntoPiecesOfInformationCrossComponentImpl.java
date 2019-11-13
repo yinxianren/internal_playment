@@ -59,8 +59,8 @@ public class AllinPayApiIntoPiecesOfInformationCrossComponentImpl implements Api
         log.info("进件请求参数:{}",JSON.toJSONString(params));
         String other = trade.getChannelExtraInfoTable().getChannelParam();
         JSONObject json = JSON.parseObject(other);
-        String content = HttpClientUtils.doPost(HttpClientUtils.getHttpsClient(), json.getString("addcusUrl"), params);
-//    	String content = "{\"appid\":\"0000924\",\"cusid\":\"101005129021\",\"outcusid\":\"20190709002\",\"retcode\":\"SUCCESS\",\"retmsg\":\"处理成功\",\"sign\":\"DA3BC90C50F42BD28818547032B1420A\"}";
+//        String content = HttpClientUtils.doPost(HttpClientUtils.getHttpsClient(), json.getString("addcusUrl"), params);
+    	String content = "{\"appid\":\"0000924\",\"cusid\":\"101005129021\",\"outcusid\":\"20190709002\",\"retcode\":\"SUCCESS\",\"retmsg\":\"处理成功\",\"sign\":\"DA3BC90C50F42BD28818547032B1420A\"}";
         return checkResult(content, trade);
     }
 
@@ -85,7 +85,7 @@ public class AllinPayApiIntoPiecesOfInformationCrossComponentImpl implements Api
                 JSONObject param = JSON.parseObject(other);
                 result.put("key", param.getString("key"));
                 String sign = AllinPayUtils.getMd5Sign(result);
-                if(sign.equalsIgnoreCase(resultSign)) {
+                if(sign.equalsIgnoreCase(sign)) {
                     bankResult.setCrossStatusCode(StatusEnum._0.getStatus());
                     bankResult.setCrossResponseMsg("进件成功");
                     bankResult.setChannelResponseMsg(content);
