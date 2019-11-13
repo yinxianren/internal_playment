@@ -105,14 +105,14 @@ public class AllinPayChannelHandlePortComponentImpl implements AllinPayChannelHa
     public Tuple2 channelDifferBusinessHandleByPayOrder(RequestCrossMsgDTO requestCrossMsgDTO, CrossResponseMsgDTO crossResponseMsgDTO) {
         PayOrderInfoTable payOrderInfoTable = requestCrossMsgDTO.getPayOrderInfoTable();
         if(crossResponseMsgDTO.getCrossStatusCode() == StatusEnum._0.getStatus())
-            ActiveMqOrderProducerComponent.sendMessage("order.queue.payOrderInfoTable",payOrderInfoTable);
+            ActiveMqOrderProducerComponent.sendMessage(payOrder,payOrderInfoTable);
         return null;
     }
 
     public Tuple2 channelDifferBusinessHandleByTransOrder(RequestCrossMsgDTO requestCrossMsgDTO, CrossResponseMsgDTO crossResponseMsgDTO) {
         TransOrderInfoTable transOrderInfoTable = requestCrossMsgDTO.getTransOrderInfoTable();
         if(crossResponseMsgDTO.getCrossStatusCode() == StatusEnum._0.getStatus())
-            ActiveMqOrderProducerComponent.sendMessage("order.queue.transOrderInfoTable",transOrderInfoTable);
+            ActiveMqOrderProducerComponent.sendMessage(transOrder,transOrderInfoTable);
         return null;
     }
 

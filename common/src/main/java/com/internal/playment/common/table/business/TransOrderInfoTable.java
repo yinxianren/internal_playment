@@ -33,8 +33,6 @@ public class TransOrderInfoTable implements Serializable {
     private Integer identityType ;//身份证类型，1身份证、2护照、3港澳回乡证、4台胞证、5军官证
     private String identityNum ;//证件号
     private String bankCode ;//银行简称如：中国农业银行： ABC，中国工商银行： ICBC
-//    private String bankName ; //银行名称     	如：中国农业银行   bank_name             	否	32
-    private Integer bankAccountProp;//账户属性	0：个人账户，1：对公账户	否	1    bank_account_prop
     private Integer  bankCardType ;//卡号类型，1借记卡  2信用卡
     private String bankCardNum ;//银行卡号
     private String bankCardPhone ;//银行卡手机号
@@ -76,10 +74,6 @@ public class TransOrderInfoTable implements Serializable {
     public TransOrderInfoTable() {
     }
 
-    public TransOrderInfoTable setBankAccountProp(Integer bankAccountProp) {
-        this.bankAccountProp = bankAccountProp;
-        return this;
-    }
     public TransOrderInfoTable setChannelOrderId(String channelOrderId) {
         this.channelOrderId = channelOrderId;
         return this;

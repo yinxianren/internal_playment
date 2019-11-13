@@ -171,7 +171,7 @@ public class NewTransOrderServiceImpl extends CommonServiceAbstract implements N
                 //不足 1RMB 禁止代付
                 state(residueAmount.compareTo(TransAmountRiskManageEnum.T_SINGLE_MIN_1.getAmount()) == 0,
                         ResponseCodeEnum.RXH00052.getCode(),
-                        format("%s-->商户号：%s；终端号：%s；错误信息: %s ,%s；代码所在位置：%s;",
+                        format("%s-->商户号：%s；终端号：%s；错误信息: %s ；代码所在位置：%s;",
                                 ipo.getBussType(), ipo.getMerId(), ipo.getTerMerId(), ResponseCodeEnum.RXH00052.getMsg(), localPoint),
                         format(" %s : %s", ResponseCodeEnum.RXH00052.getMsg(), merTransOrderApplyDTO.getOrgMerOrderId()));
 
@@ -183,14 +183,14 @@ public class NewTransOrderServiceImpl extends CommonServiceAbstract implements N
                     //不足 1RMB 禁止代付
                     state(amount.compareTo(TransAmountRiskManageEnum.T_SINGLE_MIN_1.getAmount()) == 0,
                             ResponseCodeEnum.RXH00053.getCode(),
-                            format("%s-->商户号：%s；终端号：%s；错误信息: %s ,%s；代码所在位置：%s;",
+                            format("%s-->商户号：%s；终端号：%s；错误信息: %s ；代码所在位置：%s;",
                                     ipo.getBussType(), ipo.getMerId(), ipo.getTerMerId(), ResponseCodeEnum.RXH00053.getMsg(), localPoint),
                             format(" %s : %s", ResponseCodeEnum.RXH00053.getMsg(), merTransOrderApplyDTO.getOrgMerOrderId()));
 
                     //代付金额大于可支付金额
                     state(amount.compareTo(residueAmount ) > 0,
                             ResponseCodeEnum.RXH00011.getCode(),
-                            format("%s-->商户号：%s；终端号：%s；错误信息: %s ,%s；代码所在位置：%s;",
+                            format("%s-->商户号：%s；终端号：%s；错误信息: %s ；代码所在位置：%s;",
                                     ipo.getBussType(), ipo.getMerId(), ipo.getTerMerId(), ResponseCodeEnum.RXH00011.getMsg(), localPoint),
                             format(" %s : %s", ResponseCodeEnum.RXH00011.getMsg(), merTransOrderApplyDTO.getOrgMerOrderId()));
                 }
@@ -204,14 +204,14 @@ public class NewTransOrderServiceImpl extends CommonServiceAbstract implements N
                     //不足 1RMB 禁止代付
                     state(amount.compareTo(TransAmountRiskManageEnum.T_SINGLE_MIN_1.getAmount()) == 0,
                             ResponseCodeEnum.RXH00053.getCode(),
-                            format("%s-->商户号：%s；终端号：%s；错误信息: %s ,%s；代码所在位置：%s;",
+                            format("%s-->商户号：%s；终端号：%s；错误信息: %s ；代码所在位置：%s;",
                                     ipo.getBussType(), ipo.getMerId(), ipo.getTerMerId(), ResponseCodeEnum.RXH00053.getMsg(), localPoint),
                             format(" %s : %s", ResponseCodeEnum.RXH00053.getMsg(), merTransOrderApplyDTO.getOrgMerOrderId()));
 
                     //代付金额大于可支付金额
                     state(amount.compareTo( payOrderAmount ) > 0,
                             ResponseCodeEnum.RXH00011.getCode(),
-                            format("%s-->商户号：%s；终端号：%s；错误信息: %s ,%s；代码所在位置：%s;",
+                            format("%s-->商户号：%s；终端号：%s；错误信息: %s ；代码所在位置：%s;",
                                     ipo.getBussType(), ipo.getMerId(), ipo.getTerMerId(), ResponseCodeEnum.RXH00011.getMsg(), localPoint),
                             format(" %s : %s", ResponseCodeEnum.RXH00011.getMsg(), merTransOrderApplyDTO.getOrgMerOrderId()));
                 }
@@ -448,7 +448,7 @@ public class NewTransOrderServiceImpl extends CommonServiceAbstract implements N
             //商户费用
             BigDecimal merRateFee = merchantRateTable.getRateFee();
             merRateFee = null== merRateFee ? new BigDecimal(0) : merRateFee;
-            merRateFee = merRateFee.divide(new BigDecimal(0));
+            merRateFee = merRateFee.divide(new BigDecimal(100));
 
             BigDecimal merFee = amount.multiply(merRateFee).setScale(2,BigDecimal.ROUND_UP);
 
