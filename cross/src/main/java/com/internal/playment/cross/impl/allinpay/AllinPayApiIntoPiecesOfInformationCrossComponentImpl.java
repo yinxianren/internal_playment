@@ -59,8 +59,8 @@ public class AllinPayApiIntoPiecesOfInformationCrossComponentImpl implements Api
         log.info("进件请求参数:{}",JSON.toJSONString(params));
         String other = trade.getChannelExtraInfoTable().getChannelParam();
         JSONObject json = JSON.parseObject(other);
-        String content = HttpClientUtils.doPost(HttpClientUtils.getHttpsClient(), json.getString("addcusUrl"), params);
-//    	String content = "{\"appid\":\"0000924\",\"cusid\":\"101005129021\",\"outcusid\":\"20190709002\",\"retcode\":\"SUCCESS\",\"retmsg\":\"处理成功\",\"sign\":\"DA3BC90C50F42BD28818547032B1420A\"}";
+//        String content = HttpClientUtils.doPost(HttpClientUtils.getHttpsClient(), json.getString("addcusUrl"), params);
+    	String content = "{\"appid\":\"0000924\",\"cusid\":\"101005129021\",\"outcusid\":\"20190709002\",\"retcode\":\"SUCCESS\",\"retmsg\":\"处理成功\",\"sign\":\"DA3BC90C50F42BD28818547032B1420A\"}";
         return checkResult(content, trade);
     }
 
