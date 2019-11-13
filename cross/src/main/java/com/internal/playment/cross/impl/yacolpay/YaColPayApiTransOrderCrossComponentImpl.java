@@ -53,7 +53,7 @@ public class YaColPayApiTransOrderCrossComponentImpl implements ApiTransOrderCro
         String identity_id = transOrder.getTerminalMerId();//收款方用户标识
         String bank_account_num = transOrder.getBankCardNum();//收款方银行账号
         String phone_no = transOrder.getBankCardPhone();//银行预留手机号
-        String bank_name = transOrder.getBankName();//收款方开户银行
+        String bank_name = trade.getMerchantCardTable().getBankName();//收款方开户银行
         String bank_code = transOrder.getBankCode();//银行代码
 //        String province  = merchantBankCardBinding.getProvince();//省份
 //        String city =merchantBankCardBinding.getCity();//城市
@@ -63,7 +63,7 @@ public class YaColPayApiTransOrderCrossComponentImpl implements ApiTransOrderCro
 
         Map postData = new TreeMap();
         String split_type = "1";//分账类型1-按固定金额；2-按固定比率；
-        if (transOrder.getBankAccountProp() == 0){
+        if (trade.getMerchantCardTable().getBankAccountProp() == 0){
             postData.put("card_attribute","B");//卡属性
         }else {
             postData.put("card_attribute","C");//卡属性
