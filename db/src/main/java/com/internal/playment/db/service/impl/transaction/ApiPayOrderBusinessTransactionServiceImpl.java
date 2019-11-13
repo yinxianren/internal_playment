@@ -30,6 +30,7 @@ import com.internal.playment.db.service.db.terminal.TerminalMerchantsWalletDBser
 import lombok.AllArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Set;
 
 
@@ -98,6 +99,7 @@ public class ApiPayOrderBusinessTransactionServiceImpl implements ApiPayOrderBus
                                                Tuple2<TerminalMerchantsWalletTable, TerminalMerchantsDetailsTable> terMerWalletTuple,
                                                Tuple2<ChannelWalletTable, ChannelDetailsTable> chanWalletTuple,
                                                Tuple2<AgentMerchantWalletTable, AgentMerchantsDetailsTable> agentMerWalletTuple,
+                                               List<PayOrderInfoTable> payOrderInfoTableList,
                                                TransOrderInfoTable toit) {
         //商户
         merchantWalletDBService.updateById(merWalletTuple._1);
@@ -111,6 +113,8 @@ public class ApiPayOrderBusinessTransactionServiceImpl implements ApiPayOrderBus
         //终端商户
         agentMerchantWalletDBService.updateById(agentMerWalletTuple._1);
         agentMerchantsDetailsDBService.save(agentMerWalletTuple._2);
+        //更新收单
+        payOrderInfoDBService.updateBatchById(payOrderInfoTableList);
         //更新订单
         transOrderInfoDBService.updateById(toit);
     }

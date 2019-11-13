@@ -32,6 +32,8 @@ public class ApiRegisterCollectServiceImpl implements ApiRegisterCollectService,
         if( !isBlank(rct.getMerOrderId()) ) lambdaQueryWrapper.eq(RegisterCollectTable::getMerOrderId,rct.getMerOrderId());
         if( !isBlank(rct.getPlatformOrderId()) ) lambdaQueryWrapper.eq(RegisterCollectTable::getPlatformOrderId,rct.getPlatformOrderId());
         if( !isNull(rct.getStatus()) ) lambdaQueryWrapper.eq(RegisterCollectTable::getStatus,rct.getStatus());
+        if( !isBlank(rct.getOrganizationId()) )  lambdaQueryWrapper.eq(RegisterCollectTable::getOrganizationId,rct.getOrganizationId());
+        if( !isBlank(rct.getProductId()) )  lambdaQueryWrapper.eq(RegisterCollectTable::getProductId,rct.getProductId());
         if( !isBlank(rct.getBussType()) )  lambdaQueryWrapper.eq(RegisterCollectTable::getBussType,rct.getBussType());
         if( !isBlank(rct.getChannelId()) )  lambdaQueryWrapper.eq(RegisterCollectTable::getChannelId,rct.getChannelId());
         if( !isBlank(rct.getBankCardNum()) )  lambdaQueryWrapper.eq(RegisterCollectTable::getBankCardNum,rct.getBankCardNum());
@@ -49,6 +51,8 @@ public class ApiRegisterCollectServiceImpl implements ApiRegisterCollectService,
         if( !isBlank(rct.getBussType()) ) lambdaQueryWrapper.eq(RegisterCollectTable::getBussType,rct.getBussType());
         if( !isBlank(rct.getPlatformOrderId()) ) lambdaQueryWrapper.eq(RegisterCollectTable::getPlatformOrderId,rct.getPlatformOrderId());
         if( !isNull(rct.getStatus()) )  lambdaQueryWrapper.eq(RegisterCollectTable::getStatus,rct.getStatus());
+        if( !isBlank(rct.getOrganizationId()) )  lambdaQueryWrapper.eq(RegisterCollectTable::getOrganizationId,rct.getOrganizationId());
+        if( !isBlank(rct.getProductId()) )  lambdaQueryWrapper.eq(RegisterCollectTable::getProductId,rct.getProductId());
         if( !isBlank(rct.getChannelId()) )  lambdaQueryWrapper.eq(RegisterCollectTable::getChannelId,rct.getChannelId());
         if( !isBlank(rct.getBankCardNum()) )  lambdaQueryWrapper.eq(RegisterCollectTable::getBankCardNum,rct.getBankCardNum());
         if( !isBlank(rct.getBankCardPhone()) )  lambdaQueryWrapper.eq(RegisterCollectTable::getBankCardPhone,rct.getBankCardPhone());

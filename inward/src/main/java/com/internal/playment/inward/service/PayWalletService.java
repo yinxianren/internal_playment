@@ -19,6 +19,8 @@ import com.internal.playment.common.table.terminal.TerminalMerchantsDetailsTable
 import com.internal.playment.common.table.terminal.TerminalMerchantsWalletTable;
 import com.internal.playment.common.tuple.Tuple2;
 
+import java.util.List;
+
 public interface PayWalletService {
     /**
      *  获取商户信息
@@ -160,4 +162,19 @@ public interface PayWalletService {
      * @param ipo
      */
     void checkPayOrderOperability(PayOrderInfoTable poi, InnerPrintLogObject ipo) throws Exception;
+
+    /**
+     *
+     * @param toit
+     * @param ipo
+     */
+    void checkTransOrderOperability(TransOrderInfoTable toit, InnerPrintLogObject ipo) throws Exception;
+
+    /**
+     *
+     * @param toit
+     * @param ipo
+     * @return
+     */
+    List<PayOrderInfoTable> getPayOrderInfo(TransOrderInfoTable toit, InnerPrintLogObject ipo) throws Exception;
 }

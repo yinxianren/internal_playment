@@ -29,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -127,7 +128,11 @@ public class PayWalletComponentComponentImpl implements PayWalletComponent, NewP
             ChannelInfoTable  cit = payWalletService.getChannelInfo(toit.getChannelId(),ipo);
             //获取代理商设置
             AgentMerchantSettingTable ams = payWalletService.getAgentMerSet(mit.getAgentMerchantId(),toit.getProductId(),ipo);
+            //获取收单订单信息
+            List<PayOrderInfoTable> payOrderInfoTableList = payWalletService.getPayOrderInfo(toit,ipo);
             synchronized (lock) {
+                //判断订单是否有必要执行
+                payWalletService.checkTransOrderOperability(toit,ipo);
                 //获取商户钱包
                 MerchantWalletTable mwt = payWalletService.getMerWallet(ipo);
                 //更新商户钱包 ,保存商户钱包明细
@@ -137,7 +142,7 @@ public class PayWalletComponentComponentImpl implements PayWalletComponent, NewP
                 //更新终端商户钱包 保存终端商户钱包明细
                 Tuple2<TerminalMerchantsWalletTable, TerminalMerchantsDetailsTable> terMerWalletTuple = payWalletService.updateTerMerWalletByTransOrder(tmw, toit, mrt);
                 //获取通道钱包
-                ChannelWalletTable cwt = payWalletService.getChanWallet(toit.getChannelId(), ipo);
+                ChannelWalletTable cwt = payWalletService.getChanWallet(payOrderInfoTableList.get(0).getChannelId(), ipo);
                 //更新通道钱包 保存通道钱包明细
                 Tuple2<ChannelWalletTable, ChannelDetailsTable> chanWalletTuple = payWalletService.updateChannelWalletByTransOrder(cwt, cit, toit, mrt);
                 //获取代理商钱包
@@ -147,7 +152,7 @@ public class PayWalletComponentComponentImpl implements PayWalletComponent, NewP
                 //更新订单状态，从队列处理中该为成功
                 toit = toit.setStatus(StatusEnum._0.getStatus());
                 //执行事务处理
-                dbCommonRPCComponent.apiPayOrderBusinessTransactionService.updateOrSaveTransOrderBussInfo(merWalletTuple, terMerWalletTuple, chanWalletTuple, agentMerWalletTuple, toit);
+                dbCommonRPCComponent.apiPayOrderBusinessTransactionService.updateOrSaveTransOrderBussInfo(merWalletTuple, terMerWalletTuple, chanWalletTuple, agentMerWalletTuple, payOrderInfoTableList,toit);
             }
         }catch (Exception e){
             e.printStackTrace();

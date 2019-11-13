@@ -15,6 +15,7 @@ import com.internal.playment.common.table.terminal.TerminalMerchantsDetailsTable
 import com.internal.playment.common.table.terminal.TerminalMerchantsWalletTable;
 import com.internal.playment.common.tuple.Tuple2;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -51,5 +52,5 @@ public interface ApiPayOrderBusinessTransactionService {
      * @param agentMerWalletTuple
      * @param toit
      */
-    void updateOrSaveTransOrderBussInfo(Tuple2<MerchantWalletTable, MerchantsDetailsTable> merWalletTuple, Tuple2<TerminalMerchantsWalletTable, TerminalMerchantsDetailsTable> terMerWalletTuple, Tuple2<ChannelWalletTable, ChannelDetailsTable> chanWalletTuple, Tuple2<AgentMerchantWalletTable, AgentMerchantsDetailsTable> agentMerWalletTuple, TransOrderInfoTable toit);
+    void updateOrSaveTransOrderBussInfo(Tuple2<MerchantWalletTable, MerchantsDetailsTable> merWalletTuple, Tuple2<TerminalMerchantsWalletTable, TerminalMerchantsDetailsTable> terMerWalletTuple, Tuple2<ChannelWalletTable, ChannelDetailsTable> chanWalletTuple, Tuple2<AgentMerchantWalletTable, AgentMerchantsDetailsTable> agentMerWalletTuple, List<PayOrderInfoTable> payOrderInfoTableList,TransOrderInfoTable toit);
 }

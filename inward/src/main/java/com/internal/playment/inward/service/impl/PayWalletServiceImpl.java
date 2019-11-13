@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created with IntelliJ IDEA.
@@ -379,7 +380,7 @@ public class PayWalletServiceImpl extends CommonServiceAbstract implements PayWa
         //通道利润 = 商户的费用 - 通道费用
         BigDecimal chanProfit = merFee.subtract(chanFee);
         //总余额
-        BigDecimal totalBalance = (null == cwt.getTotalBalance() ? chanProfit : cwt.getTotalBalance().add(chanProfit));
+        BigDecimal totalBalance = (null == cwt.getTotalBalance() ? inAmount : cwt.getTotalBalance().add(inAmount));
         //总不可用余额
         BigDecimal totalUnavailableAmount = ( null == cwt.getTotalUnavailableAmount() ? new BigDecimal(0) : cwt.getTotalUnavailableAmount() );
         //总可用余额
@@ -388,9 +389,9 @@ public class PayWalletServiceImpl extends CommonServiceAbstract implements PayWa
         List<String>  settleCycleList= Arrays.asList("d0","D0","t0","T0");
         String settleCycle = isBlank(cit.getSettleCycle()) ? "T7"  :  cit.getSettleCycle().trim() ;
         if( !settleCycleList.contains(settleCycle) ){
-            totalUnavailableAmount = totalUnavailableAmount.add(chanProfit);
+            totalUnavailableAmount = totalUnavailableAmount.add(inAmount);
         }else{
-            totalAvailableAmount = totalAvailableAmount.add(chanProfit);
+            totalAvailableAmount = totalAvailableAmount.add(inAmount);
         }
 
         //通道钱包
@@ -522,9 +523,9 @@ public class PayWalletServiceImpl extends CommonServiceAbstract implements PayWa
         rateFee = null == rateFee ? new BigDecimal(0 ) : rateFee.divide(new BigDecimal(100));
         BigDecimal singleFee = mrt.getSingleFee();
         singleFee = null == singleFee ? new BigDecimal(0) : singleFee;
-        BigDecimal merFee = amount.multiply(rateFee);
+        BigDecimal merFee = amount.multiply(rateFee).setScale(2,BigDecimal.ROUND_UP);
         //商户费用
-        merFee = merFee.add(singleFee).setScale(2,BigDecimal.ROUND_UP);
+        merFee = merFee.add(singleFee);
         //商户总费用
         BigDecimal totalMerFee = mwt.getTotalFee();
         totalMerFee = null == totalMerFee ? new BigDecimal(0) : totalMerFee;
@@ -534,11 +535,11 @@ public class PayWalletServiceImpl extends CommonServiceAbstract implements PayWa
         if(isNull(terFee))
             throw  new Exception("快捷MQ队列--->代付业务钱包更新: backFee 为空");
         //商户单笔利润
-        BigDecimal feeProfit = terFee.subtract(terFee);
+        BigDecimal feeProfit = terFee.subtract(merFee);
         //商户总利润
         BigDecimal totalFeeProfit = mwt.getFeeProfit();
         totalFeeProfit = null == totalFeeProfit ? new BigDecimal(0) : totalFeeProfit ;
-        totalFeeProfit = totalFeeProfit.add(terFee);
+        totalFeeProfit = totalFeeProfit.add(feeProfit);
         //单笔出账金额
         BigDecimal singleOutAmount = amount.subtract(merFee);
         //总出帐金额
@@ -658,7 +659,7 @@ public class PayWalletServiceImpl extends CommonServiceAbstract implements PayWa
         //订单金额
         BigDecimal amount = toit.getAmount();
         //总可用余额
-        BigDecimal totalBalance = cwt.getTotalAmount();
+        BigDecimal totalBalance = cwt.getTotalBalance();
         if(amount.compareTo(totalBalance) == 1 )
             throw new Exception(format("快捷MQ队列--->代付业务钱包更新: 订单金额(%s)>商户钱包总余额(%s)",amount,totalBalance));
         //总可用余额
@@ -756,7 +757,7 @@ public class PayWalletServiceImpl extends CommonServiceAbstract implements PayWa
         BigDecimal totalInAmount = amw.getIncomeAmount();
         totalInAmount = null == totalInAmount ? totalSingleFee : totalInAmount.add(totalSingleFee);
         //总可用余额
-        BigDecimal totalBalance = amw.getTotalAmount();
+        BigDecimal totalBalance = amw.getTotalBalance();
         totalBalance = totalBalance.add(totalSingleFee);
         //总可用余额
         BigDecimal totalAvailableAmount = amw.getTotalAvailableAmount();
@@ -821,5 +822,51 @@ public class PayWalletServiceImpl extends CommonServiceAbstract implements PayWa
                             "数据库的订单:[%s]\n" +
                             "====================================================================\n",
                     poi.toString(),payOrderInfoTable.toString()));
+    }
+
+    @Override
+    public void checkTransOrderOperability(TransOrderInfoTable toit, InnerPrintLogObject ipo) throws Exception {
+        TransOrderInfoTable transOrderInfoTable = dbCommonRPCComponent.apiTransOrderInfoService.getOne(
+                new TransOrderInfoTable()
+                        .setMerchantId(toit.getMerchantId())
+                        .setTerminalMerId(toit.getTerminalMerId())
+                        .setMerOrderId(toit.getMerOrderId())
+                        .setPlatformIncome(toit.getPlatformIncome())
+        );
+        if(isNull(transOrderInfoTable))
+            throw  new Exception(format("该订单在数据库中不存在：[%s]",toit.toString()));
+
+        Set<Integer> set = new HashSet(Arrays.asList(StatusEnum._7.getStatus(),StatusEnum._8.getStatus()));
+        if( !set.contains(transOrderInfoTable.getStatus()) )
+            throw  new Exception(format("\n====================================================================\n" +
+                            "该订单不在钱包处理范围:\n" +
+                            "队列中的订单:[%s]\n" +
+                            "数据库的订单:[%s]\n" +
+                            "====================================================================\n",
+                    toit.toString(),transOrderInfoTable.toString()));
+    }
+
+    @Override
+    public List<PayOrderInfoTable> getPayOrderInfo(TransOrderInfoTable toit, InnerPrintLogObject ipo) throws Exception {
+        String orgMerOrderIds = toit.getOrgMerOrderId().trim();
+        List<String> orgMerOrderIdList = Arrays.asList(orgMerOrderIds.split("\\|"));
+        Set<String> orgMerOrderIdSet = orgMerOrderIdList.stream().map(t->t.trim()).collect(Collectors.toSet());
+        List<PayOrderInfoTable> payOrderInfoTableList = dbCommonRPCComponent.apiPayOrderInfoService.getList(new PayOrderInfoTable()
+                .setMerOrderIdCollect(orgMerOrderIdSet)
+                .setMerchantId(toit.getMerchantId())
+                .setTerminalMerId(toit.getTerminalMerId())
+                .setStatus(StatusEnum._9.getStatus()));
+        if(isHasNotElement(payOrderInfoTableList))
+            throw  new Exception( format("%s-->商户号：%s；终端号：%s；收单订单号：%s,错误信息：根据原始订单号提供信息，查不到收单信息",
+                    ipo.getBussType(), ipo.getMerId(), ipo.getTerMerId(),orgMerOrderIds));
+        if( payOrderInfoTableList.size() == 1) {
+            BigDecimal tAmount = toit.getAmount();
+            BigDecimal pInAmount = payOrderInfoTableList.get(0).getInAmount();
+            if(tAmount.compareTo(pInAmount) == -1)
+                payOrderInfoTableList.get(0).setStatus(StatusEnum._11.getStatus());
+            return payOrderInfoTableList;
+        }
+        payOrderInfoTableList.forEach(p->p.setStatus(StatusEnum._10.getStatus()));
+        return payOrderInfoTableList;
     }
 }
