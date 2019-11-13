@@ -1,5 +1,6 @@
 package com.internal.playment.task.timer;
 
+import com.internal.playment.common.enums.StatusEnum;
 import com.internal.playment.common.table.business.TransOrderInfoTable;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -34,7 +36,9 @@ public class TransOrderTimer  extends  AbstractTimer{
             String  beginTime = formatter.format( Date.from(subtractAfterTime) );
             String  endTime = formatter.format( Date.from(currentTime) );
 
-//            List<TransOrderInfoTable> transOrderInfoTableList = dbCommonRPCComponent
+            List<TransOrderInfoTable> transOrderInfoTableList = dbCommonRPCComponent.apiTransOrderInfoService.getList(new TransOrderInfoTable()
+                    .setStatusCollect(Arrays.asList(StatusEnum._7.getStatus(),StatusEnum._8.getStatus()))
+            );
 
         }catch (Exception e){
 

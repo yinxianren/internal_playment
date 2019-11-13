@@ -5,10 +5,12 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Date;
 
 /**
@@ -18,6 +20,7 @@ import java.util.Date;
  * Time: 上午11:26
  * Description:
  */
+@NoArgsConstructor
 @ToString
 @TableName("9_trans_order_info_table")
 @Getter
@@ -61,18 +64,28 @@ public class TransOrderInfoTable implements Serializable {
     private Date createTime;//创建时间
     private Date updateTime;//更新时间
 
-    //分页参数
     @TableField(exist = false)
-    private Integer pageNum;
-    @TableField(exist = false)
-    private Integer pageSize;
+    private Collection<Integer> statusCollect; //支持多状态查找
+
+
     @TableField(exist = false)
     private String beginTime;
     @TableField(exist = false)
     private String endTime;
 
-    public TransOrderInfoTable() {
+    //分页参数
+    @TableField(exist = false)
+    private Integer pageNum;
+    @TableField(exist = false)
+    private Integer pageSize;
+
+
+
+    public TransOrderInfoTable setStatusCollect(Collection<Integer> statusCollect) {
+        this.statusCollect = statusCollect;
+        return this;
     }
+
 
     public TransOrderInfoTable setChannelOrderId(String channelOrderId) {
         this.channelOrderId = channelOrderId;
@@ -259,19 +272,23 @@ public class TransOrderInfoTable implements Serializable {
         return this;
     }
 
-    public void setEndTime(String endTime) {
+    public TransOrderInfoTable setEndTime(String endTime) {
         this.endTime = endTime;
+        return this;
     }
 
-    public void setBeginTime(String beginTime) {
+    public TransOrderInfoTable setBeginTime(String beginTime) {
         this.beginTime = beginTime;
+        return this;
     }
 
-    public void setPageSize(Integer pageSize) {
+    public TransOrderInfoTable setPageSize(Integer pageSize) {
         this.pageSize = pageSize;
+        return this;
     }
 
-    public void setPageNum(Integer pageNum) {
+    public TransOrderInfoTable setPageNum(Integer pageNum) {
         this.pageNum = pageNum;
+        return this;
     }
 }

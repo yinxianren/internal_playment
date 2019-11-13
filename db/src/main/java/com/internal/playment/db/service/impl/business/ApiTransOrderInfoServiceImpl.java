@@ -45,11 +45,15 @@ public class ApiTransOrderInfoServiceImpl implements ApiTransOrderInfoService, N
         if(isNull(tit)) return null;
         LambdaQueryWrapper<TransOrderInfoTable> lambdaQueryWrapper = new QueryWrapper<TransOrderInfoTable>()
                 .lambda();
+        if(  isHasElement(tit.getStatusCollect())) lambdaQueryWrapper.in(TransOrderInfoTable::getStatus,tit.getStatusCollect());
         if( !isBlank(tit.getMerOrderId()) ) lambdaQueryWrapper.eq(TransOrderInfoTable::getMerOrderId,tit.getMerOrderId());
         if( !isBlank(tit.getMerchantId()) ) lambdaQueryWrapper.eq(TransOrderInfoTable::getMerchantId,tit.getMerchantId());
         if( !isBlank(tit.getTerminalMerId()) ) lambdaQueryWrapper.eq(TransOrderInfoTable::getTerminalMerId,tit.getTerminalMerId());
         if( !isBlank(tit.getBusiType()) ) lambdaQueryWrapper.eq(TransOrderInfoTable::getBusiType,tit.getBusiType());
         if( !isNull(tit.getStatus()) ) lambdaQueryWrapper.eq(TransOrderInfoTable::getStatus,tit.getStatus());
+        if( !isBlank(tit.getBeginTime())) lambdaQueryWrapper.ge(TransOrderInfoTable::getUpdateTime,tit.getBeginTime());
+        if( !isBlank(tit.getEndTime())) lambdaQueryWrapper.le(TransOrderInfoTable::getUpdateTime,tit.getEndTime());
+        if( isHasElement(tit.getStatusCollect())) lambdaQueryWrapper.in(TransOrderInfoTable::getStatus,tit.getStatusCollect());
         return transOrderInfoDBService.list(lambdaQueryWrapper);
     }
 
