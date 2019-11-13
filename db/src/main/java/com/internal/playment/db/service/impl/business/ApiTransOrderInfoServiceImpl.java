@@ -70,8 +70,8 @@ public class ApiTransOrderInfoServiceImpl implements ApiTransOrderInfoService, N
         if(isNull(transOrderInfoTable)) return new Page();
         IPage page = new Page(transOrderInfoTable.getPageNum(),transOrderInfoTable.getPageSize());
         LambdaQueryWrapper<TransOrderInfoTable> queryWrapper = new LambdaQueryWrapper();
-        if ( isBlank(transOrderInfoTable.getMerchantId())) queryWrapper.eq(TransOrderInfoTable::getMerchantId,transOrderInfoTable.getMerchantId());
-        if ( isBlank(transOrderInfoTable.getPlatformOrderId())) queryWrapper.eq(TransOrderInfoTable::getPlatformOrderId,transOrderInfoTable.getPlatformOrderId());
+        if ( !isBlank(transOrderInfoTable.getMerchantId())) queryWrapper.eq(TransOrderInfoTable::getMerchantId,transOrderInfoTable.getMerchantId());
+        if ( !isBlank(transOrderInfoTable.getPlatformOrderId())) queryWrapper.eq(TransOrderInfoTable::getPlatformOrderId,transOrderInfoTable.getPlatformOrderId());
 //            if (StringUtils.isNotEmpty(pit.getOrganizationId())) queryWrapper.setChannelId(searchInfo.getExpressName());
         if ( !isNull(transOrderInfoTable.getStatus())) queryWrapper.eq(TransOrderInfoTable::getStatus,transOrderInfoTable.getStatus());
         if ( !isNull (transOrderInfoTable.getSettleStatus())) queryWrapper.eq(TransOrderInfoTable::getSettleStatus,transOrderInfoTable.getSettleStatus());
