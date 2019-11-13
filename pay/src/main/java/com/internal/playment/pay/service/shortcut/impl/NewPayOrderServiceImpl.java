@@ -146,13 +146,13 @@ public class NewPayOrderServiceImpl  extends CommonServiceAbstract implements Ne
             }
         };
     }
-             /*
+    /*
 
 
 returnUrl
 noticeUrl
 signMsg
-              */
+     */
     @Override
     public void multipleOrder(String merOrderId, InnerPrintLogObject ipo) throws NewPayException {
         final String localPoint="multipleOrder";
@@ -1204,10 +1204,22 @@ signMsg
                     .setProductId(merNoAuthPayOrderApplyDTO.getProductType())
                     .setStatus(StatusEnum._0.getStatus()));
 
+            isNull(agentMerchantSettingTable,
+                    ResponseCodeEnum.RXH00044.getCode(),
+                    format("%s-->商户号：%s；终端号：%s；错误信息: %s ；代码所在位置：%s;异常根源：申请支付时，代理商费率未NULL",
+                            ipo.getBussType(),ipo.getMerId(),ipo.getTerMerId(),ResponseCodeEnum.RXH00044.getMsg(),localPoint),
+                    format(" %s",ResponseCodeEnum.RXH00044.getMsg()));
+
             merchantRateTable = dbCommonRPCComponent.apiMerchantRateService.getOne(new MerchantRateTable()
                     .setMerchantId(merNoAuthPayOrderApplyDTO.getMerId())
                     .setProductId(merNoAuthPayOrderApplyDTO.getProductType())
                     .setStatus(StatusEnum._0.getStatus()));
+
+            isNull(merchantRateTable,
+                    ResponseCodeEnum.RXH00044.getCode(),
+                    format("%s-->商户号：%s；终端号：%s；错误信息: %s ；代码所在位置：%s;异常根源：申请支付时，商户费率未NULL",
+                            ipo.getBussType(),ipo.getMerId(),ipo.getTerMerId(),ResponseCodeEnum.RXH00044.getMsg(),localPoint),
+                    format(" %s",ResponseCodeEnum.RXH00044.getMsg()));
 
             if(merNoAuthPayOrderApplyDTO.getProductType().equalsIgnoreCase(ProductTypeEnum.RH_QUICKPAY_LARGE_REP.getProductId())
                     || merNoAuthPayOrderApplyDTO.getProductType().equalsIgnoreCase(ProductTypeEnum.RH_QUICKPAY_LARGE.getProductId())){
@@ -1217,13 +1229,18 @@ signMsg
                         .setProductId(merNoAuthPayOrderApplyDTO.getProductType()));
             }
         }catch (Exception e){
-            e.printStackTrace();
-            throw new NewPayException(
-                    ResponseCodeEnum.RXH99999.getCode(),
-                    format("%s-->商户号：%s；终端号：%s；错误信息: %s ；代码所在位置：%s,异常根源：申请支付时，保存订单前，查询商户代理商信息或者是查询商户费率设置信息时发生异常,异常信息：%s",
-                            ipo.getBussType(), ipo.getMerId(), ipo.getTerMerId(), ResponseCodeEnum.RXH99999.getMsg(), localPoint,e.getMessage()),
-                    format(" %s", ResponseCodeEnum.RXH99999.getMsg())
-            );
+            if(e instanceof  NewPayException){
+                NewPayException npe = (NewPayException) e;
+                throw npe;
+            }else {
+                e.printStackTrace();
+                throw new NewPayException(
+                        ResponseCodeEnum.RXH99999.getCode(),
+                        format("%s-->商户号：%s；终端号：%s；错误信息: %s ；代码所在位置：%s,异常根源：申请支付时，保存订单前，查询商户代理商信息或者是查询商户费率设置信息时发生异常,异常信息：%s",
+                                ipo.getBussType(), ipo.getMerId(), ipo.getTerMerId(), ResponseCodeEnum.RXH99999.getMsg(), localPoint, e.getMessage()),
+                        format(" %s", ResponseCodeEnum.RXH99999.getMsg())
+                );
+            }
         }
 
 
@@ -1377,6 +1394,39 @@ signMsg
     }
 
     @Override
+    public void checkProductTypeByB10(MerNoAuthPayOrderApplyDTO merNoAuthPayOrderApplyDTO, InnerPrintLogObject ipo) throws NewPayException {
+        final String localPoint="checkProductTypeByB10";
+        String productType =  merNoAuthPayOrderApplyDTO.getProductType().toUpperCase();
+        Set<String> set = new HashSet(Arrays.asList(
+                ProductTypeEnum.RH_QUICKPAY_SMALL_NOSMS.getProductId().toUpperCase(),
+                ProductTypeEnum.RH_QUICKPAY_SMALL_NOSMS_REP.getProductId().toUpperCase()
+        ));
+        state( !set.contains(productType),
+                ResponseCodeEnum.RXH00057.getCode(),
+                format("%s-->商户号：%s；终端号：%s；错误信息: %s ；产品类型:%s,代码所在位置：%s;",
+                        ipo.getBussType(),ipo.getMerId(),ipo.getTerMerId(),ResponseCodeEnum.RXH00057.getMsg(),productType,localPoint),
+                format(" %s",ResponseCodeEnum.RXH00057.getMsg()));
+
+    }
+
+    @Override
+    public void checkProductTypeByB7(MerPayOrderApplyDTO merPayOrderApplyDTO, InnerPrintLogObject ipo) throws NewPayException {
+        final String localPoint="checkProductTypeByB7";
+        String productType =  merPayOrderApplyDTO.getProductType().toUpperCase();
+        Set<String> set = new HashSet(Arrays.asList(
+                ProductTypeEnum.RH_QUICKPAY_SMALL.getProductId().toUpperCase(),
+                ProductTypeEnum.RH_QUICKPAY_SMALL_REP.getProductId().toUpperCase(),
+                ProductTypeEnum.RH_QUICKPAY_LARGE_REP.getProductId().toUpperCase(),
+                ProductTypeEnum.RH_QUICKPAY_LARGE.getProductId().toUpperCase()
+        ));
+        state( !set.contains(productType),
+                ResponseCodeEnum.RXH00057.getCode(),
+                format("%s-->商户号：%s；终端号：%s；错误信息: %s ；产品类型:%s,代码所在位置：%s;",
+                        ipo.getBussType(),ipo.getMerId(),ipo.getTerMerId(),ResponseCodeEnum.RXH00057.getMsg(),productType,localPoint),
+                format(" %s",ResponseCodeEnum.RXH00057.getMsg()));
+    }
+
+    @Override
     public PayOrderInfoTable savePayOrder(MerchantInfoTable merInfoTable, MerPayOrderApplyDTO merPayOrderApplyDTO, ChannelInfoTable channelInfoTable, RegisterCollectTable registerCollectTable, MerchantCardTable merchantCardTable, InnerPrintLogObject ipo) throws NewPayException {
         final String localPoint="savePayOrder";
         AgentMerchantSettingTable agentMerchantSettingTable;
@@ -1388,10 +1438,24 @@ signMsg
                     .setProductId(merPayOrderApplyDTO.getProductType())
                     .setStatus(StatusEnum._0.getStatus()));
 
+            isNull(agentMerchantSettingTable,
+                    ResponseCodeEnum.RXH00044.getCode(),
+                    format("%s-->商户号：%s；终端号：%s；错误信息: %s ；代码所在位置：%s;异常根源：申请支付时，代理商费率未NULL",
+                            ipo.getBussType(),ipo.getMerId(),ipo.getTerMerId(),ResponseCodeEnum.RXH00044.getMsg(),localPoint),
+                    format(" %s",ResponseCodeEnum.RXH00044.getMsg()));
+
+
             merchantRateTable = dbCommonRPCComponent.apiMerchantRateService.getOne(new MerchantRateTable()
                     .setMerchantId(merPayOrderApplyDTO.getMerId())
                     .setProductId(merPayOrderApplyDTO.getProductType())
                     .setStatus(StatusEnum._0.getStatus()));
+
+            isNull(merchantRateTable,
+                    ResponseCodeEnum.RXH00044.getCode(),
+                    format("%s-->商户号：%s；终端号：%s；错误信息: %s ；代码所在位置：%s;异常根源：申请支付时，商户费率未NULL",
+                            ipo.getBussType(),ipo.getMerId(),ipo.getTerMerId(),ResponseCodeEnum.RXH00044.getMsg(),localPoint),
+                    format(" %s",ResponseCodeEnum.RXH00044.getMsg()));
+
 
             if(merPayOrderApplyDTO.getProductType().equalsIgnoreCase(ProductTypeEnum.RH_QUICKPAY_LARGE_REP.getProductId())
                     || merPayOrderApplyDTO.getProductType().equalsIgnoreCase(ProductTypeEnum.RH_QUICKPAY_LARGE.getProductId())){
@@ -1401,13 +1465,18 @@ signMsg
                         .setProductId(merPayOrderApplyDTO.getProductType()));
             }
         }catch (Exception e){
-            e.printStackTrace();
-            throw new NewPayException(
-                    ResponseCodeEnum.RXH99999.getCode(),
-                    format("%s-->商户号：%s；终端号：%s；错误信息: %s ；代码所在位置：%s,异常根源：申请支付时，保存订单前，查询商户代理商信息或者是查询商户费率设置信息时发生异常,异常信息：%s",
-                            ipo.getBussType(), ipo.getMerId(), ipo.getTerMerId(), ResponseCodeEnum.RXH99999.getMsg(), localPoint,e.getMessage()),
-                    format(" %s", ResponseCodeEnum.RXH99999.getMsg())
-            );
+            if(e instanceof NewPayException){
+                NewPayException npe = (NewPayException) e;
+                throw  npe;
+            }else {
+                e.printStackTrace();
+                throw new NewPayException(
+                        ResponseCodeEnum.RXH99999.getCode(),
+                        format("%s-->商户号：%s；终端号：%s；错误信息: %s ；代码所在位置：%s,异常根源：申请支付时，保存订单前，查询商户代理商信息或者是查询商户费率设置信息时发生异常,异常信息：%s",
+                                ipo.getBussType(), ipo.getMerId(), ipo.getTerMerId(), ResponseCodeEnum.RXH99999.getMsg(), localPoint, e.getMessage()),
+                        format(" %s", ResponseCodeEnum.RXH99999.getMsg())
+                );
+            }
         }
 
 

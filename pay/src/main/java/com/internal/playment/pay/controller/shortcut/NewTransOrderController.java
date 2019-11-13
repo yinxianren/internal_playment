@@ -92,6 +92,8 @@ public class NewTransOrderController extends NewAbstractCommonController {
             md5Component.checkMd5(sotTable.getRequestMsg(),merInfoTable.getSecretKey(),ipo);
             //查看是否重复订单
             newTransOrderService.multipleOrder(merTransOrderApplyDTO.getMerOrderId(),ipo);
+            //验证产品类型
+            newTransOrderService.checkProductTypeByB11(merTransOrderApplyDTO,ipo);
             //-----------------------------------------开始加锁-->子商户锁-->保证收单订单多次获取
             //查询支付订单是否存在
             List<PayOrderInfoTable> payOrderInfoTableList = newTransOrderService.getPayOrderInfoByList(merTransOrderApplyDTO,ipo);

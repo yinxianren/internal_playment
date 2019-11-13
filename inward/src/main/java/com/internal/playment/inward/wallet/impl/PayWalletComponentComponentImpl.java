@@ -63,6 +63,8 @@ public class PayWalletComponentComponentImpl implements PayWalletComponent, NewP
             //获取代理商设置
             AgentMerchantSettingTable ams = payWalletService.getAgentMerSet(mit.getAgentMerchantId(),poi.getProductId(),ipo);
             synchronized (lock) {
+                //判断订单是否有必要执行
+                payWalletService.checkPayOrderOperability(poi,ipo);
                 //获取商户钱包
                 MerchantWalletTable mwt = payWalletService.getMerWallet(ipo);
                 //更新商户钱包 ,保存商户钱包明细

@@ -94,6 +94,8 @@ public class NewNoAuthenticationPayOrderController  extends NewAbstractCommonCon
             md5Component.checkMd5(sotTable.getRequestMsg(),merInfoTable.getSecretKey(),ipo);
             //查看是否重复订单
             newPayOrderService.multipleOrder(merNoAuthPayOrderApplyDTO.getMerOrderId(),ipo);
+            //判断产品类型
+            newPayOrderService.checkProductTypeByB10(merNoAuthPayOrderApplyDTO,ipo);
             //1.执行平台风控
             //获取商户风控表
             MerchantQuotaRiskTable merchantQuotaRiskTable = newPayOrderService.getMerchantQuotaRiskByMerId(merInfoTable.getMerchantId(),ipo);
