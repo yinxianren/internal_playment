@@ -22,9 +22,8 @@ import com.internal.playment.common.table.terminal.TerminalMerchantsDetailsTable
 import com.internal.playment.common.table.terminal.TerminalMerchantsWalletTable;
 import com.internal.playment.common.tuple.Tuple2;
 import com.internal.playment.inward.component.DbCommonRPCComponent;
-import com.internal.playment.inward.service.PayWalletService;
+import com.internal.playment.inward.service.wallet.PayWalletService;
 import com.internal.playment.inward.wallet.PayWalletComponent;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

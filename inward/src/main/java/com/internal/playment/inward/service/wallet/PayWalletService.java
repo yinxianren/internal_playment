@@ -1,4 +1,4 @@
-package com.internal.playment.inward.service;
+package com.internal.playment.inward.service.wallet;
 
 
 import com.internal.playment.common.inner.InnerPrintLogObject;

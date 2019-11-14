@@ -1,4 +1,4 @@
-package com.internal.playment.inward.service.impl;
+package com.internal.playment.inward.service.wallet.impl;
 
 import com.internal.playment.common.enums.ResponseCodeEnum;
 import com.internal.playment.common.enums.StatusEnum;
@@ -20,7 +20,7 @@ import com.internal.playment.common.table.terminal.TerminalMerchantsDetailsTable
 import com.internal.playment.common.table.terminal.TerminalMerchantsWalletTable;
 import com.internal.playment.common.tuple.Tuple2;
 import com.internal.playment.inward.service.CommonServiceAbstract;
-import com.internal.playment.inward.service.PayWalletService;
+import com.internal.playment.inward.service.wallet.PayWalletService;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
