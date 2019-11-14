@@ -26,7 +26,7 @@ public class ApiSysRoleServiceImpl implements ApiSysRoleService, NewPayAssert {
 
     @Override
     public boolean delByIds(List<Long> ids) {
-        if (isHasElement(ids)) return false;
+        if (isHasNotElement(ids)) return false;
         return sysRoleDBService.removeByIds(ids);
     }
 
