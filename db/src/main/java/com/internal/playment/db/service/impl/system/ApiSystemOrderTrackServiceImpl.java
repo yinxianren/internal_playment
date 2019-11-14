@@ -35,6 +35,7 @@ public class ApiSystemOrderTrackServiceImpl implements ApiSystemOrderTrackServic
         if (!isBlank(systemOrderTrackTable.getMerOrderId())) queryWrapper.eq(SystemOrderTrackTable::getMerOrderId,systemOrderTrackTable.getMerOrderId());
         if (!isBlank(systemOrderTrackTable.getPlatformOrderId())) queryWrapper.eq(SystemOrderTrackTable::getPlatformOrderId,systemOrderTrackTable.getPlatformOrderId());
         if (!isBlank(systemOrderTrackTable.getMerId())) queryWrapper.eq(SystemOrderTrackTable::getMerId,systemOrderTrackTable.getMerId());
+        queryWrapper.orderByDesc(SystemOrderTrackTable::getTradeTime);
         IPage iPage = new Page(page.getCurrent(),page.getSize());
         return systemOrderTrackDbService.page(iPage,queryWrapper);
     }
