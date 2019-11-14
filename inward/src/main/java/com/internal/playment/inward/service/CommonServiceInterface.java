@@ -11,6 +11,7 @@ import com.internal.playment.common.table.system.MerchantSettingTable;
 import com.internal.playment.common.table.system.SystemOrderTrackTable;
 
 import java.util.List;
+import java.util.Map;
 
 public interface CommonServiceInterface {
 
@@ -28,5 +29,5 @@ public interface CommonServiceInterface {
 
     String responseMsg(MerchantInfoTable merInfoTable, InnerPrintLogObject ipo, CrossResponseMsgDTO crossResponseMsgDTO, String ...args) throws NewPayException, IllegalAccessException;
 
-
+    String responseMsg(Map<String, Object> map, MerchantInfoTable merInfoTable);
 }

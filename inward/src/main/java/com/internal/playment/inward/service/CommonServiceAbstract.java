@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.lang.reflect.Field;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -351,4 +352,14 @@ public abstract class CommonServiceAbstract implements NewPayAssert, PayUtil {
 
         return rct;
     }
+
+
+    public String responseMsg(Map<String, Object> map, MerchantInfoTable merInfoTable) {
+        if( !isNull(merInfoTable) ) {
+            String signMsg = md5Component.getMd5SignWithKey(map, merInfoTable.getSecretKey());
+            map.put("signMsg", signMsg);
+        }
+        return JSON.toJSONString(map);
+    }
+
 }

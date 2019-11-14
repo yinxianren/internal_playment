@@ -157,12 +157,7 @@ public class ShortcutOrderQueryServiceImpl extends CommonServiceAbstract impleme
                 .lput("errorMsg",ResponseCodeEnum.RXH00021.getMsg());
     }
 
-    @Override
-    public String responseMsg(Map<String, Object> map, MerchantInfoTable merInfoTable) {
-        String signMsg = md5Component.getMd5SignWithKey(map,merInfoTable.getSecretKey());
-        map.put("signMsg",signMsg);
-        return JSON.toJSONString(map);
-    }
+
 
     @Override
     public String responseMsg(BusinessOrderQueryDTO businessOrderQueryDTO, MerchantInfoTable merInfoTable, String errorCode, String errorMsg) {
@@ -174,29 +169,5 @@ public class ShortcutOrderQueryServiceImpl extends CommonServiceAbstract impleme
                 .lput("errorMsg", errorMsg );
         return responseMsg(map,merInfoTable);
     }
-
-/*
-platformOrderId	平台订单号
-amount	订单金额
-status	订单状态	订单状态（0成功、1失败、2未处理、3处理中）
-msg	结果描述
-signMsg	签名字符串
-errorCode	错误码	非成功时才返回，参照3.4异常码
-errorMsg	错误信息
- */
-
-
-
-
-
-
-
-
-
-
-
-    /*
-        signMsg	签名字符串		是	256	成功必有值
-*/
 }
 
