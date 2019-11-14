@@ -143,11 +143,13 @@ public class AllinPayApiNoAuthenticationPayOrderCrossComponentImpl implements Ap
                         String sign = AllinPayUtils.getMd5Sign(result);
                         if(sign.equalsIgnoreCase(sign)) {
                             bankResult.setCrossStatusCode(StatusEnum._0.getStatus());
+                            bankResult.setCrossStatusMsg(StatusEnum._0.getRemark());
                             bankResult.setCrossResponseMsg("交易成功");
                             bankResult.setChannelResponseMsg(content);
                             bankResult.setChannelOrderId(result.get("trxid").toString());
                         }else {
                             bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
+                            bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                             bankResult.setCrossResponseMsg("交易异常:签名验证失败");
                             bankResult.setChannelResponseMsg(content);
                             bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
@@ -156,11 +158,13 @@ public class AllinPayApiNoAuthenticationPayOrderCrossComponentImpl implements Ap
                         break;
                     case "2000":
                         bankResult.setCrossStatusCode(StatusEnum._0.getStatus());
+                        bankResult.setCrossStatusMsg(StatusEnum._0.getRemark());
                         bankResult.setCrossResponseMsg("支付交易请求已接受,等待交易结果通知。");
                         bankResult.setChannelResponseMsg(content);
                         break;
                     default:
                         bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
+                        bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                         bankResult.setCrossResponseMsg("交易异常:" + json.get("errmsg"));
                         bankResult.setChannelResponseMsg(content);
                         bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
@@ -170,6 +174,7 @@ public class AllinPayApiNoAuthenticationPayOrderCrossComponentImpl implements Ap
 
             }else {
                 bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
+                bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                 bankResult.setCrossResponseMsg("交易失败:" + json.get("retmsg"));
                 bankResult.setChannelResponseMsg(content);
                 bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
@@ -177,6 +182,7 @@ public class AllinPayApiNoAuthenticationPayOrderCrossComponentImpl implements Ap
             }
         }else {
             bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
+            bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
             bankResult.setCrossResponseMsg("交易失败：支付返回结果为空！");
             bankResult.setChannelResponseMsg(content);
             bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
