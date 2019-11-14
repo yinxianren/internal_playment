@@ -11,7 +11,7 @@ import java.util.Date;
  * @Date 2019-11-13 
  */
 
-@TableName ( "1_sys_role" )
+@TableName ( "1_sys_role_table" )
 @Data
 public class SysRoleTable implements Serializable {
    
