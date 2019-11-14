@@ -53,7 +53,7 @@ public interface NewTransOrderService extends CommonServiceInterface {
      * @param ipo
      * @return
      */
-    BigDecimal verifyOrderAmount(List<PayOrderInfoTable> payOrderInfoTableList, MerTransOrderApplyDTO merTransOrderApplyDTO, InnerPrintLogObject ipo) throws NewPayException;
+    void verifyOrderAmount(List<PayOrderInfoTable> payOrderInfoTableList, MerTransOrderApplyDTO merTransOrderApplyDTO, InnerPrintLogObject ipo) throws NewPayException;
 
     /**
      *

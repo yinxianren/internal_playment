@@ -236,17 +236,22 @@ public class NewTransOrderServiceImpl extends CommonServiceAbstract implements N
     }
 
     @Override
-    public BigDecimal verifyOrderAmount(List<PayOrderInfoTable> payOrderInfoTableList, MerTransOrderApplyDTO merTransOrderApplyDTO, InnerPrintLogObject ipo) throws NewPayException {
+    public void verifyOrderAmount(List<PayOrderInfoTable> payOrderInfoTableList, MerTransOrderApplyDTO merTransOrderApplyDTO, InnerPrintLogObject ipo) throws NewPayException {
         final String localPoint="verifyOrderAmount";
         BigDecimal totalInAmount = payOrderInfoTableList.stream()
                 .map(PayOrderInfoTable::getInAmount)
                 .reduce((_1,_2)->_1.add(_2))
                 .orElse(new BigDecimal(0));
-        //****************单笔代付****************
-        if(payOrderInfoTableList.size() == 1)
-            return totalInAmount;
-        //****************多笔代付****************
         String amountStr = merTransOrderApplyDTO.getAmount();
+        //****************单笔代付****************
+        if(payOrderInfoTableList.size() == 1){
+            if(isBlank(amountStr))
+                merTransOrderApplyDTO.setAmount(totalInAmount.toString());
+            return;
+        }
+
+        //****************多笔代付****************
+
         if( !isBlank(amountStr) ) {
             BigDecimal orderAmount = new BigDecimal( null == amountStr || isBlank(amountStr) ? "0" : amountStr.trim() );
             //代付金额至少 10 RMB
@@ -277,7 +282,6 @@ public class NewTransOrderServiceImpl extends CommonServiceAbstract implements N
         }else{
             merTransOrderApplyDTO.setAmount(totalInAmount.toString());
         }
-        return totalInAmount;
     }
 
     @Override

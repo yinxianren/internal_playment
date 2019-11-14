@@ -98,7 +98,7 @@ public class NewTransOrderController extends NewAbstractCommonController {
             //查询支付订单是否存在
             List<PayOrderInfoTable> payOrderInfoTableList = newTransOrderService.getPayOrderInfoByList(merTransOrderApplyDTO,ipo);
             //验证订单金额
-            BigDecimal totalAmount = newTransOrderService.verifyOrderAmount(payOrderInfoTableList,merTransOrderApplyDTO,ipo);
+            newTransOrderService.verifyOrderAmount(payOrderInfoTableList,merTransOrderApplyDTO,ipo);
             //多通道多代付,目前系统不开发这类功能，-->订单分类，根据不同通道机构Id进行划分
             // Map<OrganizationInfoTable,  List<PayOrderInfoTable> >  organizationOrderList = newTransOrderService.groupPayOrderByOrganization(payOrderInfoTableList,ipo);
             //查看订单是否是同一个通道

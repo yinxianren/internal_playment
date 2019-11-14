@@ -864,9 +864,10 @@ public class PayWalletServiceImpl extends CommonServiceAbstract implements PayWa
         if( payOrderInfoTableList.size() == 1) {
             BigDecimal tAmount = toit.getAmount();
             BigDecimal pInAmount = payOrderInfoTableList.get(0).getInAmount();
-            if(tAmount.compareTo(pInAmount) == -1)
+            if(tAmount.compareTo(pInAmount) == -1){
                 payOrderInfoTableList.get(0).setStatus(StatusEnum._11.getStatus());
-            return payOrderInfoTableList;
+                return payOrderInfoTableList;
+            }
         }
         payOrderInfoTableList.forEach(p->p.setStatus(StatusEnum._10.getStatus()));
         return payOrderInfoTableList;

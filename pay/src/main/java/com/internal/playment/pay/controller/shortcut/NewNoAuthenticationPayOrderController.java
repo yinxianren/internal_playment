@@ -205,6 +205,8 @@ public class NewNoAuthenticationPayOrderController  extends NewAbstractCommonCon
                  */
                 //更新通道历史使用记录 8_channel_history_table
                 ChannelHistoryTable  cht = newPayOrderService.updateByChannelHistoryInfo(channelHistoryTable,payOrderInfoTable);
+                if(isNull(channelRiskQuota))
+                    channelRiskQuota = newPayOrderService.getRiskQuotaInfoByChannel(channelInfoTable,ipo);
                 //更新 商户和通道使用汇总情况 8_risk_quota_table
                 Set<RiskQuotaTable> rqtSet = newPayOrderService.updateByRiskQuotaInfo(payOrderInfoTable,merRiskQuota,channelRiskQuota);
                 //执行事务更新操作
