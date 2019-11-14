@@ -15,10 +15,7 @@ import com.internal.playment.inward.service.CommonServiceAbstract;
 import com.internal.playment.inward.service.shurtcut.ShortcutBondCardQueryService;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class ShortcutBondCardQueryServiceImpl extends CommonServiceAbstract implements ShortcutBondCardQueryService {
@@ -55,7 +52,7 @@ public class ShortcutBondCardQueryServiceImpl extends CommonServiceAbstract impl
         if(isHasNotElement(merchantCardTableList)) return map
                 .lput("errorCode", ResponseCodeEnum.RXH00060.getCode())
                 .lput("errorMsg", ResponseCodeEnum.RXH00060.getMsg());
-        List<Map<String,Object>>  list = new ArrayList<>();
+        Set<Map<String,Object>> list = new HashSet<>();
         merchantCardTableList.forEach( _1 ->list.add(
                 new PayMap<String,Object>()
                         .lput("bankCardNum",_1.getBankCardNum())
