@@ -69,6 +69,11 @@ public abstract class CommonServiceAbstract implements NewPayAssert, PayUtil {
     public MerchantInfoTable getOneMerInfo(InnerPrintLogObject ipo) throws NewPayException {
         final String localPoint="getOneMerInfo";
         MerchantInfoTable merchantInfoTable =  null;
+        isNull( isBlank(ipo.getMerId()) ? null : ipo.getMerId(),
+                ResponseCodeEnum.RXH00017.getCode(),
+                format("%s-->商户号：%s；终端号：%s；错误信息: %s ；代码所在位置：%s",
+                        ipo.getBussType(),ipo.getMerId(),ipo.getTerMerId(),ResponseCodeEnum.RXH00017.getMsg(),localPoint),
+                format(" %s",ResponseCodeEnum.RXH00017.getMsg()));
         try {
             merchantInfoTable = dbCommonRPCComponent.apiMerchantInfoService.getOne(new MerchantInfoTable().setMerchantId(ipo.getMerId()));
         }catch (Exception e){
