@@ -1,6 +1,7 @@
 package com.internal.playment.inward.service.shurtcut.imp;
 
 import com.internal.playment.common.dto.BusinessBondCardQueryDTO;
+import com.internal.playment.common.enums.BusinessTypeEnum;
 import com.internal.playment.common.enums.ParamTypeEnum;
 import com.internal.playment.common.enums.ResponseCodeEnum;
 import com.internal.playment.common.enums.StatusEnum;
@@ -48,6 +49,7 @@ public class ShortcutBondCardQueryServiceImpl extends CommonServiceAbstract impl
                         .setMerchantId(businessBondCardQueryDTO.getMerId())
                         .setTerminalMerId(businessBondCardQueryDTO.getTerMerId())
                         .setBankCardNum(businessBondCardQueryDTO.getBankCardNum())
+                        .setBussType(BusinessTypeEnum.b6.getBusiType())
         );
 
         if(isHasNotElement(merchantCardTableList)) return map
