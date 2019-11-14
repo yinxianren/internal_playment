@@ -1,6 +1,6 @@
 package com.internal.playment.inward.service.shurtcut.imp;
 
-import com.alibaba.dubbo.config.annotation.Service;
+
 import com.internal.playment.common.dto.BusinessCusInfoQueryDTO;
 import com.internal.playment.common.enums.*;
 import com.internal.playment.common.inner.InnerPrintLogObject;
@@ -10,11 +10,11 @@ import com.internal.playment.common.table.business.RegisterCollectTable;
 import com.internal.playment.common.table.merchant.MerchantInfoTable;
 import com.internal.playment.inward.service.CommonServiceAbstract;
 import com.internal.playment.inward.service.shurtcut.ShortcutCusInfoQueryService;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class ShortcutCusInfoQueryServiceImpl extends CommonServiceAbstract implements ShortcutCusInfoQueryService {
