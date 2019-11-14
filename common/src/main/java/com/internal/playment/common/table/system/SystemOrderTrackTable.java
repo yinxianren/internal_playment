@@ -1,6 +1,7 @@
 package com.internal.playment.common.table.system;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Getter;
@@ -35,6 +36,11 @@ public class SystemOrderTrackTable implements Serializable {
     private String platformPrintLog;//平台打印日志
     private Date tradeTime; // 交易时间
     private Date createTime;//创建时间
+
+    @TableField(exist = false)
+    private String beginTime;
+    @TableField(exist = false)
+    private String endTime;
 
     public SystemOrderTrackTable setIp(String ip) {
         this.ip = ip;
@@ -114,5 +120,13 @@ public class SystemOrderTrackTable implements Serializable {
     public SystemOrderTrackTable setCreateTime(Date createTime) {
         this.createTime = createTime;
         return  this;
+    }
+
+    public void setBeginTime(String beginTime) {
+        this.beginTime = beginTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 }
