@@ -1,6 +1,7 @@
 package com.internal.playment.common.table.channel;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Getter;
@@ -35,6 +36,9 @@ public class ChannelWalletTable  implements Serializable {
 	private Integer status;//状态 0：启用,1:禁用
 	private Date createTime;//创建时间
 	private Date updateTime;//更新时间
+
+	@TableField(exist = false)
+	private String productId;
 
 	public ChannelWalletTable setId(Long id) {
 		this.id = id;
@@ -115,5 +119,9 @@ public class ChannelWalletTable  implements Serializable {
 	public ChannelWalletTable setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
 		return this;
+	}
+
+	public void setProductId(String productId) {
+		this.productId = productId;
 	}
 }
