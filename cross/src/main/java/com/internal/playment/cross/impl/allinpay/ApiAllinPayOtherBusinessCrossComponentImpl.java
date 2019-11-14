@@ -104,6 +104,7 @@ public class ApiAllinPayOtherBusinessCrossComponentImpl implements ApiAllinPayOt
                         String fintime = result.get("fintime").toString();
                         Date banktime = dateFormat.parse(fintime);
                         bankResult.setCrossStatusCode(StatusEnum._0.getStatus());
+                        bankResult.setCrossStatusMsg(StatusEnum._0.getRemark());
                         bankResult.setCrossResponseMsg("交易成功,交易流程完成");
                         bankResult.setChannelResponseTime(banktime);
                         bankResult.setChannelOrderId(trxid);
@@ -112,6 +113,7 @@ public class ApiAllinPayOtherBusinessCrossComponentImpl implements ApiAllinPayOt
 
                     case "2000":
                         bankResult.setCrossStatusCode(StatusEnum._3.getStatus());
+                        bankResult.setCrossStatusMsg(StatusEnum._3.getRemark());
                         bankResult.setCrossResponseMsg("交易处理中，请查询交易");
                         bankResult.setChannelResponseMsg(content);
                         bankResult.setErrorCode(ResponseCodeEnum.RXH00007.getCode());
@@ -119,6 +121,7 @@ public class ApiAllinPayOtherBusinessCrossComponentImpl implements ApiAllinPayOt
                         break;
                     case "0003":
                         bankResult.setCrossStatusCode(StatusEnum._3.getStatus());
+                        bankResult.setCrossStatusMsg(StatusEnum._3.getRemark());
                         bankResult.setCrossResponseMsg("交易处理中，请查询交易");
                         bankResult.setChannelResponseMsg(content);
                         bankResult.setErrorCode(ResponseCodeEnum.RXH00007.getCode());
@@ -126,6 +129,7 @@ public class ApiAllinPayOtherBusinessCrossComponentImpl implements ApiAllinPayOt
                         break;
                     case "3054":
                         bankResult.setCrossStatusCode(StatusEnum._3.getStatus());
+                        bankResult.setCrossStatusMsg(StatusEnum._3.getRemark());
                         bankResult.setCrossResponseMsg("交易处理中，请查询交易");
                         bankResult.setChannelResponseMsg(content);
                         bankResult.setErrorCode(ResponseCodeEnum.RXH00007.getCode());
@@ -133,6 +137,7 @@ public class ApiAllinPayOtherBusinessCrossComponentImpl implements ApiAllinPayOt
                         break;
                     default:
                         bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
+                        bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                         bankResult.setCrossResponseMsg("交易结果未知:" + json.get("errmsg"));
                         bankResult.setChannelResponseMsg(content);
                         bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
@@ -141,6 +146,7 @@ public class ApiAllinPayOtherBusinessCrossComponentImpl implements ApiAllinPayOt
                 }
             } else {
                 bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
+                bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                 bankResult.setCrossResponseMsg("快捷交易查询失败:" + json.get("retmsg"));
                 bankResult.setChannelResponseMsg(content);
                 bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
@@ -148,6 +154,7 @@ public class ApiAllinPayOtherBusinessCrossComponentImpl implements ApiAllinPayOt
             }
         } else {
             bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
+            bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
             bankResult.setCrossResponseMsg("快捷交易查询失败：支付返回结果为空！");
             bankResult.setChannelResponseMsg(content);
             bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
@@ -191,11 +198,13 @@ public class ApiAllinPayOtherBusinessCrossComponentImpl implements ApiAllinPayOt
                         bankResult.setChannelResponseTime(new Date());
                         bankResult.setChannelOrderId(trxid);
                         bankResult.setCrossStatusCode(StatusEnum._0.getStatus());
+                        bankResult.setCrossStatusMsg(StatusEnum._0.getRemark());
                         bankResult.setCrossResponseMsg("交易成功");
                         bankResult.setChannelResponseMsg(content);
                         break;
                     case "2000":
                         bankResult.setCrossStatusCode(StatusEnum._3.getStatus());
+                        bankResult.setCrossStatusMsg(StatusEnum._3.getRemark());
                         bankResult.setCrossResponseMsg("交易已受理");
                         bankResult.setChannelResponseMsg(content);
                         bankResult.setErrorCode(ResponseCodeEnum.RXH00007.getCode());
@@ -203,6 +212,7 @@ public class ApiAllinPayOtherBusinessCrossComponentImpl implements ApiAllinPayOt
                         break;
                     case "3035":
                         bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
+                        bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                         bankResult.setCrossResponseMsg("交易不存在");
                         bankResult.setChannelResponseMsg(content);
                         bankResult.setErrorCode(ResponseCodeEnum.RXH00008.getCode());
@@ -210,6 +220,7 @@ public class ApiAllinPayOtherBusinessCrossComponentImpl implements ApiAllinPayOt
                         break;
                     case "0003":
                         bankResult.setCrossStatusCode(StatusEnum._3.getStatus());
+                        bankResult.setCrossStatusMsg(StatusEnum._3.getRemark());
                         bankResult.setCrossResponseMsg("交易处理中，请查询交易");
                         bankResult.setChannelResponseMsg(content);
                         bankResult.setErrorCode(ResponseCodeEnum.RXH00007.getCode());
@@ -217,6 +228,7 @@ public class ApiAllinPayOtherBusinessCrossComponentImpl implements ApiAllinPayOt
                         break;
                     case "3054":
                         bankResult.setCrossStatusCode(StatusEnum._3.getStatus());
+                        bankResult.setCrossStatusMsg(StatusEnum._3.getRemark());
                         bankResult.setCrossResponseMsg("交易处理中，请查询交易");
                         bankResult.setChannelResponseMsg(content);
                         bankResult.setErrorCode(ResponseCodeEnum.RXH00007.getCode());
@@ -224,6 +236,7 @@ public class ApiAllinPayOtherBusinessCrossComponentImpl implements ApiAllinPayOt
                         break;
                     default:
                         bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
+                        bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                         bankResult.setCrossResponseMsg("交易失败:" + json.get("errmsg"));
                         bankResult.setChannelResponseMsg(content);
                         bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
@@ -233,6 +246,7 @@ public class ApiAllinPayOtherBusinessCrossComponentImpl implements ApiAllinPayOt
 
             }else {
                 bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
+                bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                 bankResult.setCrossResponseMsg("交易失败:" + json.get("retmsg"));
                 bankResult.setChannelResponseMsg(content);
                 bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
@@ -240,6 +254,7 @@ public class ApiAllinPayOtherBusinessCrossComponentImpl implements ApiAllinPayOt
             }
         }else {
             bankResult.setCrossStatusCode(StatusEnum._1.getStatus());
+            bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
             bankResult.setCrossResponseMsg("交易失败：支付返回结果为空！");
             bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
             bankResult.setErrorMsg(ResponseCodeEnum.RXH99999.getMsg());
