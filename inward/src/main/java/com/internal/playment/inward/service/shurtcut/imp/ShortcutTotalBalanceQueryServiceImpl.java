@@ -49,8 +49,9 @@ public class ShortcutTotalBalanceQueryServiceImpl extends CommonServiceAbstract 
         TerminalMerchantsWalletTable terminalMerchantsWalletTable = dbCommonRPCComponent.apiTerminalMerchantsWalletService.getOne(
                 new TerminalMerchantsWalletTable()
                         .setMerchantId(businessTotalBalanceQueryDTO.getMerId())
-                        .setTerminalMerId(businessTotalBalanceQueryDTO.getTerMerId()));
+                        .setTerminalMerId(terMerId));
         return map
+                .lput("terMerId",terMerId)
                 .lput("balance", null == terminalMerchantsWalletTable ? new BigDecimal(0) : terminalMerchantsWalletTable.getTotalBalance())
                 .lput("status", StatusEnum._0.getStatus())
                 .lput("msg", StatusEnum._0.getRemark());
