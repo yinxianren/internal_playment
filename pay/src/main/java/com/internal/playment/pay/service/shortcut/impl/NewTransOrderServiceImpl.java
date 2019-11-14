@@ -169,7 +169,7 @@ public class NewTransOrderServiceImpl extends CommonServiceAbstract implements N
                 BigDecimal  residueAmount = payOrderAmount.subtract(transOrderAmount);
 
                 //不足 1RMB 禁止代付
-                state(residueAmount.compareTo(TransAmountRiskManageEnum.T_SINGLE_MIN_1.getAmount()) == 0,
+                state(residueAmount.compareTo(TransAmountRiskManageEnum.T_SINGLE_MIN_1.getAmount()) == -1,
                         ResponseCodeEnum.RXH00052.getCode(),
                         format("%s-->商户号：%s；终端号：%s；错误信息: %s ；代码所在位置：%s;",
                                 ipo.getBussType(), ipo.getMerId(), ipo.getTerMerId(), ResponseCodeEnum.RXH00052.getMsg(), localPoint),

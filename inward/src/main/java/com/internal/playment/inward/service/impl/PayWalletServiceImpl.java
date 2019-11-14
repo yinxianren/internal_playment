@@ -690,8 +690,8 @@ public class PayWalletServiceImpl extends CommonServiceAbstract implements PayWa
         totalFee = totalFee == null ? totalSingleFee : totalFee.add(totalSingleFee);
         //子商户出账金额
         BigDecimal terOutAmount = amount.subtract(toit.getBackFee());
-        //单笔输出金额 = 子商户出账金额 - 通道单笔所有费用
-        BigDecimal singleOutAmount = terOutAmount.subtract(totalSingleFee);
+        //单笔输出金额 = 子商户出账金额 + 通道单笔所有费用
+        BigDecimal singleOutAmount = terOutAmount.add(totalSingleFee);
         //总输出金额
         BigDecimal totalOutAmount = cwt.getOutAmount();
         totalOutAmount = null == totalOutAmount ? singleOutAmount : totalOutAmount.add(singleOutAmount);
