@@ -29,6 +29,7 @@ public class ApiTerminalMerchantsWalletServiceImpl implements ApiTerminalMerchan
         if(isNull(tmw)) return null;
         LambdaQueryWrapper<TerminalMerchantsWalletTable> lambdaQueryWrapper =new QueryWrapper<TerminalMerchantsWalletTable>().lambda();
         if( !isBlank(tmw.getMerchantId()))  lambdaQueryWrapper.eq(TerminalMerchantsWalletTable::getMerchantId,tmw.getMerchantId());
+        if( !isBlank(tmw.getTerminalMerId())) lambdaQueryWrapper.eq(TerminalMerchantsWalletTable::getTerminalMerId,tmw.getTerminalMerId());
         if( !isNull(tmw.getStatus()))  lambdaQueryWrapper.eq(TerminalMerchantsWalletTable::getStatus,tmw.getStatus());
         return terminalMerchantsWalletDBservice.getOne(lambdaQueryWrapper);
     }
@@ -40,10 +41,12 @@ public class ApiTerminalMerchantsWalletServiceImpl implements ApiTerminalMerchan
     }
 
     @Override
-    public List<TerminalMerchantsWalletTable> getList(TerminalMerchantsWalletTable terminalMerchantsWalletTable) {
-        if (isNull(terminalMerchantsWalletTable)) return terminalMerchantsWalletDBservice.list();
+    public List<TerminalMerchantsWalletTable> getList(TerminalMerchantsWalletTable tmw) {
+        if (isNull(tmw)) return terminalMerchantsWalletDBservice.list();
         LambdaQueryWrapper<TerminalMerchantsWalletTable> queryWrapper = new LambdaQueryWrapper<>();
-        if (!isBlank(terminalMerchantsWalletTable.getMerchantId())) queryWrapper.eq(TerminalMerchantsWalletTable::getMerchantId,terminalMerchantsWalletTable.getMerchantId());
+        if (!isBlank(tmw.getMerchantId())) queryWrapper.eq(TerminalMerchantsWalletTable::getMerchantId,tmw.getMerchantId());
+        if( !isBlank(tmw.getTerminalMerId())) queryWrapper.eq(TerminalMerchantsWalletTable::getTerminalMerId,tmw.getTerminalMerId());
+        if( !isNull(tmw.getStatus()))  queryWrapper.eq(TerminalMerchantsWalletTable::getStatus,tmw.getStatus());
         return terminalMerchantsWalletDBservice.list(queryWrapper);
     }
 }
