@@ -19,7 +19,8 @@ public class ApiSysPrivilegesServiceImpl implements ApiSysPrivilegesService, New
     @Override
     public List<SysPrivilegesTable> getList(SysPrivilegesTable sysPrivilegesTable) {
         if (isNull(sysPrivilegesTable)) return sysPrivilegesDBService.list();
-        LambdaQueryWrapper queryWrapper = new LambdaQueryWrapper();
+        LambdaQueryWrapper<SysPrivilegesTable> queryWrapper = new LambdaQueryWrapper();
+        if (isHasNotElement(sysPrivilegesTable.getIds())) queryWrapper.in(SysPrivilegesTable::getId,sysPrivilegesTable.getIds());
         return sysPrivilegesDBService.list(queryWrapper);
     }
 }
