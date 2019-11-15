@@ -1,5 +1,6 @@
 package com.internal.playment.common.table.system;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import java.io.Serializable;
@@ -20,11 +21,13 @@ public class SysRoleTable implements Serializable {
 	private String roleName;//角色名称（用户，可自定义）
 	private Long belongto;//属于，内部（0）/商户号
 	private String privilegesId;//拥有权限ID，以数组形式保存。
-	private Integer available;//是否可用
+	@TableField(exist = false)
+	private Boolean available;//是否可用
 	private String remark;//备注
 	private String creator;//创建人
 	private Date createTime;//创建时间
 	private String modifier;//修改人
 	private Date updateTime;//更新时间
+	private Integer status;//是否可用
 
 }
