@@ -36,6 +36,7 @@ public class ApiTransOrderInfoServiceImpl implements ApiTransOrderInfoService, N
         if( !isBlank(tit.getMerchantId()) ) lambdaQueryWrapper.eq(TransOrderInfoTable::getMerchantId,tit.getMerchantId());
         if( !isBlank(tit.getTerminalMerId()) ) lambdaQueryWrapper.eq(TransOrderInfoTable::getTerminalMerId,tit.getTerminalMerId());
         if( !isBlank(tit.getBusiType()) ) lambdaQueryWrapper.eq(TransOrderInfoTable::getBusiType,tit.getBusiType());
+        if( !isBlank(tit.getPlatformOrderId()) ) lambdaQueryWrapper.eq(TransOrderInfoTable::getPlatformOrderId,tit.getPlatformOrderId());
         if( !isNull(tit.getStatus()) ) lambdaQueryWrapper.eq(TransOrderInfoTable::getStatus,tit.getStatus());
         return transOrderInfoDBService.getOne(lambdaQueryWrapper);
     }
