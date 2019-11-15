@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Description  
@@ -29,5 +30,7 @@ public class SysRoleTable implements Serializable {
 	private String modifier;//修改人
 	private Date updateTime;//更新时间
 	private Integer status;//是否可用
+	@TableField(exist = false)
+	private List<SysPrivilegesTable> privileges;
 
 }

@@ -38,5 +38,7 @@ public class SysUserTable  implements Serializable {
 	private String modifier;//更新人
 	private Date updateTime;//更新时间
 	private Integer status;//是否可用
+	@TableField(exist = false)
+	private SysRoleTable role;
 
 }
