@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Description  
@@ -27,5 +28,7 @@ public class SysPrivilegesTable implements Serializable {
 	private Date createTime;//创建时间
 	private Date updateTime;//修改时间
 	private Integer status;//是否可用
+	@TableField(exist = false)
+	private List<Long> ids;
 
 }
