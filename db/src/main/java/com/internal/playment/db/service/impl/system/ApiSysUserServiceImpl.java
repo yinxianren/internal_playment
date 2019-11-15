@@ -28,6 +28,7 @@ public class ApiSysUserServiceImpl implements ApiSysUserServie, NewPayAssert {
         LambdaQueryWrapper<SysUserTable> queryWrapper = new LambdaQueryWrapper();
         if (!isBlank(sysUserTable.getUserName())) queryWrapper.eq(SysUserTable::getUserName,sysUserTable.getUserName());
         if (null != sysUserTable.getId()) queryWrapper.eq(SysUserTable::getId,sysUserTable.getId());
+        if (null != sysUserTable.getRoleId()) queryWrapper.eq(SysUserTable::getRoleId,sysUserTable.getRoleId());
         return sysUserDBService.list(queryWrapper);
     }
 
