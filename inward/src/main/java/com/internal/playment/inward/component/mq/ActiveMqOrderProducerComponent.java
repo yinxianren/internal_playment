@@ -1,4 +1,4 @@
-package com.internal.playment.pay.component;
+package com.internal.playment.inward.component.mq;
 
 import lombok.AllArgsConstructor;
 import org.apache.activemq.ScheduledMessage;

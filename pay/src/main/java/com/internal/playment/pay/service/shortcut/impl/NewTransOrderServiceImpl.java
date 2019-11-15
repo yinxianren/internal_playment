@@ -563,6 +563,7 @@ public class NewTransOrderServiceImpl extends CommonServiceAbstract implements N
                     .setSettleCycle(merchantRateTable.getSettleCycle())                           .setSettleStatus(StatusEnum._2.getStatus())
                     .setChannelRespResult(null)                                                   .setCrossRespResult(null)
                     .setStatus(StatusEnum._2.getStatus())
+                    .setNotifyUrl(merTransOrderApplyDTO.getNoticeUrl())                           .setReturnUrl(merTransOrderApplyDTO.getReturnUrl())
                     .setCreateTime(new Date())                                                    .setUpdateTime(new Date());
 
             dbCommonRPCComponent.apiTransOrderInfoService.save(transOrderInfoTable);

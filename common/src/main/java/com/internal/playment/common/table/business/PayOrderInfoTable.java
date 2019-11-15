@@ -67,6 +67,8 @@ public class PayOrderInfoTable implements Serializable {
     private String  channelRespResult;// 通道响应结果,
     private String  crossRespResult;// cross响应结果,
     private Integer status;// 状态 0：success,1:fail,
+    private String notifyUrl;
+    private String returnUrl;
     private Date createTime;// 创建时间,
     private Date updateTime;// 更新时间,
 
@@ -93,6 +95,15 @@ public class PayOrderInfoTable implements Serializable {
     @TableField(exist = false)
     private Integer pageSize;
 
+    public PayOrderInfoTable setNotifyUrl(String notifyUrl) {
+        this.notifyUrl = notifyUrl;
+        return this;
+    }
+
+    public PayOrderInfoTable setReturnUrl(String returnUrl) {
+        this.returnUrl = returnUrl;
+        return this;
+    }
 
     public PayOrderInfoTable setBeginTime(String beginTime) {
         this.beginTime = beginTime;

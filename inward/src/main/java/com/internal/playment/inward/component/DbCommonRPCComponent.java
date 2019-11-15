@@ -33,6 +33,8 @@ public  class DbCommonRPCComponent {
     @Reference(version = "${application.version}",timeout = 30000)
     public ApiRiskQuotaService apiRiskQuotaService;
     @Reference(version = "${application.version}",timeout = 30000)
+    public ApiAsyncNotifyService apiAsyncNotifyService;
+    @Reference(version = "${application.version}",timeout = 30000)
     public ApiChannelInfoService apiChannelInfoService;
     @Reference(version = "${application.version}",timeout = 30000)
     public ApiMerchantInfoService apiMerchantInfoService;
@@ -84,7 +86,5 @@ public  class DbCommonRPCComponent {
     public ApiTerminalMerchantsDetailsService apiTerminalMerchantsDetailsService;
     @Reference(version = "${application.version}",timeout = 30000)
     public ApiPayOrderBusinessTransactionService apiPayOrderBusinessTransactionService;
-    @Reference(version = "${application.version}",timeout = 30000)
-    public ApiTransOrderBusinessTransactionService apiTransOrderBusinessTransactionService;
 
 }

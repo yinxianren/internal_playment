@@ -9,10 +9,14 @@ application:
   queue:
     pay-order: @application.queue.pay-order@
     trans-order: @application.queue.trans-order@
+  async-query:
+    pay-order: @order.queue.async.query.payOrderInfoTable@
+    trans-order: @order.queue.async.query.transOrderInfoTable@
+
 dubbo:
   application:
     #应用名称，每个dubbo应用的名称都是唯一的
-    name: pay
+    name: pay2
   registry:
     #注册中心
     address: @pay.dubbo.registry_addr@

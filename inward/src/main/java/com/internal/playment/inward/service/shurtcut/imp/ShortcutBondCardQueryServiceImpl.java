@@ -57,6 +57,7 @@ public class ShortcutBondCardQueryServiceImpl extends CommonServiceAbstract impl
                 new PayMap<String,Object>()
                         .lput("bankCardNum",_1.getBankCardNum())
                         .lput("status",_1.getStatus())
+                        .lput("channelTab", _1.getOrganizationId())
                 )
         );
         return map

@@ -1,4 +1,4 @@
-package com.internal.playment.inward.component;
+package com.internal.playment.inward.component.mq;
 
 
 import com.internal.playment.common.table.business.PayOrderInfoTable;
@@ -15,15 +15,10 @@ public class OrderConsumerComponent {
 
     private final PayWalletComponent payWalletComponent;
 
-    // 接收 order.queue 队列的消息
-    @JmsListener(destination="order.queue.payOrderInfoTable",  containerFactory="jmsListenerContainerQueue")
+
+    @JmsListener(destination="application.queue.async.notify",  containerFactory="jmsListenerContainerQueue")
     public void receiveQueueByPayOrder(PayOrderInfoTable payOrderInfoTable){
         payWalletComponent.payOrderWallet(payOrderInfoTable);
     }
 
-    // 接收 order.queue 队列的消息
-    @JmsListener(destination="order.queue.transOrderInfoTable",  containerFactory="jmsListenerContainerQueue")
-    public void receiveQueueByTransOrder(TransOrderInfoTable transOrderInfoTable){
-        payWalletComponent.transOrderWallet(transOrderInfoTable);
-    }
 }
