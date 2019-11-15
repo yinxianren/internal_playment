@@ -15,6 +15,7 @@ import com.internal.playment.common.table.business.TransOrderInfoTable;
 import com.internal.playment.common.tuple.Tuple2;
 import com.internal.playment.pay.channel.AllinPayChannelHandlePortComponent;
 import com.internal.playment.pay.component.ActiveMqOrderProducerComponent;
+import com.internal.playment.pay.component.ThreadPoolExecutorComponent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -34,6 +35,12 @@ public class AllinPayChannelHandlePortComponentImpl implements AllinPayChannelHa
     private String payOrder;
     @Value("${application.queue.trans-order}")
     private String transOrder;
+    @Value("${application.async-query.pay-order}")
+    private String asyncQueryPayOrder;
+    @Value("${application.async-query.trans-order}")
+    private String asyncQueryTransOrder;
+
+
 
     @Reference(version = "${application.version}", group = "allinPay", timeout = 30000)
     private ApiBondCardCrossComponent apiBondCardCrossComponent;
@@ -104,15 +111,25 @@ public class AllinPayChannelHandlePortComponentImpl implements AllinPayChannelHa
 
     public Tuple2 channelDifferBusinessHandleByPayOrder(RequestCrossMsgDTO requestCrossMsgDTO, CrossResponseMsgDTO crossResponseMsgDTO) {
         PayOrderInfoTable payOrderInfoTable = requestCrossMsgDTO.getPayOrderInfoTable();
+        //向上游异步查询
+        ThreadPoolExecutorComponent.executorService.submit(()->
+                ActiveMqOrderProducerComponent.delaySend(asyncQueryPayOrder,payOrderInfoTable,10000L));
+        //钱包处理
         if(crossResponseMsgDTO.getCrossStatusCode() == StatusEnum._0.getStatus())
-            ActiveMqOrderProducerComponent.sendMessage(payOrder,payOrderInfoTable);
+            ThreadPoolExecutorComponent.executorService.submit( ()->
+                    ActiveMqOrderProducerComponent.sendMessage(payOrder,payOrderInfoTable));
         return null;
     }
 
     public Tuple2 channelDifferBusinessHandleByTransOrder(RequestCrossMsgDTO requestCrossMsgDTO, CrossResponseMsgDTO crossResponseMsgDTO) {
         TransOrderInfoTable transOrderInfoTable = requestCrossMsgDTO.getTransOrderInfoTable();
+        //向上游异步查询
+        ThreadPoolExecutorComponent.executorService.submit(()->
+                ActiveMqOrderProducerComponent.delaySend(asyncQueryTransOrder,transOrderInfoTable,10000l));
+        //钱包处理
         if(crossResponseMsgDTO.getCrossStatusCode() == StatusEnum._0.getStatus())
-            ActiveMqOrderProducerComponent.sendMessage(transOrder,transOrderInfoTable);
+            ThreadPoolExecutorComponent.executorService.submit( ()->
+                    ActiveMqOrderProducerComponent.sendMessage(transOrder,transOrderInfoTable));
         return null;
     }
 

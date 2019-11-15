@@ -1376,6 +1376,7 @@ signMsg
                 .setPlatformIncome(platformIncome)                                          .setSettleCycle(merchantRateTable.getSettleCycle())
                 .setSettleStatus(1)                                                         .setStatus(StatusEnum._2.getStatus())
                 .setChannelRespResult(null)                                                 .setCrossRespResult(null)
+                .setNotifyUrl(merNoAuthPayOrderApplyDTO.getNoticeUrl())                     .setReturnUrl(merNoAuthPayOrderApplyDTO.getReturnUrl())
                 .setCreateTime(new Date())                                                  .setUpdateTime(new Date());
 
         try {
@@ -1614,6 +1615,7 @@ signMsg
                 .setPlatformIncome(platformIncome)                                          .setSettleCycle(merchantRateTable.getSettleCycle())
                 .setSettleStatus(1)                                                         .setStatus(StatusEnum._2.getStatus())
                 .setChannelRespResult(null)                                                 .setCrossRespResult(null)
+                .setNotifyUrl(merPayOrderApplyDTO.getNoticeUrl())                           .setReturnUrl(merPayOrderApplyDTO.getReturnUrl())
                 .setCreateTime(new Date())                                                  .setUpdateTime(new Date());
 
         try {

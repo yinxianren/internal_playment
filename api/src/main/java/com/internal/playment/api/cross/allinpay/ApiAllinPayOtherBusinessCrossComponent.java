@@ -2,6 +2,7 @@ package com.internal.playment.api.cross.allinpay;
 
 import com.internal.playment.common.dto.CrossResponseMsgDTO;
 import com.internal.playment.common.dto.RequestCrossMsgDTO;
+import com.internal.playment.common.table.business.PayOrderInfoTable;
 
 import java.text.ParseException;
 

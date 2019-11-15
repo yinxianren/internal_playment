@@ -61,6 +61,8 @@ public class TransOrderInfoTable implements Serializable {
     private String channelRespResult;//通道响应结果
     private String crossRespResult;//cross响应结果
     private Integer  status;//状态 0：success1:fail
+    private String notifyUrl;
+    private String returnUrl;
     private Date createTime;//创建时间
     private Date updateTime;//更新时间
 
@@ -83,6 +85,15 @@ public class TransOrderInfoTable implements Serializable {
     private String organizationId;
 
 
+    public TransOrderInfoTable setNotifyUrl(String notifyUrl) {
+        this.notifyUrl = notifyUrl;
+        return this;
+    }
+
+    public TransOrderInfoTable setReturnUrl(String returnUrl) {
+        this.returnUrl = returnUrl;
+        return this;
+    }
 
     public TransOrderInfoTable setStatusCollect(Collection<Integer> statusCollect) {
         this.statusCollect = statusCollect;
