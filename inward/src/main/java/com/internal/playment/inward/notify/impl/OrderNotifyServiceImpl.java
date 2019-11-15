@@ -3,6 +3,7 @@ package com.internal.playment.inward.notify.impl;
 import com.internal.playment.common.enums.StatusEnum;
 import com.internal.playment.common.inner.HttpClientUtils;
 import com.internal.playment.common.table.merchant.MerchantInfoTable;
+import com.internal.playment.common.table.system.AsyncNotifyTable;
 import com.internal.playment.inward.notify.NotifyCommonServiceAbstract;
 import com.internal.playment.inward.notify.OrderNotifyService;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,7 @@ public class OrderNotifyServiceImpl extends NotifyCommonServiceAbstract implemen
             int count = asyncNotifyTable.getNotifyCount() + 1;
             //继续通知
             asyncNotifyTable
+                    .setStatus(StatusEnum._1.getStatus())
                     .setUpdateTime(new Date())
                     .setNotifyCount( count )
                     .setRespResult( isBlank(content) ? content :
@@ -44,8 +46,13 @@ public class OrderNotifyServiceImpl extends NotifyCommonServiceAbstract implemen
             dbCommonRPCComponent.apiAsyncNotifyService.updateByKey(asyncNotifyTable);
             if(count == 2)
                 activeMqOrderProducerComponent.delaySend(asyncNotify,asyncNotifyTable,5*60*1000L);
-
-
+            else if(count == 3)
+                activeMqOrderProducerComponent.delaySend(asyncNotify,asyncNotifyTable,10*60*1000L);
+            else  if(count == 4)
+                activeMqOrderProducerComponent.delaySend(asyncNotify,asyncNotifyTable,15*60*1000L);
+            else  if(count == 5)
+                activeMqOrderProducerComponent.delaySend(asyncNotify,asyncNotifyTable,30*60*1000L);
+            else return;
         }catch (Exception e){
             e.printStackTrace();
         }
