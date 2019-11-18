@@ -82,7 +82,7 @@
                 <!--   服务端口号   -->
                 <server.cross.port>8002</server.cross.port>
                 <server.db.port>8001</server.db.port>
-                <server.inward.port>8003</server.inward.port>
+                <server.inward.port>8013</server.inward.port>
                 <server.pay.port>8081</server.pay.port>
                 <server.task2.port>8005</server.task2.port>
                 <server.web.admin.port>8009</server.web.admin.port>

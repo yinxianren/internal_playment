@@ -9,8 +9,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class PageDTO implements Serializable {
 
-    private Integer pageNum;
-    private Integer paegSize;
+    private Integer pageNum = 1;
+    private Integer paegSize = 10;
     private String beginTime;
     private String endTime;
 
