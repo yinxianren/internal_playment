@@ -13,4 +13,6 @@ public interface ApiSysConstantService {
     boolean delByIds(List<String> ids);
 
     IPage page(SysConstantTable sysConstantTable, PageDTO pageDTO);
+
+    List<SysConstantTable> getList(SysConstantTable sysConstantTable);
 }
