@@ -75,8 +75,8 @@
                 <application.queue.pay-order>order.queue.payOrderInfoTable</application.queue.pay-order>
                 <application.queue.trans-order>order.queue.transOrderInfoTable</application.queue.trans-order>
                 <!--  队列异步主动查询 -->
-                <order.queue.async.query.payOrderInfoTable>order.queue.async.query.payOrderInfoTable</order.queue.async.query.payOrderInfoTable>
-                <order.queue.async.query.transOrderInfoTable>order.queue.async.query.transOrderInfoTable</order.queue.async.query.transOrderInfoTable>
+                <order.queue.async.query.pay-order>order.queue.async.query.payOrderInfoTable</order.queue.async.query.pay-order>
+                <order.queue.async.query.trans-order>order.queue.async.query.transOrderInfoTable</order.queue.async.query.trans-order>
                 <!--  队列异步通知 -->
                 <order.queue.async.notify>order.queue.async.notify</order.queue.async.notify>
             </properties>
@@ -118,8 +118,8 @@
                 <application.queue.pay-order>order.queue.payOrderInfoTable</application.queue.pay-order>
                 <application.queue.trans-order>order.queue.transOrderInfoTable</application.queue.trans-order>
                 <!--  队列异步主动查询 -->
-                <order.queue.async.query.payOrderInfoTable>order.queue.async.query.payOrderInfoTable</order.queue.async.query.payOrderInfoTable>
-                <order.queue.async.query.transOrderInfoTable>order.queue.async.query.transOrderInfoTable</order.queue.async.query.transOrderInfoTable>
+                <order.queue.async.query.pay-order>order.queue.async.query.payOrderInfoTable</order.queue.async.query.pay-order>
+                <order.queue.async.query.trans-order>order.queue.async.query.transOrderInfoTable</order.queue.async.query.trans-order>
                 <!--  队列异步通知 -->
                 <order.queue.async.notify>order.queue.async.notify</order.queue.async.notify>
             </properties>
@@ -163,8 +163,8 @@
                 <application.queue.pay-order>order.queue.payOrderInfoTable</application.queue.pay-order>
                 <application.queue.trans-order>order.queue.transOrderInfoTable</application.queue.trans-order>
                 <!--  队列异步主动查询 -->
-                <order.queue.async.query.payOrderInfoTable>order.queue.async.query.payOrderInfoTable</order.queue.async.query.payOrderInfoTable>
-                <order.queue.async.query.transOrderInfoTable>order.queue.async.query.transOrderInfoTable</order.queue.async.query.transOrderInfoTable>
+                <order.queue.async.query.pay-order>order.queue.async.query.payOrderInfoTable</order.queue.async.query.pay-order>
+                <order.queue.async.query.trans-order>order.queue.async.query.transOrderInfoTable</order.queue.async.query.trans-order>
                 <!--  队列异步通知 -->
                 <order.queue.async.notify>order.queue.async.notify</order.queue.async.notify>
             </properties>
