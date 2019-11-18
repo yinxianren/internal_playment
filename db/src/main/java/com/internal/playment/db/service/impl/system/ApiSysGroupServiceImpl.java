@@ -44,7 +44,7 @@ public class ApiSysGroupServiceImpl implements ApiSysGroupService, NewPayAssert 
         if (isNull(sysGroupTable)) return sysGroupDBService.list();
         LambdaQueryWrapper<SysGroupTable> queryWrapper = new LambdaQueryWrapper<>();
         if (!isBlank(sysGroupTable.getCode())) queryWrapper.eq(SysGroupTable::getCode,sysGroupTable.getCode());
-        if (!isBlank(sysGroupTable.getName())) queryWrapper.eq(SysGroupTable::getName,sysGroupTable.getCode());
+        if (!isBlank(sysGroupTable.getName())) queryWrapper.eq(SysGroupTable::getName,sysGroupTable.getName());
         return sysGroupDBService.list(queryWrapper);
     }
 
