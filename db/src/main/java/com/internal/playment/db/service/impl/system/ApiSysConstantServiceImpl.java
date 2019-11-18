@@ -35,6 +35,12 @@ public class ApiSysConstantServiceImpl implements ApiSysConstantService, NewPayA
     public IPage page(SysConstantTable sysConstantTable, PageDTO pageDTO) {
         if (isNull(sysConstantTable)) return new Page();
         LambdaQueryWrapper<SysConstantTable> queryWrapper = new LambdaQueryWrapper<>();
+        if (!isBlank(sysConstantTable.getGroupCode())) queryWrapper.eq(SysConstantTable::getGroupCode,sysConstantTable.getGroupCode());
+        if (!isBlank(sysConstantTable.getFirstValue())) queryWrapper.eq(SysConstantTable::getFirstValue,sysConstantTable.getFirstValue());
+        if (!isBlank(sysConstantTable.getSecondValue())) queryWrapper.eq(SysConstantTable::getSecondValue,sysConstantTable.getSecondValue());
+        if (!isBlank(sysConstantTable.getName())) queryWrapper.like(SysConstantTable::getName,sysConstantTable.getName());
+        if (!isNull(sysConstantTable.getSortValue())) queryWrapper.eq(SysConstantTable::getSortValue,sysConstantTable.getSortValue());
+        if (!isBlank(sysConstantTable.getId())) queryWrapper.eq(SysConstantTable::getId,sysConstantTable.getId());
         IPage iPage = new Page(pageDTO.getPageNum(),pageDTO.getPaegSize());
         return sysConstantDBService.page(iPage,queryWrapper);
     }
