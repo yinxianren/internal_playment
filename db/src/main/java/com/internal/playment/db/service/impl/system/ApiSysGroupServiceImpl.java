@@ -27,7 +27,7 @@ public class ApiSysGroupServiceImpl implements ApiSysGroupService, NewPayAssert 
 
     @Override
     public boolean delByIds(List<Long> ids) {
-        if (isHasElement(ids)) return false;
+        if (isHasNotElement(ids)) return false;
         return sysGroupDBService.removeByIds(ids);
     }
 
@@ -50,7 +50,7 @@ public class ApiSysGroupServiceImpl implements ApiSysGroupService, NewPayAssert 
 
     @Override
     public boolean delByCodes(List<String> codes) {
-        if (isHasElement(codes)) return false;
+        if (isHasNotElement(codes)) return false;
         LambdaQueryWrapper<SysGroupTable> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.in(SysGroupTable::getCode,codes);
         return sysGroupDBService.remove(queryWrapper);
