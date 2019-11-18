@@ -38,4 +38,21 @@ public class ApiSysGroupServiceImpl implements ApiSysGroupService, NewPayAssert 
         IPage iPage = new Page(pageDTO.getPageNum(),pageDTO.getPaegSize());
         return sysGroupDBService.page(iPage,queryWrapper);
     }
+
+    @Override
+    public List<SysGroupTable> getList(SysGroupTable sysGroupTable) {
+        if (isNull(sysGroupTable)) return sysGroupDBService.list();
+        LambdaQueryWrapper<SysGroupTable> queryWrapper = new LambdaQueryWrapper<>();
+        if (!isBlank(sysGroupTable.getCode())) queryWrapper.eq(SysGroupTable::getCode,sysGroupTable.getCode());
+        if (!isBlank(sysGroupTable.getName())) queryWrapper.eq(SysGroupTable::getName,sysGroupTable.getCode());
+        return sysGroupDBService.list(queryWrapper);
+    }
+
+    @Override
+    public boolean delByCodes(List<String> codes) {
+        if (isHasElement(codes)) return false;
+        LambdaQueryWrapper<SysGroupTable> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.in(SysGroupTable::getCode,codes);
+        return sysGroupDBService.remove(queryWrapper);
+    }
 }

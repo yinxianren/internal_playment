@@ -14,7 +14,7 @@ public class PageDTO implements Serializable {
     private String beginTime;
     private String endTime;
 
-    private PageDTO (Integer pageNum,Integer paegSize){
+    public PageDTO (Integer pageNum,Integer paegSize){
         this.pageNum = pageNum;
         this.paegSize = paegSize;
     }
