@@ -30,10 +30,12 @@
         <module>pay</module>
         <module>inward</module>
         <module>cross</module>
-        <module>api</module>
-        <module>web</module>
         <module>task2</module>
+
         <module>common</module>
+        <module>api</module>
+
+        <module>web</module>
     </modules>
 
     <profiles>
@@ -69,9 +71,14 @@
                 <pay.activemq.user>admin</pay.activemq.user>
                 <pay.activemq.password>admin</pay.activemq.password>
                 <application.version>1.0.0</application.version>
-                <!--  队列名称 -->
+                <!--  队列钱包处理 -->
                 <application.queue.pay-order>order.queue.payOrderInfoTable</application.queue.pay-order>
                 <application.queue.trans-order>order.queue.transOrderInfoTable</application.queue.trans-order>
+                <!--  队列异步主动查询 -->
+                <order.queue.async.query.payOrderInfoTable>order.queue.async.query.payOrderInfoTable</order.queue.async.query.payOrderInfoTable>
+                <order.queue.async.query.transOrderInfoTable>order.queue.async.query.transOrderInfoTable</order.queue.async.query.transOrderInfoTable>
+                <!--  队列异步通知 -->
+                <order.queue.async.notify>order.queue.async.notify</order.queue.async.notify>
             </properties>
         </profile>
 <!--        -->
@@ -107,9 +114,14 @@
                 <pay.activemq.user>admin</pay.activemq.user>
                 <pay.activemq.password>admin</pay.activemq.password>
                 <application.version>1.0.0</application.version>
-                <!--  队列名称 -->
+                <!--  队列钱包处理 -->
                 <application.queue.pay-order>order.queue.payOrderInfoTable</application.queue.pay-order>
                 <application.queue.trans-order>order.queue.transOrderInfoTable</application.queue.trans-order>
+                <!--  队列异步主动查询 -->
+                <order.queue.async.query.payOrderInfoTable>order.queue.async.query.payOrderInfoTable</order.queue.async.query.payOrderInfoTable>
+                <order.queue.async.query.transOrderInfoTable>order.queue.async.query.transOrderInfoTable</order.queue.async.query.transOrderInfoTable>
+                <!--  队列异步通知 -->
+                <order.queue.async.notify>order.queue.async.notify</order.queue.async.notify>
             </properties>
 <!--            <activation>-->
 <!--                <activeByDefault>true</activeByDefault>-->
@@ -147,9 +159,14 @@
                 <pay.activemq.user>admin</pay.activemq.user>
                 <pay.activemq.password>admin</pay.activemq.password>
                 <application.version>1.0.0</application.version>
-                <!--  队列名称 -->
+                <!--  队列钱包处理 -->
                 <application.queue.pay-order>order.queue.payOrderInfoTable</application.queue.pay-order>
                 <application.queue.trans-order>order.queue.transOrderInfoTable</application.queue.trans-order>
+                <!--  队列异步主动查询 -->
+                <order.queue.async.query.payOrderInfoTable>order.queue.async.query.payOrderInfoTable</order.queue.async.query.payOrderInfoTable>
+                <order.queue.async.query.transOrderInfoTable>order.queue.async.query.transOrderInfoTable</order.queue.async.query.transOrderInfoTable>
+                <!--  队列异步通知 -->
+                <order.queue.async.notify>order.queue.async.notify</order.queue.async.notify>
             </properties>
         </profile>
     </profiles>
