@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.internal.playment.api.db.system.ApiSysGroupService;
 import com.internal.playment.common.dto.PageDTO;
+import com.internal.playment.common.enums.StatusEnum;
 import com.internal.playment.common.inner.NewPayAssert;
 import com.internal.playment.common.table.system.SysGroupTable;
 import com.internal.playment.db.service.db.system.SysGroupDBService;
@@ -35,6 +36,11 @@ public class ApiSysGroupServiceImpl implements ApiSysGroupService, NewPayAssert 
     public IPage page(SysGroupTable sysGroupTable, PageDTO pageDTO) {
         if (isNull(sysGroupTable)) return new Page();
         LambdaQueryWrapper<SysGroupTable> queryWrapper = new LambdaQueryWrapper<>();
+        if (!isBlank(sysGroupTable.getName())) queryWrapper.like(SysGroupTable::getName,sysGroupTable.getName());
+        if (!isBlank(sysGroupTable.getCode())) queryWrapper.eq(SysGroupTable::getCode,sysGroupTable.getCode());
+        if (!isNull(sysGroupTable.getModel())) queryWrapper.eq(SysGroupTable::getModel,sysGroupTable.getModel());
+        if (!isNull(sysGroupTable.getSystem())) queryWrapper.eq(SysGroupTable::getSystem,sysGroupTable);
+        queryWrapper.eq(SysGroupTable::getStatus, StatusEnum._0.getStatus());
         IPage iPage = new Page(pageDTO.getPageNum(),pageDTO.getPaegSize());
         return sysGroupDBService.page(iPage,queryWrapper);
     }
