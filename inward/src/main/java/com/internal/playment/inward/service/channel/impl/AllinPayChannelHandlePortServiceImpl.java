@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Random;
 
 @Service
 public class AllinPayChannelHandlePortServiceImpl extends ChannelCommonServiceAbstract implements AllinPayChannelHandlePortService {
@@ -40,28 +41,18 @@ public class AllinPayChannelHandlePortServiceImpl extends ChannelCommonServiceAb
     }
 
     @Override
-    public void fieldByPayOrder(PayOrderInfoTable payOrderInfoTable, CrossResponseMsgDTO crossResponseMsgDTO) {
+    public void fieldByPayOrder(PayOrderInfoTable payOrderInfoTable, CrossResponseMsgDTO crossResponseMsgDTO) throws CloneNotSupportedException {
+
         int payOrderStatus = payOrderInfoTable.getStatus();
         //同步状态为1，异步状态为1，一致什么也不处理
-        if( payOrderStatus == StatusEnum._1.getStatus()){}
+        if (payOrderStatus == StatusEnum._1.getStatus()) {
+        }
         // 同步状态为0，异步状态为1
-        else if( payOrderStatus == StatusEnum._7.getStatus() ){
-            //做对冲，生成一个新的订单
-            synchronized (this){
-                payOrderInfoTable.setId(System.currentTimeMillis());
-            }
-            payOrderInfoTable
-                    .setAmount(payOrderInfoTable.getAmount().multiply(new BigDecimal(-1)))
-                    .setInAmount(payOrderInfoTable.getInAmount().multiply(new BigDecimal(-1)))
-                    .setTerFee(payOrderInfoTable.getTerFee().multiply(new BigDecimal(-1)))
-                    .setChannelFee(payOrderInfoTable.getChannelFee().multiply(new BigDecimal(-1)))
-                    .setAgentFee(payOrderInfoTable.getAgentFee().multiply(new BigDecimal(-1)))
-                    .setMerFee(payOrderInfoTable.getMerFee().multiply(new BigDecimal(-1)))
-                    .setBussType(BusinessTypeEnum.b10)
-                    .setCreateTime(new Date())
-                    .setUpdateTime(new Date());
+        else if (payOrderStatus == StatusEnum._7.getStatus()) {
+              this.payOrderBySuccessToFiel(payOrderInfoTable);
 
-        }else{//其他状态全部更新为失败
+
+        } else {//其他状态全部更新为失败
             payOrderInfoTable
                     .setCrossRespResult(JSON.toJSONString(crossResponseMsgDTO))
                     .setChannelRespResult(crossResponseMsgDTO.getChannelResponseMsg())
@@ -71,11 +62,12 @@ public class AllinPayChannelHandlePortServiceImpl extends ChannelCommonServiceAb
             dbCommonRPCComponent.apiPayOrderInfoService.updateByPrimaryKey(payOrderInfoTable);
         }
         //封装数据库保存对象
-        AsyncNotifyTable asyncNotifyTable = packageAsyncNotifyTable(payOrderInfoTable,StatusEnum._1.getStatus());
+        AsyncNotifyTable asyncNotifyTable = packageAsyncNotifyTable(payOrderInfoTable, StatusEnum._1.getStatus());
         //保存信息
         dbCommonRPCComponent.apiAsyncNotifyService.save(asyncNotifyTable);
         //放到队列执行
-        activeMqOrderProducerComponent.sendMessage(asyncNotify,asyncNotifyTable);
+        activeMqOrderProducerComponent.sendMessage(asyncNotify, asyncNotifyTable);
+
     }
 
 
@@ -106,4 +98,27 @@ public class AllinPayChannelHandlePortServiceImpl extends ChannelCommonServiceAb
 
     }
 
+    private void payOrderBySuccessToFiel(PayOrderInfoTable payOrderInfoTable) throws CloneNotSupportedException {
+
+        PayOrderInfoTable poi = (PayOrderInfoTable) payOrderInfoTable.clone();
+        //做对冲，生成一个新的订单
+        synchronized (this) {
+            poi
+                    .setPlatformOrderId("RXH" + new Random(System.currentTimeMillis()).nextInt(1000000) + "-B12" + System.currentTimeMillis())
+                    .setId(System.currentTimeMillis());
+
+        }
+        poi
+                .setAmount(payOrderInfoTable.getAmount().multiply(new BigDecimal(-1)))
+                .setInAmount(payOrderInfoTable.getInAmount().multiply(new BigDecimal(-1)))
+                .setTerFee(payOrderInfoTable.getTerFee().multiply(new BigDecimal(-1)))
+                .setChannelFee(payOrderInfoTable.getChannelFee().multiply(new BigDecimal(-1)))
+                .setAgentFee(payOrderInfoTable.getAgentFee().multiply(new BigDecimal(-1)))
+                .setMerFee(payOrderInfoTable.getMerFee().multiply(new BigDecimal(-1)))
+                .setBussType(BusinessTypeEnum.b12.getBusiType())
+                .setStatus(StatusEnum._7.getStatus())
+                .setCreateTime(new Date())
+                .setUpdateTime(new Date());
+
+    }
 }

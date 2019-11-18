@@ -11,5 +11,5 @@ public interface AllinPayChannelHandlePortService extends ChannelCommonServiceIn
 
     void otherByPayOrder(PayOrderInfoTable payOrderInfoTable, CrossResponseMsgDTO crossResponseMsgDTO);
 
-    void fieldByPayOrder(PayOrderInfoTable payOrderInfoTable, CrossResponseMsgDTO crossResponseMsgDTO);
+    void fieldByPayOrder(PayOrderInfoTable payOrderInfoTable, CrossResponseMsgDTO crossResponseMsgDTO) throws CloneNotSupportedException;
 }

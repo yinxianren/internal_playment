@@ -24,7 +24,7 @@ import java.util.Date;
 @TableName("8_pay_order_info_table")
 @Getter
 @NoArgsConstructor
-public class PayOrderInfoTable implements Serializable {
+public class PayOrderInfoTable implements Serializable,Cloneable {
 
     @TableId(type= IdType.INPUT)
     private Long id ;// 表主键,
@@ -350,5 +350,10 @@ public class PayOrderInfoTable implements Serializable {
 
     public void setOrganizationId(String organizationId) {
         this.organizationId = organizationId;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }
