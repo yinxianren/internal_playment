@@ -32,4 +32,10 @@ public class ApiTransOrderBusinessTransactionServiceImpl implements ApiTransOrde
         payOrderInfoDBService.updateBatchById(payOrderInfoTableList);
     }
 
+    @Override
+    public void updateAndSaveTransOderMsg(TransOrderInfoTable transOrderInfoTable, TransOrderInfoTable transOrderInfoTableHedging) {
+        transOrderInfoDBService.save(transOrderInfoTableHedging);
+        transOrderInfoDBService.updateById(transOrderInfoTable);
+    }
+
 }

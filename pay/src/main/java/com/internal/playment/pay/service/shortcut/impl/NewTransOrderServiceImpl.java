@@ -415,7 +415,7 @@ public class NewTransOrderServiceImpl extends CommonServiceAbstract implements N
     }
 
     @Override
-    public TransOrderInfoTable saveOrder(MerTransOrderApplyDTO merTransOrderApplyDTO, ChannelInfoTable channelInfoTable, MerchantInfoTable merInfoTable, InnerPrintLogObject ipo) throws NewPayException {
+    public TransOrderInfoTable saveOrder(MerTransOrderApplyDTO merTransOrderApplyDTO, ChannelInfoTable channelInfoTable, MerchantInfoTable merInfoTable,RegisterCollectTable registerCollectTable,MerchantCardTable merchantCardTable, InnerPrintLogObject ipo) throws NewPayException {
         final String localPoint="saveOrder";
         TransOrderInfoTable transOrderInfoTable =null;
         try {
@@ -562,6 +562,7 @@ public class NewTransOrderServiceImpl extends CommonServiceAbstract implements N
                     .setChannelRespResult(null)                                                   .setCrossRespResult(null)
                     .setStatus(StatusEnum._2.getStatus())
                     .setNotifyUrl(merTransOrderApplyDTO.getNoticeUrl())                           .setReturnUrl(merTransOrderApplyDTO.getReturnUrl())
+                    .setRegPlatformOrderId(registerCollectTable.getPlatformOrderId())             .setCardPlatformOrderId(merchantCardTable.getPlatformOrderId())
                     .setCreateTime(new Date())                                                    .setUpdateTime(new Date());
 
             synchronized (this){

@@ -1598,7 +1598,6 @@ signMsg
         PayOrderInfoTable payOrderInfoTable = new PayOrderInfoTable();
         payOrderInfoTable
                 .setMerOrderId(merPayOrderApplyDTO.getMerOrderId())
-
                 .setMerchantId(merPayOrderApplyDTO.getMerId())                              .setTerminalMerId(merPayOrderApplyDTO.getTerMerId())
                 .setIdentityType( Integer.valueOf(merPayOrderApplyDTO.getIdentityType()))   .setIdentityNum(merPayOrderApplyDTO.getIdentityNum())
                 .setBankCode(merPayOrderApplyDTO.getBankCode())                             .setBankCardType(Integer.valueOf(merPayOrderApplyDTO.getBankCardType()))

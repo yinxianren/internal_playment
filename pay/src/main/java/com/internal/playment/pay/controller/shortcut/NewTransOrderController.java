@@ -79,7 +79,11 @@ public class NewTransOrderController extends NewAbstractCommonController {
             sotTable = this.getSystemOrderTrackTable(request,param,bussType);
             //类型转换
             merTransOrderApplyDTO = JSON.parse(sotTable.getRequestMsg(), MerTransOrderApplyDTO.class);
-            sotTable.setMerId(merTransOrderApplyDTO.getMerId()).setMerOrderId(merTransOrderApplyDTO.getMerOrderId()).setReturnUrl(merTransOrderApplyDTO.getReturnUrl()).setNoticeUrl(merTransOrderApplyDTO.getNoticeUrl());
+            sotTable.setMerId(merTransOrderApplyDTO.getMerId())
+                    .setAmount( new BigDecimal(merTransOrderApplyDTO.getAmount()) )
+                    .setMerOrderId(merTransOrderApplyDTO.getMerOrderId())
+                    .setReturnUrl(merTransOrderApplyDTO.getReturnUrl())
+                    .setNoticeUrl(merTransOrderApplyDTO.getNoticeUrl());
             //创建日志打印对象
             ipo = new InnerPrintLogObject(merTransOrderApplyDTO.getMerId(), merTransOrderApplyDTO.getTerMerId(),bussType);
             //获取商户信息
@@ -110,7 +114,7 @@ public class NewTransOrderController extends NewAbstractCommonController {
             //获取绑卡信息
             MerchantCardTable merchantCardTable = newTransOrderService.getMerchantCardInfoByPlatformOrderId(payOrderInfoTableList.get(0).getCardPlatformOrderId(),BusinessTypeEnum.b6.getBusiType(),ipo);
             //保存代付订单
-            transOrderInfoTable = newTransOrderService.saveOrder(merTransOrderApplyDTO,tuple2._2,merInfoTable,ipo);
+            transOrderInfoTable = newTransOrderService.saveOrder(merTransOrderApplyDTO,tuple2._2,merInfoTable,registerCollectTable,merchantCardTable,ipo);
             Class  clz=Class.forName(tuple2._1.getApplicationClassObj().trim());
             //生成通道处理对象
             CommonChannelHandlePortComponent commonChannelHandlePortComponent = (CommonChannelHandlePortComponent) SpringContextUtil.getBean(clz);

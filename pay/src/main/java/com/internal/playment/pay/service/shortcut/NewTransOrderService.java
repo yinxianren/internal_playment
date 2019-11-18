@@ -5,7 +5,9 @@ import com.internal.playment.common.dto.MerTransOrderApplyDTO;
 import com.internal.playment.common.inner.InnerPrintLogObject;
 import com.internal.playment.common.inner.NewPayException;
 import com.internal.playment.common.inner.ParamRule;
+import com.internal.playment.common.table.business.MerchantCardTable;
 import com.internal.playment.common.table.business.PayOrderInfoTable;
+import com.internal.playment.common.table.business.RegisterCollectTable;
 import com.internal.playment.common.table.business.TransOrderInfoTable;
 import com.internal.playment.common.table.channel.ChannelInfoTable;
 import com.internal.playment.common.table.merchant.MerchantInfoTable;
@@ -79,7 +81,7 @@ public interface NewTransOrderService extends CommonServiceInterface {
      * @param ipo
      * @return
      */
-    TransOrderInfoTable saveOrder(MerTransOrderApplyDTO merTransOrderApplyDTO, ChannelInfoTable channelInfoTable, MerchantInfoTable merInfoTable, InnerPrintLogObject ipo) throws NewPayException;
+    TransOrderInfoTable saveOrder(MerTransOrderApplyDTO merTransOrderApplyDTO, ChannelInfoTable channelInfoTable, MerchantInfoTable merInfoTable, RegisterCollectTable registerCollectTable, MerchantCardTable merchantCardTable, InnerPrintLogObject ipo) throws NewPayException;
 
     /**
      *

@@ -37,6 +37,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -80,7 +81,11 @@ public class NewPayOrderController extends NewAbstractCommonController {
             sotTable = this.getSystemOrderTrackTable(request,param,bussType);
             //类型转换
             merPayOrderApplyDTO = JSON.parse(sotTable.getRequestMsg(), MerPayOrderApplyDTO.class);
-            sotTable.setMerId(merPayOrderApplyDTO.getMerId()).setMerOrderId(merPayOrderApplyDTO.getMerOrderId()).setReturnUrl(merPayOrderApplyDTO.getReturnUrl()).setNoticeUrl(merPayOrderApplyDTO.getNoticeUrl());
+            sotTable.setMerId(merPayOrderApplyDTO.getMerId())
+                    .setMerOrderId(merPayOrderApplyDTO.getMerOrderId())
+                    .setReturnUrl(merPayOrderApplyDTO.getReturnUrl())
+                    .setAmount( new BigDecimal(merPayOrderApplyDTO.getAmount()) )
+                    .setNoticeUrl(merPayOrderApplyDTO.getNoticeUrl());
             //创建日志打印对象
             ipo = new InnerPrintLogObject(merPayOrderApplyDTO.getMerId(), merPayOrderApplyDTO.getTerMerId(),bussType);
             //获取商户信息
@@ -93,7 +98,7 @@ public class NewPayOrderController extends NewAbstractCommonController {
             md5Component.checkMd5(sotTable.getRequestMsg(),merInfoTable.getSecretKey(),ipo);
             //查看是否重复订单
             newPayOrderService.multipleOrder(merPayOrderApplyDTO.getMerOrderId(),ipo);
-           //验证产品类型
+            //验证产品类型
             newPayOrderService.checkProductTypeByB7(merPayOrderApplyDTO,ipo);
             //1.执行平台风控
             //获取商户风控表
@@ -247,7 +252,8 @@ public class NewPayOrderController extends NewAbstractCommonController {
             sotTable = this.getSystemOrderTrackTable(request,param,bussType);
             //类型转换
             merPayOrderConfirmDTO = JSON.parse(sotTable.getRequestMsg(), MerPayOrderConfirmDTO.class);
-            sotTable.setMerId(merPayOrderConfirmDTO.getMerId()).setPlatformOrderId(merPayOrderConfirmDTO.getPlatformOrderId());
+            sotTable.setMerId(merPayOrderConfirmDTO.getMerId())
+                    .setPlatformOrderId(merPayOrderConfirmDTO.getPlatformOrderId());
             //创建日志打印对象
             ipo = new InnerPrintLogObject(merPayOrderConfirmDTO.getMerId(), merPayOrderConfirmDTO.getTerMerId(),bussType);
             //获取商户信息
@@ -260,7 +266,9 @@ public class NewPayOrderController extends NewAbstractCommonController {
             md5Component.checkMd5(sotTable.getRequestMsg(),merInfoTable.getSecretKey(),ipo);
             //判断平台订单号是否存在
             payOrderInfoTable = newPayOrderService.getPayOrderInfoByPlatformOrderId(merPayOrderConfirmDTO.getPlatformOrderId(), BusinessTypeEnum.b7.getBusiType(),ipo);
-            sotTable.setPlatformOrderId(payOrderInfoTable.getPlatformOrderId()).setMerOrderId(payOrderInfoTable.getMerOrderId());
+            sotTable.setPlatformOrderId( payOrderInfoTable.getPlatformOrderId() )
+                    .setAmount( payOrderInfoTable.getAmount() )
+                    .setMerOrderId( payOrderInfoTable.getMerOrderId() );
             //获取进件信息
             RegisterCollectTable registerCollectTable = newPayOrderService.getRegCollectInfo(payOrderInfoTable.getRegPlatformOrderId(),BusinessTypeEnum.b3.getBusiType(),ipo);
             //获取绑卡信息
@@ -335,7 +343,8 @@ public class NewPayOrderController extends NewAbstractCommonController {
             sotTable = this.getSystemOrderTrackTable(request,param,bussType);
             //类型转换
             merPayOrderConfirmDTO = JSON.parse(sotTable.getRequestMsg(), MerPayOrderConfirmDTO.class);
-            sotTable.setMerId(merPayOrderConfirmDTO.getMerId()).setPlatformOrderId(merPayOrderConfirmDTO.getPlatformOrderId());
+            sotTable.setMerId(merPayOrderConfirmDTO.getMerId())
+                    .setPlatformOrderId(merPayOrderConfirmDTO.getPlatformOrderId());
             //创建日志打印对象
             ipo = new InnerPrintLogObject(merPayOrderConfirmDTO.getMerId(), merPayOrderConfirmDTO.getTerMerId(),bussType);
             //获取商户信息
@@ -348,6 +357,9 @@ public class NewPayOrderController extends NewAbstractCommonController {
             md5Component.checkMd5(sotTable.getRequestMsg(),merInfoTable.getSecretKey(),ipo);
             //判断平台订单号是否存在
             payOrderInfoTable = newPayOrderService.getPayOrderInfoByPlatformOrderId(merPayOrderConfirmDTO.getPlatformOrderId(),null,ipo);
+            sotTable.setPlatformOrderId( payOrderInfoTable.getPlatformOrderId() )
+                    .setAmount( payOrderInfoTable.getAmount() )
+                    .setMerOrderId( payOrderInfoTable.getMerOrderId() );
             //判断该订单是否已经使用过 ,正式环境必须打开
             newPayOrderService.checkPayOrderInfoTableByB9(payOrderInfoTable,ipo);
             //获取进件信息

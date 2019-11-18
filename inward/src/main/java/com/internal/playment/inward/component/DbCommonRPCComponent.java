@@ -86,5 +86,6 @@ public  class DbCommonRPCComponent {
     public ApiTerminalMerchantsDetailsService apiTerminalMerchantsDetailsService;
     @Reference(version = "${application.version}",timeout = 30000)
     public ApiPayOrderBusinessTransactionService apiPayOrderBusinessTransactionService;
-
+    @Reference(version = "${application.version}",timeout = 30000)
+    public ApiTransOrderBusinessTransactionService apiTransOrderBusinessTransactionService;
 }

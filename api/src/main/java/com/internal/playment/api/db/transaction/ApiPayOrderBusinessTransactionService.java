@@ -53,4 +53,11 @@ public interface ApiPayOrderBusinessTransactionService {
      * @param toit
      */
     void updateOrSaveTransOrderBussInfo(Tuple2<MerchantWalletTable, MerchantsDetailsTable> merWalletTuple, Tuple2<TerminalMerchantsWalletTable, TerminalMerchantsDetailsTable> terMerWalletTuple, Tuple2<ChannelWalletTable, ChannelDetailsTable> chanWalletTuple, Tuple2<AgentMerchantWalletTable, AgentMerchantsDetailsTable> agentMerWalletTuple, List<PayOrderInfoTable> payOrderInfoTableList,TransOrderInfoTable toit);
+
+    /**
+     *
+     * @param payOrderInfoTable
+     * @param payOrderInfoByHedging
+     */
+    void updateAndSavePayOderMsg(PayOrderInfoTable payOrderInfoTable,PayOrderInfoTable payOrderInfoByHedging);
 }

@@ -1,5 +1,6 @@
 package com.internal.playment.inward.service.wallet.impl;
 
+import com.internal.playment.common.enums.BusinessTypeEnum;
 import com.internal.playment.common.enums.ResponseCodeEnum;
 import com.internal.playment.common.enums.StatusEnum;
 import com.internal.playment.common.inner.InnerPrintLogObject;
@@ -214,7 +215,10 @@ public class PayWalletServiceImpl extends CommonServiceAbstract implements PayWa
         //总订单金额
         BigDecimal totalAmount = ( null == mwt.getTotalAmount() ?  amount :  mwt.getTotalAmount().add(amount) );
         BigDecimal rateFee = (null == mrt.getRateFee() ? new BigDecimal(0) : mrt.getRateFee().divide(new BigDecimal(100)) );
+
         BigDecimal singleFee = (null == mrt.getSingleFee() ? new BigDecimal(0) : mrt.getSingleFee() );
+        //判断是否是对冲业务
+        if(  poi.getBussType().equalsIgnoreCase(BusinessTypeEnum.b12.getBusiType()) )  singleFee = singleFee.multiply(new BigDecimal(-1));
         //单笔总费用
         BigDecimal totalSingleFee = ( amount.multiply(rateFee).setScale(2, BigDecimal.ROUND_UP ) .add(singleFee)) ;
         //入账金额
@@ -523,6 +527,8 @@ public class PayWalletServiceImpl extends CommonServiceAbstract implements PayWa
         rateFee = null == rateFee ? new BigDecimal(0 ) : rateFee.divide(new BigDecimal(100));
         BigDecimal singleFee = mrt.getSingleFee();
         singleFee = null == singleFee ? new BigDecimal(0) : singleFee;
+        //判断是否是对冲
+        if( toit.getBusiType().equalsIgnoreCase(BusinessTypeEnum.b13.getBusiType()) ) singleFee = singleFee.multiply(new BigDecimal(-1));
         BigDecimal merFee = amount.multiply(rateFee).setScale(2,BigDecimal.ROUND_UP);
         //商户费用
         merFee = merFee.add(singleFee);

@@ -10,4 +10,5 @@ public interface ApiTransOrderBusinessTransactionService {
 
     void updateByPayOrderCorrelationInfo(TransOrderInfoTable transOrderInfoTable, List<PayOrderInfoTable> payOrderInfoTableList);
 
+    void updateAndSaveTransOderMsg(TransOrderInfoTable transOrderInfoTable, TransOrderInfoTable transOrderInfoTableHedging);
 }

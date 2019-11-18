@@ -55,7 +55,7 @@ public class AllinPayChannelHandlePortComponentImpl implements AllinPayChannelHa
                     new ChannelInfoTable()
                             .setStatus(StatusEnum._0.getStatus())
                             .setChannelId(payOrderInfoTable.getChannelId()));
-            if(isNull(merchantCardTable))
+            if(isNull(channelInfoTable))
                 throw  new Exception(format("%s-->查询通道信息，根据订单保存通道id:%s，查询结果为空",bussType,payOrderInfoTable.getChannelId()));
             //封装请求信息
             RequestCrossMsgDTO requestCrossMsgDTO = allinPayChannelHandlePortService.packageRequestCrossMsgDTO(new Tuple4(registerCollectTable,merchantCardTable,channelInfoTable,payOrderInfoTable));
@@ -76,6 +76,39 @@ public class AllinPayChannelHandlePortComponentImpl implements AllinPayChannelHa
 
     @Override
     public void asyncTransOderQuery(TransOrderInfoTable transOrderInfoTable) {
+        final String bussType = "【代付异步主动通联查询】";
+        try{
+            //获取进件信息
+            RegisterCollectTable registerCollectTable = dbCommonRPCComponent.apiRegisterCollectService.getOne(
+                    new RegisterCollectTable()
+                            .setBussType(BusinessTypeEnum.b3.getBusiType())
+                            .setStatus(StatusEnum._0.getStatus())
+                            .setPlatformOrderId(transOrderInfoTable.getRegPlatformOrderId()));
+            if(isNull(registerCollectTable))
+                throw  new Exception(format("%s-->查询进件信息，根据订单保存进件平台号：%s，查询结果为空",bussType,transOrderInfoTable.getRegPlatformOrderId()));
+            //获取通道信息
+            ChannelInfoTable channelInfoTable = dbCommonRPCComponent.apiChannelInfoService.getOne(
+                    new ChannelInfoTable()
+                            .setStatus(StatusEnum._0.getStatus())
+                            .setChannelId(transOrderInfoTable.getChannelId()));
+            if(isNull(channelInfoTable))
+                throw  new Exception(format("%s-->查询通道信息，根据订单保存通道id:%s，查询结果为空",bussType,transOrderInfoTable.getChannelId()));
+            //封装请求信息
+            RequestCrossMsgDTO requestCrossMsgDTO = new RequestCrossMsgDTO()
+                    .setRegisterCollectTable(registerCollectTable)
+                    .setChannelInfoTable(channelInfoTable)
+                    .setTransOrderInfoTable(transOrderInfoTable);
+           //请求业务数据
+            CrossResponseMsgDTO crossResponseMsgDTO = apiAllinPayOtherBusinessCrossComponent.queryByTransOrder(requestCrossMsgDTO);
+            //判断业务场景
+            switch (crossResponseMsgDTO.getCrossStatusCode()){
+                case 0 :  allinPayChannelHandlePortService.successByTransOrder(transOrderInfoTable,crossResponseMsgDTO); break;
+                case 1 :  allinPayChannelHandlePortService.fieldByTransOrder(transOrderInfoTable,crossResponseMsgDTO);   break;
+                default:  allinPayChannelHandlePortService.otherByTransOrder(transOrderInfoTable,crossResponseMsgDTO);   break;
+            }
 
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

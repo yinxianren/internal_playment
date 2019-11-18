@@ -37,6 +37,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -81,7 +82,11 @@ public class NewNoAuthenticationPayOrderController  extends NewAbstractCommonCon
             sotTable = this.getSystemOrderTrackTable(request,param,bussType);
             //类型转换
             merNoAuthPayOrderApplyDTO = JSON.parse(sotTable.getRequestMsg(), MerNoAuthPayOrderApplyDTO.class);
-            sotTable.setMerId(merNoAuthPayOrderApplyDTO.getMerId()).setMerOrderId(merNoAuthPayOrderApplyDTO.getMerOrderId()).setReturnUrl(merNoAuthPayOrderApplyDTO.getReturnUrl()).setNoticeUrl(merNoAuthPayOrderApplyDTO.getNoticeUrl());
+            sotTable.setMerId(merNoAuthPayOrderApplyDTO.getMerId())
+                    .setAmount( new BigDecimal(merNoAuthPayOrderApplyDTO.getAmount()) )
+                    .setMerOrderId(merNoAuthPayOrderApplyDTO.getMerOrderId())
+                    .setReturnUrl(merNoAuthPayOrderApplyDTO.getReturnUrl())
+                    .setNoticeUrl(merNoAuthPayOrderApplyDTO.getNoticeUrl());
             //创建日志打印对象
             ipo = new InnerPrintLogObject(merNoAuthPayOrderApplyDTO.getMerId(), merNoAuthPayOrderApplyDTO.getTerMerId(),bussType);
             //获取商户信息
@@ -218,7 +223,8 @@ public class NewNoAuthenticationPayOrderController  extends NewAbstractCommonCon
             newPayOrderService.isSuccess(crossResponseMsgDTO,ipo);
             //封装放回结果  // merInfoTable, ipo, crossResponseMsgDTO,merOrderId,platformOrderId,amount,errorCode,errorMsg,channelTab
             respResult = newPayOrderService.responseMsg(merInfoTable,ipo,crossResponseMsgDTO,merNoAuthPayOrderApplyDTO.getMerOrderId(),payOrderInfoTable.getPlatformOrderId(),merNoAuthPayOrderApplyDTO.getAmount(),null,null,channelInfoTable.getChannelId());
-            sotTable.setPlatformPrintLog(StatusEnum.remark(crossResponseMsgDTO.getCrossStatusCode())).setTradeCode( crossResponseMsgDTO.getCrossStatusCode() );
+            sotTable.setPlatformPrintLog(StatusEnum.remark(crossResponseMsgDTO.getCrossStatusCode()))
+                    .setTradeCode( crossResponseMsgDTO.getCrossStatusCode() );
         }catch (Exception e){
             if(e instanceof NewPayException){
                 NewPayException npe = (NewPayException) e;

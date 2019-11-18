@@ -24,7 +24,7 @@ import java.util.Date;
 @ToString
 @TableName("9_trans_order_info_table")
 @Getter
-public class TransOrderInfoTable implements Serializable {
+public class TransOrderInfoTable implements Serializable,Cloneable {
     @TableId(type= IdType.INPUT)
     private Long id;//表主键
     private String platformOrderId ;//平台订单号
@@ -40,6 +40,8 @@ public class TransOrderInfoTable implements Serializable {
     private String bankCardNum ;//银行卡号
     private String bankCardPhone ;//银行卡手机号
     private String channelId ;//通道id
+    private String  regPlatformOrderId;//进件B3的平台id  reg_platform_order_id
+    private String  cardPlatformOrderId;//办卡B6的平台id card_platform_order_id
     private String  busiType;//'业务类型:b11
     private String productId ;//产品类型ID
     private BigDecimal productFee ;//产品费率
@@ -84,6 +86,16 @@ public class TransOrderInfoTable implements Serializable {
     @TableField(exist = false)
     private String organizationId;
 
+
+    public TransOrderInfoTable setRegPlatformOrderId(String regPlatformOrderId) {
+        this.regPlatformOrderId = regPlatformOrderId;
+        return this;
+    }
+
+    public TransOrderInfoTable setCardPlatformOrderId(String cardPlatformOrderId) {
+        this.cardPlatformOrderId = cardPlatformOrderId;
+        return this;
+    }
 
     public TransOrderInfoTable setNotifyUrl(String notifyUrl) {
         this.notifyUrl = notifyUrl;
@@ -308,5 +320,11 @@ public class TransOrderInfoTable implements Serializable {
 
     public void setOrganizationId(String organizationId) {
         this.organizationId = organizationId;
+    }
+
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }

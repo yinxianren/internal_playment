@@ -119,4 +119,10 @@ public class ApiPayOrderBusinessTransactionServiceImpl implements ApiPayOrderBus
         transOrderInfoDBService.updateById(toit);
     }
 
+    @Override
+    public void updateAndSavePayOderMsg(PayOrderInfoTable payOrderInfoTable, PayOrderInfoTable payOrderInfoByHedging) {
+        payOrderInfoDBService.updateById(payOrderInfoTable);
+        payOrderInfoDBService.save(payOrderInfoByHedging);
+    }
+
 }
