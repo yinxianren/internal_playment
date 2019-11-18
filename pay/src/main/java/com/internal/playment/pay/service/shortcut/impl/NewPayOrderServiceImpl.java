@@ -1356,8 +1356,7 @@ signMsg
 
         PayOrderInfoTable payOrderInfoTable = new PayOrderInfoTable();
         payOrderInfoTable
-                .setMerOrderId(merNoAuthPayOrderApplyDTO.getMerOrderId())                         .setId(System.currentTimeMillis())
-                .setPlatformOrderId("RXH" + new Random(System.currentTimeMillis()).nextInt(1000000) + "-B10" + System.currentTimeMillis())
+                .setMerOrderId(merNoAuthPayOrderApplyDTO.getMerOrderId())
                 .setMerchantId(merNoAuthPayOrderApplyDTO.getMerId())                              .setTerminalMerId(merNoAuthPayOrderApplyDTO.getTerMerId())
                 .setIdentityType( Integer.valueOf(merNoAuthPayOrderApplyDTO.getIdentityType()))   .setIdentityNum(merNoAuthPayOrderApplyDTO.getIdentityNum())
                 .setBankCode(merNoAuthPayOrderApplyDTO.getBankCode())                             .setBankCardType(Integer.valueOf(merNoAuthPayOrderApplyDTO.getBankCardType()))
@@ -1380,6 +1379,11 @@ signMsg
                 .setCreateTime(new Date())                                                  .setUpdateTime(new Date());
 
         try {
+            synchronized (this){
+                payOrderInfoTable
+                        .setPlatformOrderId("RXH" + new Random(System.currentTimeMillis()).nextInt(1000000) + "-B10" + System.currentTimeMillis())
+                        .setId(System.currentTimeMillis());
+            }
             dbCommonRPCComponent.apiPayOrderInfoService.save(payOrderInfoTable);
         }catch (Exception e){
             e.printStackTrace();
@@ -1390,7 +1394,6 @@ signMsg
                     format(" %s", ResponseCodeEnum.RXH99999.getMsg())
             );
         }
-
         return payOrderInfoTable;
     }
 
@@ -1594,8 +1597,8 @@ signMsg
 
         PayOrderInfoTable payOrderInfoTable = new PayOrderInfoTable();
         payOrderInfoTable
-                .setMerOrderId(merPayOrderApplyDTO.getMerOrderId())                         .setId(System.currentTimeMillis())
-                .setPlatformOrderId("RXH" + new Random(System.currentTimeMillis()).nextInt(1000000) + "-B7" + System.currentTimeMillis())
+                .setMerOrderId(merPayOrderApplyDTO.getMerOrderId())
+
                 .setMerchantId(merPayOrderApplyDTO.getMerId())                              .setTerminalMerId(merPayOrderApplyDTO.getTerMerId())
                 .setIdentityType( Integer.valueOf(merPayOrderApplyDTO.getIdentityType()))   .setIdentityNum(merPayOrderApplyDTO.getIdentityNum())
                 .setBankCode(merPayOrderApplyDTO.getBankCode())                             .setBankCardType(Integer.valueOf(merPayOrderApplyDTO.getBankCardType()))
@@ -1619,6 +1622,11 @@ signMsg
                 .setCreateTime(new Date())                                                  .setUpdateTime(new Date());
 
         try {
+            synchronized (this){
+                payOrderInfoTable
+                        .setPlatformOrderId("RXH" + new Random(System.currentTimeMillis()).nextInt(1000000) + "-B7" + System.currentTimeMillis())
+                        .setId(System.currentTimeMillis());
+            }
             dbCommonRPCComponent.apiPayOrderInfoService.save(payOrderInfoTable);
         }catch (Exception e){
             e.printStackTrace();

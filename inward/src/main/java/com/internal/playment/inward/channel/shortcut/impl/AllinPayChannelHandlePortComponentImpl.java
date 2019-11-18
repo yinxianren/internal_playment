@@ -71,6 +71,9 @@ public class AllinPayChannelHandlePortComponentImpl implements AllinPayChannelHa
             e.printStackTrace();
         }
     }
+
+
+
     @Override
     public void asyncTransOderQuery(TransOrderInfoTable transOrderInfoTable) {
 

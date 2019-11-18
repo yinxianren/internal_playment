@@ -140,11 +140,9 @@ public class NewBondCardServiceImpl extends CommonServiceAbstract implements New
         final String localPoint="saveCardInfoByB4";
         MerchantCardTable  merchantCardTable = new MerchantCardTable()
                 .setChannelId(channelInfoTable.getChannelId())
-                .setId(System.currentTimeMillis())
                 .setRegisterCollectPlatformOrderId(registerCollectTable.getPlatformOrderId())
                 .setOrganizationId(channelInfoTable.getOrganizationId())
                 .setProductId(channelInfoTable.getProductId())
-                .setPlatformOrderId("RXH" + new Random(System.currentTimeMillis()).nextInt(1000000) + "-B4" + System.currentTimeMillis())
                 .setMerchantId(mbcaDTO.getMerId())
                 .setMerOrderId(mbcaDTO.getMerOrderId())
                 .setTerminalMerId(mbcaDTO.getTerMerId())
@@ -164,6 +162,11 @@ public class NewBondCardServiceImpl extends CommonServiceAbstract implements New
                 .setBussType(BusinessTypeEnum.b4.getBusiType())
                 .setStatus(StatusEnum._3.getStatus()).setCreateTime(new Date()).setUpdateTime(new Date());
         try {
+            synchronized (this){
+                merchantCardTable
+                        .setId(System.currentTimeMillis())
+                        .setPlatformOrderId("RXH" + new Random(System.currentTimeMillis()).nextInt(1000000) + "-B4" + System.currentTimeMillis());
+            }
             dbCommonRPCComponent.apiMerchantCardService.save(merchantCardTable);
         }catch (Exception e){
             e.printStackTrace();
@@ -180,8 +183,6 @@ public class NewBondCardServiceImpl extends CommonServiceAbstract implements New
     public MerchantCardTable saveCardInfoByB5(MerchantCardTable merchantCardTable, MerReGetBondCodeDTO mrgbcDTO, InnerPrintLogObject ipo) throws NewPayException {
         final String localPoint="saveCardInfoByB5";
         merchantCardTable
-                .setId(System.currentTimeMillis())
-                .setPlatformOrderId("RXH" + new Random(System.currentTimeMillis()).nextInt(1000000) + "-B5" + System.currentTimeMillis())
                 .setTerminalMerId(mrgbcDTO.getTerMerId())
                 .setCardHolderName(mrgbcDTO.getCardHolderName())
                 .setIdentityType(Integer.valueOf(mrgbcDTO.getIdentityType()))
@@ -197,6 +198,11 @@ public class NewBondCardServiceImpl extends CommonServiceAbstract implements New
                 .setStatus(StatusEnum._3.getStatus()).setCreateTime(new Date()).setUpdateTime(new Date());
 
         try {
+            synchronized (this){
+                merchantCardTable
+                        .setId(System.currentTimeMillis())
+                        .setPlatformOrderId("RXH" + new Random(System.currentTimeMillis()).nextInt(1000000) + "-B5" + System.currentTimeMillis());
+            }
             dbCommonRPCComponent.apiMerchantCardService.save(merchantCardTable);
         }catch (Exception e){
             e.printStackTrace();
@@ -213,8 +219,6 @@ public class NewBondCardServiceImpl extends CommonServiceAbstract implements New
     public MerchantCardTable saveCardInfoByB6(MerchantCardTable merchantCardTable, MerConfirmBondCardDTO mcbcDTO, InnerPrintLogObject ipo) throws NewPayException {
         final String localPoint="saveCardInfoByB6";
         merchantCardTable
-                .setId(System.currentTimeMillis())
-                .setPlatformOrderId("RXH" + new Random(System.currentTimeMillis()).nextInt(1000000) + "-B5" + System.currentTimeMillis())
                 .setTerminalMerId(mcbcDTO.getTerMerId())
                 .setCardHolderName(mcbcDTO.getCardHolderName())
                 .setIdentityType(Integer.valueOf(mcbcDTO.getIdentityType()))
@@ -234,6 +238,11 @@ public class NewBondCardServiceImpl extends CommonServiceAbstract implements New
                 .setBackCardPhone(mcbcDTO.getBackCardPhone())
                 .setStatus(StatusEnum._3.getStatus()).setCreateTime(new Date()).setUpdateTime(new Date());
         try {
+            synchronized (this){
+                merchantCardTable
+                        .setId(System.currentTimeMillis())
+                        .setPlatformOrderId("RXH" + new Random(System.currentTimeMillis()).nextInt(1000000) + "-B5" + System.currentTimeMillis());
+            }
             dbCommonRPCComponent.apiMerchantCardService.save(merchantCardTable);
         }catch (Exception e){
             e.printStackTrace();

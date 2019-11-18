@@ -46,6 +46,7 @@ public class AllinPayChannelHandlePortServiceImpl extends ChannelCommonServiceAb
         else if( payOrderStatus == 7 ){
           //做对冲，生成一个新的订单
 
+
         }else{//其他状态全部更新为失败
             payOrderInfoTable
                     .setCrossRespResult(JSON.toJSONString(crossResponseMsgDTO))

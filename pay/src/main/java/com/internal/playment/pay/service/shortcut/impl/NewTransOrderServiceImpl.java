@@ -544,8 +544,6 @@ public class NewTransOrderServiceImpl extends CommonServiceAbstract implements N
                     format(" %s",ResponseCodeEnum.RXH00044.getMsg()));
 
             transOrderInfoTable = new TransOrderInfoTable()
-                    .setId(System.currentTimeMillis())
-                    .setPlatformOrderId("RXH" + new Random(System.currentTimeMillis()).nextInt(1000000) + "-B11" + System.currentTimeMillis())
                     .setMerchantId(merTransOrderApplyDTO.getMerId())                              .setTerminalMerId(merTransOrderApplyDTO.getTerMerId())
                     .setMerOrderId(merTransOrderApplyDTO.getMerOrderId())                         .setOrgMerOrderId(merTransOrderApplyDTO.getOrgMerOrderId())
                     .setIdentityType(Integer.valueOf(merTransOrderApplyDTO.getIdentityType()))    .setIdentityNum(merTransOrderApplyDTO.getIdentityNum())
@@ -566,6 +564,11 @@ public class NewTransOrderServiceImpl extends CommonServiceAbstract implements N
                     .setNotifyUrl(merTransOrderApplyDTO.getNoticeUrl())                           .setReturnUrl(merTransOrderApplyDTO.getReturnUrl())
                     .setCreateTime(new Date())                                                    .setUpdateTime(new Date());
 
+            synchronized (this){
+                transOrderInfoTable
+                        .setId(System.currentTimeMillis())
+                        .setPlatformOrderId("RXH" + new Random(System.currentTimeMillis()).nextInt(1000000) + "-B11" + System.currentTimeMillis());
+            }
             dbCommonRPCComponent.apiTransOrderInfoService.save(transOrderInfoTable);
         }catch (Exception e){
             if (e instanceof NewPayException) {

@@ -140,12 +140,13 @@ public class NewIntoPiecesOfInformationServiceImp extends CommonServiceAbstract 
                             .setIdentityType(new Integer(mbirDTO.getIdentityType()))
                             .setIdentityNum(mbirDTO.getIdentityNum()));
 
-            if (null == registerInfoTable){
-                registerInfoTable = new RegisterInfoTable()
-                        .setId(System.currentTimeMillis())
-                        .setCreateTime(new Date());
+            if (null == registerInfoTable) {
+                synchronized (this) {
+                    registerInfoTable = new RegisterInfoTable()
+                            .setId(System.currentTimeMillis())
+                            .setCreateTime(new Date());
+                }
             }
-
             registerInfoTable.setMerchantId(mbirDTO.getMerId())
                     .setTerminalMerId(mbirDTO.getTerMerId())                     .setTerminalMerName(mbirDTO.getTerMerName())
                     .setUserName(mbirDTO.getCardHolderName())                   .setUserShortName(mbirDTO.getTerMerShortName())
@@ -156,8 +157,7 @@ public class NewIntoPiecesOfInformationServiceImp extends CommonServiceAbstract 
                     .setUpdateTime(new Date());
 
             RegisterCollectTable registerCollectTable = new RegisterCollectTable()
-                    .setPlatformOrderId("RXH" + new Random(System.currentTimeMillis()).nextInt(1000000) + "-B1" + System.currentTimeMillis())
-                    .setId(System.currentTimeMillis())                          .setChannelId(channelInfoTable.getChannelId())
+                    .setChannelId(channelInfoTable.getChannelId())
                     .setProductId(channelInfoTable.getProductId())              .setRitId(registerInfoTable.getId())
                     .setOrganizationId(channelInfoTable.getOrganizationId())    .setMerchantId(mbirDTO.getMerId())
                     .setTerminalMerId(mbirDTO.getTerMerId())                    .setMerOrderId(mbirDTO.getMerOrderId())
@@ -170,6 +170,11 @@ public class NewIntoPiecesOfInformationServiceImp extends CommonServiceAbstract 
                     .setStatus(StatusEnum._3.getStatus())                       .setMerchantRateTableCollect(merchantRateTableList)
                     .setCreateTime(new Date())                                  .setBussType(BusinessTypeEnum.b1.getBusiType()) //基础信息登记
                     .setUpdateTime(new Date());
+            synchronized (this) {
+                registerCollectTable
+                        .setId(System.currentTimeMillis())
+                        .setPlatformOrderId("RXH" + new Random(System.currentTimeMillis()).nextInt(1000000) + "-B1" + System.currentTimeMillis());
+            }
             //保持或更新
             dbCommonRPCComponent.apiRegisterInfoService.saveOrUpdate(registerInfoTable);
             dbCommonRPCComponent.apiRegisterCollectService.save(registerCollectTable);
@@ -376,9 +381,8 @@ public class NewIntoPiecesOfInformationServiceImp extends CommonServiceAbstract 
                     .setProvince(mbcbDTO.getProvince())
                     .setCity(mbcbDTO.getCity())
                     .setUpdateTime(new Date());
-            registerCollectTable.setId(System.currentTimeMillis())
+            registerCollectTable
                     .setStatus(StatusEnum._3.getStatus())
-                    .setPlatformOrderId("RXH" + new Random(System.currentTimeMillis()).nextInt(1000000) + "-B2" + System.currentTimeMillis())
                     .setBankAccountProp(Integer.valueOf(mbcbDTO.getBankAccountProp()))
                     .setBankCode(mbcbDTO.getBankCode())
                     .setBankCardType(Integer.valueOf(mbcbDTO.getBankCardType()))
@@ -391,6 +395,12 @@ public class NewIntoPiecesOfInformationServiceImp extends CommonServiceAbstract 
                     .setUpdateTime(new Date())
                     .setCrossRespResult(null)
                     .setChannelRespResult(null);
+            synchronized (this){
+                registerCollectTable
+                        .setId(System.currentTimeMillis())
+                        .setPlatformOrderId("RXH" + new Random(System.currentTimeMillis()).nextInt(1000000) + "-B2" + System.currentTimeMillis());
+            }
+
 
             dbCommonRPCComponent.apiRegisterInfoService.saveOrUpdate(registerInfoTable);
             dbCommonRPCComponent.apiRegisterCollectService.save(registerCollectTable);
@@ -417,16 +427,20 @@ public class NewIntoPiecesOfInformationServiceImp extends CommonServiceAbstract 
     @Override
     public RegisterCollectTable saveRegisterCollectTableByB3(RegisterCollectTable registerCollectTable, InnerPrintLogObject ipo) throws NewPayException {
         final String localPoint="saveRegisterCollectTableByB3";
-        registerCollectTable.setId(System.currentTimeMillis())
+        synchronized (this){
+            registerCollectTable
+                    .setId(System.currentTimeMillis())
+                    .setPlatformOrderId("RXH" + new Random(System.currentTimeMillis()).nextInt(1000000) + "-B3" + System.currentTimeMillis());
+        }
+        registerCollectTable
                 .setBussType(BusinessTypeEnum.b3.getBusiType())
-                .setPlatformOrderId("RXH" + new Random(System.currentTimeMillis()).nextInt(1000000) + "-B3" + System.currentTimeMillis())
                 .setCrossRespResult(null)
                 .setChannelRespResult(null)
                 .setUpdateTime(new Date())
                 .setCreateTime(new Date())
                 .setStatus(StatusEnum._3.getStatus());
-
         List<MerchantRateTable> merchantRateTableList = null;
+
         try{
 
             merchantRateTableList = dbCommonRPCComponent.apiMerchantRateService.getList(new MerchantRateTable()
