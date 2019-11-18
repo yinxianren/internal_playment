@@ -2,12 +2,14 @@ package com.internal.playment.inward.service.channel.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.internal.playment.common.dto.CrossResponseMsgDTO;
+import com.internal.playment.common.enums.BusinessTypeEnum;
 import com.internal.playment.common.enums.StatusEnum;
 import com.internal.playment.common.table.business.PayOrderInfoTable;
 import com.internal.playment.common.table.system.AsyncNotifyTable;
 import com.internal.playment.inward.service.channel.AllinPayChannelHandlePortService;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Service
@@ -41,11 +43,23 @@ public class AllinPayChannelHandlePortServiceImpl extends ChannelCommonServiceAb
     public void fieldByPayOrder(PayOrderInfoTable payOrderInfoTable, CrossResponseMsgDTO crossResponseMsgDTO) {
         int payOrderStatus = payOrderInfoTable.getStatus();
         //同步状态为1，异步状态为1，一致什么也不处理
-        if( payOrderStatus == 1){}
+        if( payOrderStatus == StatusEnum._1.getStatus()){}
         // 同步状态为0，异步状态为1
-        else if( payOrderStatus == 7 ){
-          //做对冲，生成一个新的订单
-
+        else if( payOrderStatus == StatusEnum._7.getStatus() ){
+            //做对冲，生成一个新的订单
+            synchronized (this){
+                payOrderInfoTable.setId(System.currentTimeMillis());
+            }
+            payOrderInfoTable
+                    .setAmount(payOrderInfoTable.getAmount().multiply(new BigDecimal(-1)))
+                    .setInAmount(payOrderInfoTable.getInAmount().multiply(new BigDecimal(-1)))
+                    .setTerFee(payOrderInfoTable.getTerFee().multiply(new BigDecimal(-1)))
+                    .setChannelFee(payOrderInfoTable.getChannelFee().multiply(new BigDecimal(-1)))
+                    .setAgentFee(payOrderInfoTable.getAgentFee().multiply(new BigDecimal(-1)))
+                    .setMerFee(payOrderInfoTable.getMerFee().multiply(new BigDecimal(-1)))
+                    .setBussType(BusinessTypeEnum.b10)
+                    .setCreateTime(new Date())
+                    .setUpdateTime(new Date());
 
         }else{//其他状态全部更新为失败
             payOrderInfoTable
