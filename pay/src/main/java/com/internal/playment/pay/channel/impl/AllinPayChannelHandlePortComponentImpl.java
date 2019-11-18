@@ -5,6 +5,7 @@ import com.internal.playment.api.cross.ApiBondCardCrossComponent;
 import com.internal.playment.api.cross.ApiIntoPiecesOfInformationCrossComponent;
 import com.internal.playment.api.cross.ApiPayOrderCrossComponent;
 import com.internal.playment.api.cross.ApiTransOrderCrossComponent;
+import com.internal.playment.api.cross.allinpay.ApiAllinPayOtherBusinessCrossComponent;
 import com.internal.playment.api.cross.allinpay.ApiNoAuthenticationPayOrderCrossComponent;
 import com.internal.playment.common.dto.CrossResponseMsgDTO;
 import com.internal.playment.common.dto.RequestCrossMsgDTO;
@@ -52,6 +53,9 @@ public class AllinPayChannelHandlePortComponentImpl implements AllinPayChannelHa
     private ApiTransOrderCrossComponent apiTransOrderCrossComponent;
     @Reference(version = "${application.version}", group = "allinPay", timeout = 30000)
     private ApiNoAuthenticationPayOrderCrossComponent apiNoAuthenticationPayOrderCrossComponent;
+    @Reference(version = "${application.version}", group = "allinPay", timeout = 30000)
+    private ApiAllinPayOtherBusinessCrossComponent apiAllinPayOtherBusinessCrossComponent;
+
     @Autowired
     private ActiveMqOrderProducerComponent ActiveMqOrderProducerComponent;
 
@@ -107,6 +111,11 @@ public class AllinPayChannelHandlePortComponentImpl implements AllinPayChannelHa
     @Override
     public CrossResponseMsgDTO exemptCodePay(RequestCrossMsgDTO requestCrossMsgDTO, InnerPrintLogObject ipo) {
         return apiNoAuthenticationPayOrderCrossComponent.exemptCodePay(requestCrossMsgDTO);
+    }
+
+    @Override
+    public CrossResponseMsgDTO unBondCard(RequestCrossMsgDTO requestCrossMsgDTO, InnerPrintLogObject ipo) {
+        return apiAllinPayOtherBusinessCrossComponent.unBondCard(requestCrossMsgDTO);
     }
 
     public Tuple2 channelDifferBusinessHandleByPayOrder(RequestCrossMsgDTO requestCrossMsgDTO, CrossResponseMsgDTO crossResponseMsgDTO) {

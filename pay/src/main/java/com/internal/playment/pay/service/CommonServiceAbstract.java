@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.lang.reflect.Field;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -367,6 +368,26 @@ public abstract class CommonServiceAbstract implements NewPayAssert, PayUtil {
         return merchantCardTable;
     }
 
+    public MerchantCardTable getMerchantCardInfo( MerchantCardTable merchantCardTable, InnerPrintLogObject ipo) throws NewPayException {
+        final String localPoint="getMerchantCardInfoByMap( MerchantCardTable merchantCardTable, InnerPrintLogObject ipo)";
+        try {
+            merchantCardTable = dbCommonRPCComponent.apiMerchantCardService.getOne(merchantCardTable);
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new NewPayException(
+                    ResponseCodeEnum.RXH99999.getCode(),
+                    format("%s-->商户号：%s；终端号：%s；错误信息: %s ；代码所在位置：%s,异常根源：根据平台流水号获取绑卡申请记录发生异常,异常信息：%s", ipo.getBussType(), ipo.getMerId(), ipo.getTerMerId(), ResponseCodeEnum.RXH99999.getMsg(), localPoint,e.getMessage()),
+                    format(" %s", ResponseCodeEnum.RXH99999.getMsg())
+            );
+        }
+        isNull(merchantCardTable,
+                ResponseCodeEnum.RXH00034.getCode(),
+                format("%s-->商户号：%s；终端号：%s；错误信息: %s ；银行卡号：%s, 代码所在位置：%s;",
+                        ipo.getBussType(),ipo.getMerId(),ipo.getTerMerId(),ResponseCodeEnum.RXH00034.getMsg(),merchantCardTable.getBankCardNum(),localPoint),
+                format(" %s",ResponseCodeEnum.RXH00034.getMsg()));
+        return merchantCardTable;
+    }
+
     public RegisterCollectTable getRegCollectInfo(String regPlatformOrderId, String busiType, InnerPrintLogObject ipo) throws NewPayException {
         final String localPoint="getRegCollectInfo";
         RegisterCollectTable rct = null;
@@ -394,4 +415,28 @@ public abstract class CommonServiceAbstract implements NewPayAssert, PayUtil {
 
         return rct;
     }
+
+    public RegisterCollectTable getRegCollectInfo(RegisterCollectTable registerCollectTable,InnerPrintLogObject ipo) throws NewPayException {
+        final String localPoint=" getRegCollectInfo(RegisterCollectTable registerCollectTable,InnerPrintLogObject ipo)";
+        RegisterCollectTable rct = null;
+        try{
+            rct = dbCommonRPCComponent.apiRegisterCollectService.getOne(registerCollectTable);
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new NewPayException(
+                    ResponseCodeEnum.RXH99999.getCode(),
+                    format("%s-->商户号：%s；终端号：%s；错误信息: %s ；代码所在位置：%s,异常根源：获取成功进件信息发生异常,异常信息：%s",
+                            ipo.getBussType(), ipo.getMerId(), ipo.getTerMerId(), ResponseCodeEnum.RXH99999.getMsg(), localPoint,e.getMessage()),
+                    format(" %s", ResponseCodeEnum.RXH99999.getMsg())
+            );
+        }
+        isNull(rct,
+                ResponseCodeEnum.RXH00030.getCode(),
+                format("%s-->商户号：%s；终端号：%s；错误信息: %s ；代码所在位置：%s;",
+                        ipo.getBussType(),ipo.getMerId(),ipo.getTerMerId(),ResponseCodeEnum.RXH00030.getMsg(),localPoint),
+                format(" %s",ResponseCodeEnum.RXH00030.getMsg()));
+
+        return rct;
+    }
+
 }

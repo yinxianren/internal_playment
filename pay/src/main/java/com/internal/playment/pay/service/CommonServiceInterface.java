@@ -17,6 +17,7 @@ import com.internal.playment.common.table.system.SystemOrderTrackTable;
 import com.internal.playment.common.tuple.Tuple2;
 
 import java.util.List;
+import java.util.Map;
 
 public interface CommonServiceInterface {
     /**
@@ -127,6 +128,7 @@ public interface CommonServiceInterface {
      */
     MerchantCardTable getMerchantCardInfoByPlatformOrderId(String platformOrderId, String busiType, InnerPrintLogObject ipo) throws NewPayException;
 
+    MerchantCardTable getMerchantCardInfo( MerchantCardTable merchantCardTable, InnerPrintLogObject ipo) throws NewPayException;
     /**
      *
      * @param regPlatformOrderId
@@ -136,6 +138,7 @@ public interface CommonServiceInterface {
      */
     RegisterCollectTable getRegCollectInfo(String regPlatformOrderId, String busiType, InnerPrintLogObject ipo) throws NewPayException;
 
+    RegisterCollectTable getRegCollectInfo(RegisterCollectTable registerCollectTable,InnerPrintLogObject ipo)throws NewPayException;
     /**
      *
      * @param crossResponseMsgDTO

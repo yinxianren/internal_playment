@@ -13,5 +13,6 @@ public class BusinessUnBondCardDTO implements Serializable {
     private String terMerId;//	子商户id
     private String bankCardNum;//	银行卡号
     private String identityNum;//	证件号码
+    private String channelTab;//通道标识
     private String signMsg;//	签名字符串
 }

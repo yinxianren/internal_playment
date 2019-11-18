@@ -14,4 +14,6 @@ public interface AllinPayChannelHandlePortComponent extends  CommonChannelHandle
      */
     CrossResponseMsgDTO exemptCodePay(RequestCrossMsgDTO requestCrossMsgDTO, InnerPrintLogObject ipo);
 
+
+
 }

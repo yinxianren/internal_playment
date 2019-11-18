@@ -81,9 +81,6 @@ public interface CommonChannelHandlePortComponent {
     CrossResponseMsgDTO payment(RequestCrossMsgDTO requestCrossMsgDTO, InnerPrintLogObject ipo) throws Exception;
 
 
-
-
-
     /**
      *  收单业务
      * @param requestCrossMsgDTO
@@ -99,5 +96,11 @@ public interface CommonChannelHandlePortComponent {
      * @return
      */
     Tuple2  channelDifferBusinessHandleByTransOrder(RequestCrossMsgDTO requestCrossMsgDTO, CrossResponseMsgDTO crossResponseMsgDTO);
+    /**
+     * 解卡
+     * @param requestCrossMsgDTO
+     * @return
+     */
+    CrossResponseMsgDTO unBondCard(RequestCrossMsgDTO requestCrossMsgDTO, InnerPrintLogObject ipo);
 
 }

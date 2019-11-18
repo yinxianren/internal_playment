@@ -36,6 +36,7 @@ public class ApiMerchantCardServiceImpl implements ApiMerchantCardService, NewPa
         if( !isBlank(mct.getBankCardNum()) )  lambdaQueryWrapper.eq(MerchantCardTable::getBankCardNum,mct.getBankCardNum());
         if( !isBlank(mct.getBussType()) )  lambdaQueryWrapper.eq(MerchantCardTable::getBussType,mct.getBussType());
         if( !isBlank(mct.getPlatformOrderId()) )  lambdaQueryWrapper.eq(MerchantCardTable::getPlatformOrderId,mct.getPlatformOrderId());
+        if( !isBlank(mct.getOrganizationId()) ) lambdaQueryWrapper.eq(MerchantCardTable::getOrganizationId,mct.getOrganizationId());
         return merchantCardDBService.getOne(lambdaQueryWrapper);
     }
 
