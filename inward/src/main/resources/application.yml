@@ -7,8 +7,8 @@ application:
   #版本号
   version: @application.version@
   async-query:
-    pay-order: @order.queue.async.query.payOrderInfoTable@
-    trans-order: @order.queue.async.query.transOrderInfoTable@
+    pay-order: @order.queue.async.query.pay-order@
+    trans-order: @order.queue.async.query.trans-order@
   async-notify: @order.queue.async.notify@
 
 

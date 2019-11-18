@@ -10,8 +10,8 @@ application:
     pay-order: @application.queue.pay-order@
     trans-order: @application.queue.trans-order@
   async-query:
-    pay-order: @order.queue.async.query.payOrderInfoTable@
-    trans-order: @order.queue.async.query.transOrderInfoTable@
+    pay-order: @order.queue.async.query.pay-order@
+    trans-order: @order.queue.async.query.trans-order@
 
 dubbo:
   application:
