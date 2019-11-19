@@ -157,7 +157,7 @@ public class NewIntoPiecesOfInformationServiceImp extends CommonServiceAbstract 
                     .setUpdateTime(new Date());
 
             RegisterCollectTable registerCollectTable = new RegisterCollectTable()
-                    .setProductGroupType(mbirDTO.getProductGroupType())        .setRitId(registerInfoTable.getId())
+                    .setPlatformOrderId(mbirDTO.getProductGroupType())          .setRitId(registerInfoTable.getId())
                     .setOrganizationId(channelInfoTable.getOrganizationId())    .setMerchantId(mbirDTO.getMerId())
                     .setTerminalMerId(mbirDTO.getTerMerId())                    .setMerOrderId(mbirDTO.getMerOrderId())
                     .setCategory(mbirDTO.getCategory())                         .setMiMerCertPic1(mbirDTO.getMiMerCertPic1())

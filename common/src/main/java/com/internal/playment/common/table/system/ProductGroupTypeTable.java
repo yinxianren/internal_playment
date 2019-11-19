@@ -3,11 +3,12 @@ package com.internal.playment.common.table.system;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Getter;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Getter
 @TableName("5_product_group_type_table")
-public class ProductGroupTypeTable {
+public class ProductGroupTypeTable implements Serializable {
     private Long id ;
     private String productGroupId;// 产品组ID
     private String productGroupName;//产品组名称
