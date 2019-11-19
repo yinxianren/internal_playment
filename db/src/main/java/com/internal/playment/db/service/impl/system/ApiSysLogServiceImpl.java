@@ -22,7 +22,7 @@ public class ApiSysLogServiceImpl implements ApiSysLogService, NewPayAssert {
     public IPage page(SysLogTable sysLogTable, PageDTO pageDTO) {
         if (isNull(sysLogTable)) return new Page();
         LambdaQueryWrapper queryWrapper = new LambdaQueryWrapper();
-        IPage iPage = new Page(pageDTO.getPaegSize(),pageDTO.getPageNum());
+        IPage iPage = new Page(pageDTO.getPageNum(),pageDTO.getPaegSize());
         return sysLogDBService.page(iPage,queryWrapper);
     }
 }
