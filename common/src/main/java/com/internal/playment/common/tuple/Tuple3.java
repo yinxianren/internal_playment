@@ -9,8 +9,8 @@ package com.internal.playment.common.tuple;
  */
 public class Tuple3<A,B,C>  extends Tuple2<A,B> {
     public final C _3;
-    public Tuple3(A _, B _2,C _3) {
-        super(_, _2);
+    public Tuple3(A _1, B _2,C _3) {
+        super(_1, _2);
         this._3 = _3;
     }
 }
