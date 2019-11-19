@@ -13,7 +13,6 @@ import com.internal.playment.common.table.channel.ChannelExtraInfoTable;
 import com.internal.playment.common.table.channel.ChannelInfoTable;
 import com.internal.playment.common.table.system.MerchantSettingTable;
 import com.internal.playment.common.table.system.ProductGroupTypeTable;
-import com.internal.playment.common.table.system.ProductSettingTable;
 import com.internal.playment.common.tuple.Tuple2;
 import com.internal.playment.pay.service.CommonServiceInterface;
 

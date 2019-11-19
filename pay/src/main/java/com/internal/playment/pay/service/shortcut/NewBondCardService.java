@@ -9,10 +9,8 @@ import com.internal.playment.common.inner.NewPayException;
 import com.internal.playment.common.inner.ParamRule;
 import com.internal.playment.common.table.business.MerchantCardTable;
 import com.internal.playment.common.table.business.RegisterCollectTable;
-import com.internal.playment.common.table.channel.ChannelInfoTable;
 import com.internal.playment.pay.service.CommonServiceInterface;
 
-import java.util.List;
 import java.util.Map;
 
 public interface NewBondCardService extends CommonServiceInterface {
