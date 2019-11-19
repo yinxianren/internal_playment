@@ -42,15 +42,6 @@ public interface NewBondCardService extends CommonServiceInterface {
 
 
     /**
-     *  获取进件成功的附属表
-     * @param mbcaDTO
-     * @param ipo
-     * @return
-     * @throws NewPayException
-     */
-//    RegisterCollectTable getSuccessRegisterCollectInfo( MerchantBondCardApplyDTO mbcaDTO,InnerPrintLogObject ipo) throws NewPayException;
-
-    /**
      *  保存绑卡申请记录
      * @param mbcaDTO
      * @param ipo
@@ -90,48 +81,6 @@ public interface NewBondCardService extends CommonServiceInterface {
      * @return
      */
     RegisterCollectTable getRegisterInfoTableByPlatformOrderId(String platformOrderId, InnerPrintLogObject ipo) throws NewPayException;
-
-    /**
-     *
-     * @param mbcaDTO
-     * @param ipo
-     * @return
-     */
-//    List<RegisterCollectTable> getRegCollectBySuccess(MerBondCardApplyDTO mbcaDTO, InnerPrintLogObject ipo) throws NewPayException;
-
-    /**
-     *
-     * @param registerCollectTableList
-     * @param ipo
-     * @return
-     */
-//    ChannelInfoTable getChannelInfoByRegCollect(List<RegisterCollectTable> registerCollectTableList, InnerPrintLogObject ipo) throws NewPayException;
-
-    /**
-     *
-     * @param registerCollectTableList
-     * @param channelId
-     * @param ipo
-     * @return
-     */
-//    RegisterCollectTable filterRegCollectByChannelId(List<RegisterCollectTable> registerCollectTableList, String channelId, InnerPrintLogObject ipo) throws NewPayException;
-
-    /**
-     *
-     * @param mbcaDTO
-     * @param ipo
-     * @return
-     */
-//    List<MerchantCardTable> getMerCartInfoBySuccess(MerBondCardApplyDTO mbcaDTO, InnerPrintLogObject ipo) throws NewPayException;
-
-    /**
-     *
-     * @param registerCollectTableList
-     * @param merchantCardTableList
-     * @param ipo
-     * @return
-     */
-//    List<RegisterCollectTable> filterRegCollectByBondCardSuccess(List<RegisterCollectTable> registerCollectTableList, List<MerchantCardTable> merchantCardTableList, InnerPrintLogObject ipo) throws NewPayException;
 
     /**
      *

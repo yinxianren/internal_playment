@@ -50,14 +50,6 @@ public interface NewIntoPiecesOfInformationService  extends CommonServiceInterfa
      */
     List<ChannelInfoTable>   getChannelInfoByMerSetting(List<MerchantSettingTable> list, InnerPrintLogObject ipo) throws NewPayException;
 
-    /**
-     *   根据产品类型过滤通道
-     * @param list
-     * @param productType
-     * @param ipo
-     * @return
-     */
-//    Tuple2<List<ProductSettingTable>,Set<ChannelInfoTable>> filtrationChannelInfoByProductType(List<ChannelInfoTable> list, String productType, InnerPrintLogObject ipo) throws NewPayException;
 
     /**
      *  获取子商户成功进件的所有记录
