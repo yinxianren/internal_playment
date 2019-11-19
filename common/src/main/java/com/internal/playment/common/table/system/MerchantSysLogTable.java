@@ -12,8 +12,8 @@ import java.util.Date;
  */
 
 @Data
-@TableName ("1_sys_log_table" )
-public class SysLogTable  implements Serializable {
+@TableName ("1_merchant_sys_log_table" )
+public class MerchantSysLogTable  implements Serializable {
 
 
 	private Long id;
@@ -35,9 +35,5 @@ public class SysLogTable  implements Serializable {
 	private String methodDescription; //方法描述，如是异常则是异常描述
 
 	private String message; //信息/异常栈信息（10条栈信息）
-
-	private Date createTime; //创建时间
-
-	private Date updateTime; //修改时间
 
 }

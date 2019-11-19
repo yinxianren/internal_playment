@@ -39,7 +39,7 @@ public class ApiSysGroupServiceImpl implements ApiSysGroupService, NewPayAssert 
         if (!isBlank(sysGroupTable.getName())) queryWrapper.like(SysGroupTable::getName,sysGroupTable.getName());
         if (!isBlank(sysGroupTable.getCode())) queryWrapper.eq(SysGroupTable::getCode,sysGroupTable.getCode());
         if (!isNull(sysGroupTable.getModel())) queryWrapper.eq(SysGroupTable::getModel,sysGroupTable.getModel());
-        if (!isNull(sysGroupTable.getSystem())) queryWrapper.eq(SysGroupTable::getSystem,sysGroupTable);
+        if (!isNull(sysGroupTable.getSystem())) queryWrapper.eq(SysGroupTable::getSystem,sysGroupTable.getSystem());
         queryWrapper.eq(SysGroupTable::getStatus, StatusEnum._0.getStatus());
         IPage iPage = new Page(pageDTO.getPageNum(),pageDTO.getPaegSize());
         return sysGroupDBService.page(iPage,queryWrapper);
