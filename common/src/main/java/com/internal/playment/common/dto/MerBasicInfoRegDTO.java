@@ -9,7 +9,7 @@ import java.io.Serializable;
 public class MerBasicInfoRegDTO implements Serializable {
     private String  charset;//	字符编码	固定UTF-8
     private String  signType;//	签名类型	固定为MD5
-    private String  productType;//	产品类型
+    private String  productGroupType;//	产品类型
     private String  merId;//	商户号	我司分配给接入方的唯一编码
     private String  merOrderId;//	商户订单号	每次发起请求，要求唯一
     private String  merType;//	商户类型	00公司商户，01个体商户

@@ -29,8 +29,7 @@ public class RegisterCollectTable implements Serializable {
     private String platformOrderId;//平台订单号',
     private Long  ritId;//主表id',
     private String organizationId;//通道机构ID
-    private String  channelId;// 通道id,
-    private String  productId;// 产品类型ID,
+    private String  productGroupType;// 产品类型ID,
     private String  merchantId;//商户号',
     private String  terminalMerId;//终端商户号',
     private String  merOrderId;//商户订单号',
@@ -64,18 +63,13 @@ public class RegisterCollectTable implements Serializable {
         return this;
     }
 
+    public RegisterCollectTable setProductGroupType(String productGroupType) {
+        this.productGroupType = productGroupType;
+        return this;
+    }
+
     public RegisterCollectTable setBussType(String bussType) {
         this.bussType = bussType;
-        return this;
-    }
-
-    public RegisterCollectTable setChannelId(String channelId) {
-        this.channelId = channelId;
-        return this;
-    }
-
-    public RegisterCollectTable setProductId(String productId) {
-        this.productId = productId;
         return this;
     }
 

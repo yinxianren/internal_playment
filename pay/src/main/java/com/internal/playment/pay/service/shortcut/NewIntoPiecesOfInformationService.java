@@ -12,6 +12,7 @@ import com.internal.playment.common.table.business.RegisterInfoTable;
 import com.internal.playment.common.table.channel.ChannelExtraInfoTable;
 import com.internal.playment.common.table.channel.ChannelInfoTable;
 import com.internal.playment.common.table.system.MerchantSettingTable;
+import com.internal.playment.common.table.system.ProductGroupTypeTable;
 import com.internal.playment.common.table.system.ProductSettingTable;
 import com.internal.playment.common.tuple.Tuple2;
 import com.internal.playment.pay.service.CommonServiceInterface;
@@ -135,8 +136,6 @@ public interface NewIntoPiecesOfInformationService  extends CommonServiceInterfa
      */
     Tuple2<RegisterInfoTable,RegisterCollectTable> saveOnRegisterInfo(RegisterCollectTable registerCollectTable, MerBankCardBindDTO mbcbDTO, InnerPrintLogObject ipo) throws NewPayException;
 
-
-
     /**
      *
      * @param registerCollectTable
@@ -145,5 +144,20 @@ public interface NewIntoPiecesOfInformationService  extends CommonServiceInterfa
      */
     RegisterCollectTable saveRegisterCollectTableByB3(RegisterCollectTable registerCollectTable, InnerPrintLogObject ipo) throws NewPayException;
 
+    /**
+     *
+     * @param productGroupType
+     * @param ipo
+     * @return
+     */
+    List<ProductGroupTypeTable> getProductGroupTypeInfo(String productGroupType, InnerPrintLogObject ipo) throws NewPayException;
 
+    /**
+     *
+     * @param productGroupTypeTableList
+     * @param channelInfoTableList
+     * @param ipo
+     * @return
+     */
+    Set<ChannelInfoTable> filtrationChannelInfo(List<ProductGroupTypeTable> productGroupTypeTableList, List<ChannelInfoTable> channelInfoTableList, InnerPrintLogObject ipo) throws NewPayException;
 }

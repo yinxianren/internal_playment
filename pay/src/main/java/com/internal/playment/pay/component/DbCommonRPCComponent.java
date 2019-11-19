@@ -63,6 +63,8 @@ public  class DbCommonRPCComponent {
     @Reference(version = "${application.version}",timeout = 30000)
     public ApiSystemOrderTrackService apiSystemOrderTrackService;
     @Reference(version = "${application.version}",timeout = 30000)
+    public ApiProductGroupTypeService ApiProductGroupTypeService;
+    @Reference(version = "${application.version}",timeout = 30000)
     public  ApiOrganizationInfoService apiOrganizationInfoService;
     @Reference(version = "${application.version}",timeout = 30000)
     public ApiMerchantsDetailsService apiMerchantsDetailsService;
@@ -86,5 +88,4 @@ public  class DbCommonRPCComponent {
     public ApiPayOrderBusinessTransactionService apiPayOrderBusinessTransactionService;
     @Reference(version = "${application.version}",timeout = 30000)
     public ApiTransOrderBusinessTransactionService apiTransOrderBusinessTransactionService;
-
 }

@@ -14,8 +14,10 @@ import com.internal.playment.common.table.channel.ChannelExtraInfoTable;
 import com.internal.playment.common.table.channel.ChannelInfoTable;
 import com.internal.playment.common.table.merchant.MerchantRateTable;
 import com.internal.playment.common.table.system.MerchantSettingTable;
+import com.internal.playment.common.table.system.ProductGroupTypeTable;
 import com.internal.playment.common.table.system.ProductSettingTable;
 import com.internal.playment.common.tuple.Tuple2;
+import com.internal.playment.common.tuple.Tuple3;
 import com.internal.playment.common.tuple.Tuple4;
 import com.internal.playment.pay.service.CommonServiceAbstract;
 import com.internal.playment.pay.service.shortcut.NewIntoPiecesOfInformationService;
@@ -148,7 +150,7 @@ public class NewIntoPiecesOfInformationServiceImp extends CommonServiceAbstract 
                 }
             }
             registerInfoTable.setMerchantId(mbirDTO.getMerId())
-                    .setTerminalMerId(mbirDTO.getTerMerId())                     .setTerminalMerName(mbirDTO.getTerMerName())
+                    .setTerminalMerId(mbirDTO.getTerMerId())                    .setTerminalMerName(mbirDTO.getTerMerName())
                     .setUserName(mbirDTO.getCardHolderName())                   .setUserShortName(mbirDTO.getTerMerShortName())
                     .setIdentityType(new Integer(mbirDTO.getIdentityType()))    .setIdentityNum(mbirDTO.getIdentityNum())
                     .setPhone(mbirDTO.getPhone())                               .setMerchantType(mbirDTO.getMerType())
@@ -157,8 +159,7 @@ public class NewIntoPiecesOfInformationServiceImp extends CommonServiceAbstract 
                     .setUpdateTime(new Date());
 
             RegisterCollectTable registerCollectTable = new RegisterCollectTable()
-                    .setChannelId(channelInfoTable.getChannelId())
-                    .setProductId(channelInfoTable.getProductId())              .setRitId(registerInfoTable.getId())
+                    .setProductGroupType(mbirDTO.getProductGroupType())        .setRitId(registerInfoTable.getId())
                     .setOrganizationId(channelInfoTable.getOrganizationId())    .setMerchantId(mbirDTO.getMerId())
                     .setTerminalMerId(mbirDTO.getTerMerId())                    .setMerOrderId(mbirDTO.getMerOrderId())
                     .setCategory(mbirDTO.getCategory())                         .setMiMerCertPic1(mbirDTO.getMiMerCertPic1())
@@ -198,12 +199,11 @@ public class NewIntoPiecesOfInformationServiceImp extends CommonServiceAbstract 
     }
 
     public RequestCrossMsgDTO getRequestCrossMsgDTO(Tuple2 tuple) {
-        Tuple4<ChannelInfoTable,ChannelExtraInfoTable, RegisterInfoTable,RegisterCollectTable> tuple4 = (Tuple4<ChannelInfoTable, ChannelExtraInfoTable,  RegisterInfoTable,RegisterCollectTable>) tuple;
+        Tuple3<ChannelExtraInfoTable, RegisterInfoTable,RegisterCollectTable> tuple3 = (Tuple3<ChannelExtraInfoTable,  RegisterInfoTable,RegisterCollectTable>) tuple;
         return new RequestCrossMsgDTO()
-                .setChannelInfoTable(tuple4._1)
-                .setChannelExtraInfoTable(tuple4._2)
-                .setRegisterInfoTable(tuple4._3)
-                .setRegisterCollectTable(tuple4._4);
+                .setChannelExtraInfoTable(tuple3._1)
+                .setRegisterInfoTable(tuple3._2)
+                .setRegisterCollectTable(tuple3._3);
     }
 
     @Override
@@ -294,6 +294,49 @@ public class NewIntoPiecesOfInformationServiceImp extends CommonServiceAbstract 
 
 
     @Override
+    public List<ProductGroupTypeTable> getProductGroupTypeInfo(String productGroupType, InnerPrintLogObject ipo) throws NewPayException {
+        final String localPoint="getProductGroupTypeInfo";
+        List<ProductGroupTypeTable> productGroupTypeTableList = null;
+        try{
+            productGroupTypeTableList = dbCommonRPCComponent.ApiProductGroupTypeService.getList(new ProductGroupTypeTable()
+                    .setProductGroupId(productGroupType)
+                    .setStatus(StatusEnum._0.getStatus()));
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new NewPayException(
+                    ResponseCodeEnum.RXH99999.getCode(),
+                    format("%s-->商户号：%s；终端号：%s；错误信息: %s ；代码所在位置B2：%s,异常根源：查询产品组信息发生异常,异常信息：%s", ipo.getBussType(), ipo.getMerId(), ipo.getTerMerId(), ResponseCodeEnum.RXH99999.getMsg(), localPoint,e.getMessage()),
+                    format(" %s", ResponseCodeEnum.RXH99999.getMsg())
+            );
+        }
+        isHasNotElement(productGroupTypeTableList,
+                ResponseCodeEnum.RXH00063.getCode(),
+                format("%s-->商户号：%s；终端号：%s；错误信息: %s ；代码所在位置：%s",
+                        ipo.getBussType(),ipo.getMerId(),ipo.getTerMerId(),ResponseCodeEnum.RXH00063.getMsg(),localPoint),
+                format(" %s",ResponseCodeEnum.RXH00063.getMsg()));
+        return productGroupTypeTableList;
+    }
+
+    @Override
+    public Set<ChannelInfoTable> filtrationChannelInfo(List<ProductGroupTypeTable> productGroupTypeTableList, List<ChannelInfoTable> channelInfoTableList, InnerPrintLogObject ipo) throws NewPayException {
+        final String localPoint="filtrationChannelInfo";
+        Set<ChannelInfoTable> set = new HashSet<>(channelInfoTableList.size());
+        productGroupTypeTableList.forEach(pgt->{
+            channelInfoTableList.forEach(cit->{
+                if(pgt.getOrganizationId().equalsIgnoreCase(cit.getOrganizationId()))
+                    set.add(cit);
+            });
+        });
+        isHasNotElement(set,
+                ResponseCodeEnum.RXH00064.getCode(),
+                format("%s-->商户号：%s；终端号：%s；错误信息: %s ；代码所在位置：%s",
+                        ipo.getBussType(),ipo.getMerId(),ipo.getTerMerId(),ResponseCodeEnum.RXH00064.getMsg(),localPoint),
+                format(" %s",ResponseCodeEnum.RXH00064.getMsg()));
+        return set;
+    }
+
+
+    @Override
     public RegisterCollectTable getRegisterCollectTable(String platformOrderId,String busiType, InnerPrintLogObject ipo) throws NewPayException {
         final String localPoint="getRegisterCollectTable";
         RegisterCollectTable rct = null;
@@ -330,7 +373,7 @@ public class NewIntoPiecesOfInformationServiceImp extends CommonServiceAbstract 
                     .setTerminalMerId(ipo.getTerMerId())
                     .setBussType(busiType)
                     .setStatus(StatusEnum._0.getStatus())
-                    .setChannelId(rct.getChannelId())
+//                    .setChannelId(rct.getChannelId())
                     .setBankCardNum(rct.getBankCardNum())
                     .setBankCardPhone(rct.getBankCardPhone())
             );
@@ -480,7 +523,7 @@ public class NewIntoPiecesOfInformationServiceImp extends CommonServiceAbstract 
             {
                 put("charset", new ParamRule(ParamTypeEnum.STRING.getType(), 5, 5));//固定UTF-8
                 put("signType", new ParamRule(ParamTypeEnum.STRING.getType(), 3, 3));//固定为MD5
-                put("productType", new ParamRule(ParamTypeEnum.STRING.getType(), 3, 64));//产品类型
+                put("productGroupType", new ParamRule(ParamTypeEnum.STRING.getType(), 3, 64));//产品组合类型
                 put("merId", new ParamRule(ParamTypeEnum.STRING.getType(), 6, 32));//商户号
                 put("merOrderId", new ParamRule(ParamTypeEnum.STRING.getType(), 16, 32));// 商户订单号
                 put("merType", new ParamRule(ParamTypeEnum.STRING.getType(), 2, 2));//商户类型 商户类型	00公司商户，01个体商户

@@ -14,11 +14,9 @@ import com.internal.playment.common.table.business.RegisterInfoTable;
 import com.internal.playment.common.table.channel.ChannelExtraInfoTable;
 import com.internal.playment.common.table.channel.ChannelInfoTable;
 import com.internal.playment.common.table.merchant.MerchantInfoTable;
-import com.internal.playment.common.table.system.MerchantSettingTable;
-import com.internal.playment.common.table.system.OrganizationInfoTable;
-import com.internal.playment.common.table.system.ProductSettingTable;
-import com.internal.playment.common.table.system.SystemOrderTrackTable;
+import com.internal.playment.common.table.system.*;
 import com.internal.playment.common.tuple.Tuple2;
+import com.internal.playment.common.tuple.Tuple3;
 import com.internal.playment.common.tuple.Tuple4;
 import com.internal.playment.pay.channel.CommonChannelHandlePortComponent;
 import com.internal.playment.pay.component.Md5Component;
@@ -90,30 +88,47 @@ public class NewIntoPiecesOfInformationController extends NewAbstractCommonContr
             md5Component.checkMd5(sotTable.getRequestMsg(),merInfoTable.getSecretKey(),ipo);
             //查看是否重复订单
             newIntoPiecesOfInformationService.multipleOrder(mbirDTO.getMerOrderId(),ipo);
+            //获取产品组信息
+            List<ProductGroupTypeTable> productGroupTypeTableList = newIntoPiecesOfInformationService
+                    .getProductGroupTypeInfo(mbirDTO.getProductGroupType(),ipo);
             // 获取商户配置
-            List<MerchantSettingTable>  merchantSettingTableList=newIntoPiecesOfInformationService.getMerchantSetting(ipo);
+            List<MerchantSettingTable>  merchantSettingTableList=newIntoPiecesOfInformationService
+                    .getMerchantSetting(ipo);
             //获取配置的所有通道
-            List<ChannelInfoTable>  channelInfoTableList = newIntoPiecesOfInformationService.getChannelInfoByMerSetting(merchantSettingTableList,ipo);
-            //根据产品类型进行过滤
-            Tuple2<List<ProductSettingTable>,Set<ChannelInfoTable>> tuple2=newIntoPiecesOfInformationService.filtrationChannelInfoByProductType(channelInfoTableList,mbirDTO.getProductType(),ipo);
+            List<ChannelInfoTable>  channelInfoTableList = newIntoPiecesOfInformationService
+                    .getChannelInfoByMerSetting(merchantSettingTableList,ipo);
+            //过滤所支持的通道
+            Set<ChannelInfoTable> channelInfoTableSet = newIntoPiecesOfInformationService
+                    .filtrationChannelInfo(productGroupTypeTableList,channelInfoTableList,ipo);
+//            //根据产品类型进行过滤
+//            Tuple2<List<ProductSettingTable>,Set<ChannelInfoTable>> tuple2=newIntoPiecesOfInformationService
+//                    .filtrationChannelInfoByProductType(channelInfoTableList,mbirDTO.getProductType(),ipo);
             //获取商户成功进件的信息
-            List<RegisterCollectTable>  registerCollectTableList = newIntoPiecesOfInformationService.getRegisterCollectOnSuccess(ipo);
+            List<RegisterCollectTable>  registerCollectTableList = newIntoPiecesOfInformationService
+                    .getRegisterCollectOnSuccess(ipo);
             //过滤已经成功进件的通道
-            LinkedList<ChannelInfoTable> channelInfoTablesList=newIntoPiecesOfInformationService.filtrationChannelInfoBySuccessRegisterCollect(tuple2._2,registerCollectTableList,ipo);
+            LinkedList<ChannelInfoTable> channelInfoTablesList=newIntoPiecesOfInformationService
+                    .filtrationChannelInfoBySuccessRegisterCollect(channelInfoTableSet,registerCollectTableList,ipo);
             //获取星级最高的通道，如果相同，取最后一个
-            ChannelInfoTable channelInfoTable = newIntoPiecesOfInformationService.filtrationChannelInfoByLevel(channelInfoTablesList,ipo);
+            ChannelInfoTable channelInfoTable = newIntoPiecesOfInformationService
+                    .filtrationChannelInfoByLevel(channelInfoTablesList,ipo);
+
             //获取进件附属通道
-            ChannelExtraInfoTable extraInfoTable = newIntoPiecesOfInformationService.getAddCusChannelExtraInfo(channelInfoTable,ipo);
+            ChannelExtraInfoTable extraInfoTable = newIntoPiecesOfInformationService
+                    .getAddCusChannelExtraInfo(channelInfoTable,ipo);
             //获取组织机构信息
-            OrganizationInfoTable organizationInfoTable = newIntoPiecesOfInformationService.getOrganizationInfo(channelInfoTable.getOrganizationId(),ipo);
+            OrganizationInfoTable organizationInfoTable = newIntoPiecesOfInformationService
+                    .getOrganizationInfo(channelInfoTable.getOrganizationId(),ipo);
             Class  clz=Class.forName(organizationInfoTable.getApplicationClassObj().trim());
             //生成通道处理对象
-            CommonChannelHandlePortComponent commonChannelHandlePortComponent = (CommonChannelHandlePortComponent) SpringContextUtil.getBean(clz);
+            CommonChannelHandlePortComponent commonChannelHandlePortComponent = (CommonChannelHandlePortComponent) SpringContextUtil
+                    .getBean(clz);
             //保存进件信息
             tuple = newIntoPiecesOfInformationService.saveByRegister(mbirDTO,channelInfoTable,ipo);
             sotTable.setPlatformOrderId(tuple._2.getPlatformOrderId());
             //封装请求cross必要参数
-            requestCrossMsgDTO = newIntoPiecesOfInformationService.getRequestCrossMsgDTO(new Tuple4(channelInfoTable,extraInfoTable,tuple._1,tuple._2));
+            requestCrossMsgDTO = newIntoPiecesOfInformationService
+                    .getRequestCrossMsgDTO(new Tuple3(extraInfoTable,tuple._1,tuple._2));
             requestCrossMsgDTO.setIP(sotTable.getIp());
             //调用业务申请
             crossResponseMsgDTO = commonChannelHandlePortComponent.addCusInfo(requestCrossMsgDTO,ipo);
@@ -195,15 +210,15 @@ public class NewIntoPiecesOfInformationController extends NewAbstractCommonContr
             //更新RegisterCollectTable并保存
             tuple2 = newIntoPiecesOfInformationService.saveOnRegisterInfo(registerCollectTable,mbcbDTO,ipo);
             sotTable.setPlatformOrderId(tuple2._2.getPlatformOrderId());
-            //获取通道信息
-            ChannelInfoTable channelInfoTable = newIntoPiecesOfInformationService.getChannelInfoByChannelId(tuple2._2.getChannelId(),ipo);
-            //获取附属通道信息
-            ChannelExtraInfoTable channelExtraInfoTable =  newIntoPiecesOfInformationService.getChannelExtraInfoByOrgId(channelInfoTable.getOrganizationId(), BussTypeEnum.ADDCUS.getBussType(),ipo);
+            //获取进件附属通道信息
+            ChannelExtraInfoTable channelExtraInfoTable =  newIntoPiecesOfInformationService
+                    .getChannelExtraInfoByOrgId(tuple2._2.getOrganizationId(), BussTypeEnum.ADDCUS.getBussType(),ipo);
             //获取组织机构信息
-            OrganizationInfoTable organizationInfoTable = newIntoPiecesOfInformationService.getOrganizationInfo(channelInfoTable.getOrganizationId(),ipo);
+            OrganizationInfoTable organizationInfoTable = newIntoPiecesOfInformationService
+                    .getOrganizationInfo(channelExtraInfoTable.getOrganizationId(),ipo);
             Class  clz=Class.forName(organizationInfoTable.getApplicationClassObj().trim());
             //封装请求cross必要参数
-            requestCrossMsgDTO = newIntoPiecesOfInformationService.getRequestCrossMsgDTO(new Tuple4(channelInfoTable,channelExtraInfoTable,tuple2._1,tuple2._2));
+            requestCrossMsgDTO = newIntoPiecesOfInformationService.getRequestCrossMsgDTO(new Tuple3(channelExtraInfoTable,tuple2._1,tuple2._2));
             requestCrossMsgDTO.setIP(sotTable.getIp());
             //生成通道处理对象
             CommonChannelHandlePortComponent commonChannelHandlePortComponent = (CommonChannelHandlePortComponent) SpringContextUtil.getBean(clz);
@@ -289,15 +304,13 @@ public class NewIntoPiecesOfInformationController extends NewAbstractCommonContr
             sotTable.setPlatformOrderId(registerCollectTable.getPlatformOrderId());
             //获取进件主表信息
             RegisterInfoTable registerInfoTable = newIntoPiecesOfInformationService.getRegisterInfoTable(registerCollectTable.getRitId(),ipo);
-            //获取通道信息
-            ChannelInfoTable channelInfoTable = newIntoPiecesOfInformationService.getChannelInfoByChannelId(registerCollectTable.getChannelId(),ipo);
             //获取附属通道信息
-            ChannelExtraInfoTable channelExtraInfoTable =  newIntoPiecesOfInformationService.getChannelExtraInfoByOrgId(channelInfoTable.getOrganizationId(), BussTypeEnum.ADDCUS.getBussType(),ipo);
+            ChannelExtraInfoTable channelExtraInfoTable =  newIntoPiecesOfInformationService.getChannelExtraInfoByOrgId(registerCollectTable.getOrganizationId(), BussTypeEnum.ADDCUS.getBussType(),ipo);
             //获取组织机构信息
-            OrganizationInfoTable organizationInfoTable = newIntoPiecesOfInformationService.getOrganizationInfo(channelInfoTable.getOrganizationId(),ipo);
+            OrganizationInfoTable organizationInfoTable = newIntoPiecesOfInformationService.getOrganizationInfo(channelExtraInfoTable.getOrganizationId(),ipo);
             Class  clz=Class.forName(organizationInfoTable.getApplicationClassObj().trim());
             //封装请求cross必要参数
-            requestCrossMsgDTO = newIntoPiecesOfInformationService.getRequestCrossMsgDTO(new Tuple4(channelInfoTable,channelExtraInfoTable,registerInfoTable,registerCollectTable));
+            requestCrossMsgDTO = newIntoPiecesOfInformationService.getRequestCrossMsgDTO(new Tuple3(channelExtraInfoTable,registerInfoTable,registerCollectTable));
             requestCrossMsgDTO.setIP(sotTable.getIp());
             //生成通道处理对象
             CommonChannelHandlePortComponent commonChannelHandlePortComponent = (CommonChannelHandlePortComponent) SpringContextUtil.getBean(clz);
