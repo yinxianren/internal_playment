@@ -1,6 +1,6 @@
 package com.internal.playment.pay.controller.shortcut;
 
-import com.alibaba.dubbo.common.json.JSON;
+import com.alibaba.fastjson.JSON;
 import com.internal.playment.common.dto.*;
 import com.internal.playment.common.enums.BusinessTypeEnum;
 import com.internal.playment.common.enums.BussTypeEnum;
@@ -13,11 +13,10 @@ import com.internal.playment.common.table.business.MerchantCardTable;
 import com.internal.playment.common.table.business.RegisterCollectTable;
 import com.internal.playment.common.table.business.RegisterInfoTable;
 import com.internal.playment.common.table.channel.ChannelExtraInfoTable;
-import com.internal.playment.common.table.channel.ChannelInfoTable;
 import com.internal.playment.common.table.merchant.MerchantInfoTable;
 import com.internal.playment.common.table.system.OrganizationInfoTable;
 import com.internal.playment.common.table.system.SystemOrderTrackTable;
-import com.internal.playment.common.tuple.Tuple5;
+import com.internal.playment.common.tuple.Tuple4;
 import com.internal.playment.pay.channel.CommonChannelHandlePortComponent;
 import com.internal.playment.pay.component.Md5Component;
 import com.internal.playment.pay.config.SpringContextUtil;
@@ -32,7 +31,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -75,8 +73,11 @@ public class NewBondCardController extends NewAbstractCommonController {
             //解析 以及 获取SystemOrderTrackTable对象
             sotTable = this.getSystemOrderTrackTable(request,param,bussType);
             //类型转换
-            mbcaDTO = JSON.parse(sotTable.getRequestMsg(), MerBondCardApplyDTO.class);
-            sotTable.setMerId(mbcaDTO.getMerId()).setMerOrderId(mbcaDTO.getMerOrderId()).setReturnUrl(mbcaDTO.getReturnUrl()).setNoticeUrl(mbcaDTO.getNoticeUrl());
+            mbcaDTO = JSON.parseObject(sotTable.getRequestMsg(), MerBondCardApplyDTO.class);
+            sotTable.setMerId(mbcaDTO.getMerId())
+                    .setMerOrderId(mbcaDTO.getMerOrderId())
+                    .setReturnUrl(mbcaDTO.getReturnUrl())
+                    .setNoticeUrl(mbcaDTO.getNoticeUrl());
             //创建日志打印对象
             ipo = new InnerPrintLogObject(mbcaDTO.getMerId(),mbcaDTO.getTerMerId(),bussType);
             //获取商户信息
@@ -90,27 +91,25 @@ public class NewBondCardController extends NewAbstractCommonController {
             //查看是否重复订单
             newBondCardService.multipleOrder(mbcaDTO.getMerOrderId(),ipo);
             //获取绑卡进件信息
-            List<RegisterCollectTable> registerCollectTableList = newBondCardService.getRegCollectBySuccess(mbcaDTO,ipo);
-            //获取所有已经绑卡成功的卡信息
-            List<MerchantCardTable> merchantCardTableList = newBondCardService.getMerCartInfoBySuccess(mbcaDTO,ipo);
-            //排除已经成功绑卡的通道
-            registerCollectTableList = newBondCardService.filterRegCollectByBondCardSuccess(registerCollectTableList,merchantCardTableList,ipo);
-            //获取等级最高的通道
-            ChannelInfoTable channelInfoTable = newBondCardService.getChannelInfoByRegCollect(registerCollectTableList,ipo);
-            //根据通道ID筛选出最终的进件附表信息
-            RegisterCollectTable registerCollectTable =newBondCardService.filterRegCollectByChannelId(registerCollectTableList,channelInfoTable.getChannelId(),ipo);
+            RegisterCollectTable registerCollectTable = newBondCardService.getRegisterInfoTableByPlatformOrderId(mbcaDTO.getPlatformOrderId(),ipo);
+            //判断该卡是否已经绑卡
+            newBondCardService.checkSuccessBondCardInfo(new MerchantCardTable()
+                    .setMerchantId(mbcaDTO.getMerId())
+                    .setTerminalMerId(mbcaDTO.getTerMerId())
+                    .setBankCardNum(mbcaDTO.getBankCardNum())
+                    .setBussType(BusinessTypeEnum.b6.getBusiType()).setStatus(StatusEnum._0.getStatus()),ipo);
             //获取进件主表
             RegisterInfoTable registerInfoTable = newBondCardService.getRegisterInfoTable(registerCollectTable.getRitId(),ipo);
             //获取通道附属信息
-            ChannelExtraInfoTable channelExtraInfoTable = newBondCardService.getChannelExtraInfoByOrgId(channelInfoTable.getOrganizationId(), BussTypeEnum.BONDCARD.getBussType(),ipo);
+            ChannelExtraInfoTable channelExtraInfoTable = newBondCardService.getChannelExtraInfoByOrgId(registerCollectTable.getOrganizationId(), BussTypeEnum.BONDCARD.getBussType(),ipo);
             //获取组织机构信息
-            OrganizationInfoTable organizationInfoTable = newBondCardService.getOrganizationInfo(channelInfoTable.getOrganizationId(),ipo);
+            OrganizationInfoTable organizationInfoTable = newBondCardService.getOrganizationInfo(channelExtraInfoTable.getOrganizationId(),ipo);
             Class  clz=Class.forName(organizationInfoTable.getApplicationClassObj().trim());
             //保存绑卡申请记录
-            merchantCardTable = newBondCardService.saveCardInfoByB4(mbcaDTO,channelInfoTable,registerCollectTable,ipo);
+            merchantCardTable = newBondCardService.saveCardInfoByB4(mbcaDTO,registerCollectTable,ipo);
             sotTable.setPlatformOrderId(merchantCardTable.getPlatformOrderId());
             //封装请求cross必要参数
-            requestCrossMsgDTO = newBondCardService.getRequestCrossMsgDTO(new Tuple5(registerInfoTable,registerCollectTable,channelInfoTable,channelExtraInfoTable,merchantCardTable));
+            requestCrossMsgDTO = newBondCardService.getRequestCrossMsgDTO(new Tuple4(registerInfoTable,registerCollectTable,channelExtraInfoTable,merchantCardTable));
             requestCrossMsgDTO.setIP(sotTable.getIp());
             //生成通道处理对象
             CommonChannelHandlePortComponent commonChannelHandlePortComponent = (CommonChannelHandlePortComponent) SpringContextUtil.getBean(clz);
@@ -174,7 +173,7 @@ public class NewBondCardController extends NewAbstractCommonController {
             //解析 以及 获取SystemOrderTrackTable对象
             sotTable = this.getSystemOrderTrackTable(request,param,bussType);
             //类型转换
-            mrgbcDTO = JSON.parse(sotTable.getRequestMsg(), MerReGetBondCodeDTO.class);
+            mrgbcDTO = JSON.parseObject(sotTable.getRequestMsg(), MerReGetBondCodeDTO.class);
             sotTable.setMerId(mrgbcDTO.getMerId()).setReturnUrl(mrgbcDTO.getReturnUrl()).setNoticeUrl(mrgbcDTO.getNoticeUrl());
             //创建日志打印对象
             ipo = new InnerPrintLogObject(mrgbcDTO.getMerId(),mrgbcDTO.getTerMerId(),bussType);
@@ -187,24 +186,25 @@ public class NewBondCardController extends NewAbstractCommonController {
             //验证签名
             md5Component.checkMd5(sotTable.getRequestMsg(),merInfoTable.getSecretKey(),ipo);
             //根据平台订单号获取B4操作记录
-            merchantCardTable = newBondCardService.getMerchantCardInfoByPlatformOrderId(mrgbcDTO.getPlatformOrderId(), BusinessTypeEnum.b4.getBusiType(),ipo);
+            merchantCardTable = newBondCardService
+                    .getMerchantCardInfoByPlatformOrderId(mrgbcDTO.getPlatformOrderId(), BusinessTypeEnum.b4.getBusiType(),ipo);
             sotTable.setMerOrderId(merchantCardTable.getMerOrderId());
             //获取进件成功的附属表
-            RegisterCollectTable registerCollectTable = newBondCardService.getRegisterInfoTableByPlatformOrderId(merchantCardTable.getRegisterCollectPlatformOrderId(),ipo);
+            RegisterCollectTable registerCollectTable = newBondCardService
+                    .getRegisterInfoTableByPlatformOrderId(merchantCardTable.getRegisterCollectPlatformOrderId(),ipo);
             //获取进件主表
             RegisterInfoTable registerInfoTable = newBondCardService.getRegisterInfoTable(registerCollectTable.getRitId(),ipo);
-            //获取通道信息
-            ChannelInfoTable channelInfoTable = newBondCardService.getChannelInfoByChannelId(registerCollectTable.getChannelId(),ipo);
             //获取通道附属信息
-            ChannelExtraInfoTable channelExtraInfoTable = newBondCardService.getChannelExtraInfoByOrgId(channelInfoTable.getOrganizationId(), BussTypeEnum.BONDCARD.getBussType(),ipo);
+            ChannelExtraInfoTable channelExtraInfoTable = newBondCardService
+                    .getChannelExtraInfoByOrgId(registerCollectTable.getOrganizationId(), BussTypeEnum.BONDCARD.getBussType(),ipo);
             //获取组织机构信息
-            OrganizationInfoTable organizationInfoTable = newBondCardService.getOrganizationInfo(channelInfoTable.getOrganizationId(),ipo);
+            OrganizationInfoTable organizationInfoTable = newBondCardService.getOrganizationInfo(channelExtraInfoTable.getOrganizationId(),ipo);
             Class  clz=Class.forName(organizationInfoTable.getApplicationClassObj().trim());
             //保存绑卡申请记录
             merchantCardTable = newBondCardService.saveCardInfoByB5(merchantCardTable,mrgbcDTO,ipo);
             sotTable.setPlatformOrderId(merchantCardTable.getPlatformOrderId());
             //封装请求cross必要参数
-            requestCrossMsgDTO = newBondCardService.getRequestCrossMsgDTO(new Tuple5(registerInfoTable,registerCollectTable,channelInfoTable,channelExtraInfoTable,merchantCardTable));
+            requestCrossMsgDTO = newBondCardService.getRequestCrossMsgDTO(new Tuple4(registerInfoTable,registerCollectTable,channelExtraInfoTable,merchantCardTable));
             requestCrossMsgDTO.setIP(sotTable.getIp());
             //生成通道处理对象
             CommonChannelHandlePortComponent commonChannelHandlePortComponent = (CommonChannelHandlePortComponent) SpringContextUtil.getBean(clz);
@@ -269,7 +269,7 @@ public class NewBondCardController extends NewAbstractCommonController {
             //解析 以及 获取SystemOrderTrackTable对象
             sotTable = this.getSystemOrderTrackTable(request,param,bussType);
             //类型转换
-            mcbcDTO = JSON.parse(sotTable.getRequestMsg(), MerConfirmBondCardDTO.class);
+            mcbcDTO = JSON.parseObject(sotTable.getRequestMsg(), MerConfirmBondCardDTO.class);
             sotTable.setMerId(mcbcDTO.getMerId()).setReturnUrl(mcbcDTO.getReturnUrl()).setNoticeUrl(mcbcDTO.getNoticeUrl());
             //创建日志打印对象
             ipo = new InnerPrintLogObject(mcbcDTO.getMerId(),mcbcDTO.getTerMerId(),bussType);
@@ -289,18 +289,16 @@ public class NewBondCardController extends NewAbstractCommonController {
             RegisterCollectTable registerCollectTable = newBondCardService.getRegisterInfoTableByPlatformOrderId(merchantCardTable.getRegisterCollectPlatformOrderId(),ipo);
             //获取进件主表
             RegisterInfoTable registerInfoTable = newBondCardService.getRegisterInfoTable(registerCollectTable.getRitId(),ipo);
-            //获取通道信息
-            ChannelInfoTable channelInfoTable = newBondCardService.getChannelInfoByChannelId(registerCollectTable.getChannelId(),ipo);
             //获取通道附属信息
-            ChannelExtraInfoTable channelExtraInfoTable = newBondCardService.getChannelExtraInfoByOrgId(channelInfoTable.getOrganizationId(), BussTypeEnum.BONDCARD.getBussType(),ipo);
+            ChannelExtraInfoTable channelExtraInfoTable = newBondCardService.getChannelExtraInfoByOrgId(registerCollectTable.getOrganizationId(), BussTypeEnum.BONDCARD.getBussType(),ipo);
             //获取组织机构信息
-            OrganizationInfoTable organizationInfoTable = newBondCardService.getOrganizationInfo(channelInfoTable.getOrganizationId(),ipo);
+            OrganizationInfoTable organizationInfoTable = newBondCardService.getOrganizationInfo(channelExtraInfoTable.getOrganizationId(),ipo);
             Class  clz=Class.forName(organizationInfoTable.getApplicationClassObj().trim());
             //保存绑卡申请记录
             merchantCardTable = newBondCardService.saveCardInfoByB6(merchantCardTable,mcbcDTO,ipo);
             sotTable.setPlatformOrderId(merchantCardTable.getPlatformOrderId());
             //封装请求cross必要参数
-            requestCrossMsgDTO = newBondCardService.getRequestCrossMsgDTO(new Tuple5(registerInfoTable,registerCollectTable,channelInfoTable,channelExtraInfoTable,merchantCardTable));
+            requestCrossMsgDTO = newBondCardService.getRequestCrossMsgDTO(new Tuple4(registerInfoTable,registerCollectTable,channelExtraInfoTable,merchantCardTable));
             requestCrossMsgDTO.setIP(sotTable.getIp());
             //生成通道处理对象
             CommonChannelHandlePortComponent commonChannelHandlePortComponent = (CommonChannelHandlePortComponent) SpringContextUtil.getBean(clz);

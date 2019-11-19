@@ -1,6 +1,6 @@
 package com.internal.playment.pay.controller.shortcut;
 
-import com.alibaba.dubbo.common.json.JSON;
+import com.alibaba.fastjson.JSON;
 import com.internal.playment.common.dto.*;
 import com.internal.playment.common.enums.BusinessTypeEnum;
 import com.internal.playment.common.enums.BussTypeEnum;
@@ -74,7 +74,7 @@ public class NewIntoPiecesOfInformationController extends NewAbstractCommonContr
             //解析 以及 获取SystemOrderTrackTable对象
             sotTable = this.getSystemOrderTrackTable(request,param,bussType);
             //类型转换
-            mbirDTO = JSON.parse(sotTable.getRequestMsg(), MerBasicInfoRegDTO.class);
+            mbirDTO = JSON.parseObject(sotTable.getRequestMsg(), MerBasicInfoRegDTO.class);
             sotTable.setMerId(mbirDTO.getMerId()).setMerOrderId(mbirDTO.getMerOrderId());
             //创建日志打印对象
             ipo = new InnerPrintLogObject(mbirDTO.getMerId(),mbirDTO.getTerMerId(),bussType);
@@ -190,7 +190,7 @@ public class NewIntoPiecesOfInformationController extends NewAbstractCommonContr
             //解析 以及 获取SystemOrderTrackTable对象
             sotTable = this.getSystemOrderTrackTable(request,param,bussType);
             //类型转换
-            mbcbDTO = JSON.parse(sotTable.getRequestMsg(),MerBankCardBindDTO.class);
+            mbcbDTO = JSON.parseObject(sotTable.getRequestMsg(),MerBankCardBindDTO.class);
             sotTable.setMerId(mbcbDTO.getMerId());
             //创建日志打印对象
             ipo = new InnerPrintLogObject(mbcbDTO.getMerId(),mbcbDTO.getTerMerId(),bussType);
@@ -282,7 +282,7 @@ public class NewIntoPiecesOfInformationController extends NewAbstractCommonContr
             //解析 以及 获取SystemOrderTrackTable对象
             sotTable = this.getSystemOrderTrackTable(request,param,bussType);
             //类型转换
-            msDTO = JSON.parse(sotTable.getRequestMsg(),MerServiceFulfillDTO.class);
+            msDTO = JSON.parseObject(sotTable.getRequestMsg(),MerServiceFulfillDTO.class);
             sotTable.setMerId(msDTO.getMerId());
             //创建日志打印对象
             ipo = new InnerPrintLogObject(msDTO.getMerId(),msDTO.getTerMerId(),bussType);

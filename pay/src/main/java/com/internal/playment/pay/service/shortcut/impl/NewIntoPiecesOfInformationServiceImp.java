@@ -252,45 +252,45 @@ public class NewIntoPiecesOfInformationServiceImp extends CommonServiceAbstract 
         return channelInfoTableList;
     }
 
-    @Override
-    public Tuple2<List<ProductSettingTable>,Set<ChannelInfoTable>> filtrationChannelInfoByProductType(List<ChannelInfoTable> list, String productType, InnerPrintLogObject ipo) throws NewPayException {
-        final String localPoint="filtrationChannelInfoByProductType";
-        Set<String> orgIds = list.stream().map(ChannelInfoTable::getOrganizationId).collect(Collectors.toSet());
-        List<ProductSettingTable> productSettingTableList;
-        try {
-            productSettingTableList = dbCommonRPCComponent.apiProductTypeSettingService.list(new ProductSettingTable()
-                    .setProductId(productType)//产品类型不存在,或未开启该产品
-                    .setOrganizationIds(orgIds));
-        }catch (Exception e){
-            e.printStackTrace();
-            throw new NewPayException(
-                    ResponseCodeEnum.RXH99999.getCode(),
-                    format("%s-->商户号：%s；终端号：%s；错误信息: %s ；B1代码所在位置：%s,异常根源：获取产品类型所支持的组织机构信息发生异常,异常信息：%s",
-                            ipo.getBussType(),ipo.getMerId(),ipo.getTerMerId(),ResponseCodeEnum.RXH99999.getMsg(),localPoint,e.getMessage()),
-                    format(" %s",ResponseCodeEnum.RXH99999.getMsg())
-            );
-        }
-        isHasNotElement(productSettingTableList,
-                ResponseCodeEnum.RXH00021.getCode(),
-                format("%s-->商户号：%s；终端号：%s；错误信息: %s ；",ipo.getBussType(),ipo.getMerId(),ipo.getTerMerId(),ResponseCodeEnum.RXH00021.getMsg()),
-                format(" %s",ResponseCodeEnum.RXH00021.getMsg()));
-
-        Set<ChannelInfoTable> channelInfoTableSet=  new HashSet<>(list.size());
-        final List<ProductSettingTable> productSettingTableList2=productSettingTableList;
-        //过滤要进件的通道
-        list.forEach(ch->{
-            productSettingTableList2.forEach(pro->{
-                if( ch.getOrganizationId().equalsIgnoreCase(pro.getOrganizationId()) && ch.getProductId().equalsIgnoreCase(pro.getProductId())){
-                    channelInfoTableSet.add(ch);
-                }
-            });
-        });
-        isHasNotElement(channelInfoTableSet,//通道不匹配
-                ResponseCodeEnum.RXH00022.getCode(),
-                format("%s-->商户号：%s；终端号：%s；错误信息: %s ；代码所在位置：%s",ipo.getBussType(),ipo.getMerId(),ipo.getTerMerId(),ResponseCodeEnum.RXH00022.getMsg(),localPoint),
-                format(" %s",ResponseCodeEnum.RXH00022.getMsg()));
-        return new Tuple2(productSettingTableList,channelInfoTableSet);
-    }
+//    @Override
+//    public Tuple2<List<ProductSettingTable>,Set<ChannelInfoTable>> filtrationChannelInfoByProductType(List<ChannelInfoTable> list, String productType, InnerPrintLogObject ipo) throws NewPayException {
+//        final String localPoint="filtrationChannelInfoByProductType";
+//        Set<String> orgIds = list.stream().map(ChannelInfoTable::getOrganizationId).collect(Collectors.toSet());
+//        List<ProductSettingTable> productSettingTableList;
+//        try {
+//            productSettingTableList = dbCommonRPCComponent.apiProductTypeSettingService.list(new ProductSettingTable()
+//                    .setProductId(productType)//产品类型不存在,或未开启该产品
+//                    .setOrganizationIds(orgIds));
+//        }catch (Exception e){
+//            e.printStackTrace();
+//            throw new NewPayException(
+//                    ResponseCodeEnum.RXH99999.getCode(),
+//                    format("%s-->商户号：%s；终端号：%s；错误信息: %s ；B1代码所在位置：%s,异常根源：获取产品类型所支持的组织机构信息发生异常,异常信息：%s",
+//                            ipo.getBussType(),ipo.getMerId(),ipo.getTerMerId(),ResponseCodeEnum.RXH99999.getMsg(),localPoint,e.getMessage()),
+//                    format(" %s",ResponseCodeEnum.RXH99999.getMsg())
+//            );
+//        }
+//        isHasNotElement(productSettingTableList,
+//                ResponseCodeEnum.RXH00021.getCode(),
+//                format("%s-->商户号：%s；终端号：%s；错误信息: %s ；",ipo.getBussType(),ipo.getMerId(),ipo.getTerMerId(),ResponseCodeEnum.RXH00021.getMsg()),
+//                format(" %s",ResponseCodeEnum.RXH00021.getMsg()));
+//
+//        Set<ChannelInfoTable> channelInfoTableSet=  new HashSet<>(list.size());
+//        final List<ProductSettingTable> productSettingTableList2=productSettingTableList;
+//        //过滤要进件的通道
+//        list.forEach(ch->{
+//            productSettingTableList2.forEach(pro->{
+//                if( ch.getOrganizationId().equalsIgnoreCase(pro.getOrganizationId()) && ch.getProductId().equalsIgnoreCase(pro.getProductId())){
+//                    channelInfoTableSet.add(ch);
+//                }
+//            });
+//        });
+//        isHasNotElement(channelInfoTableSet,//通道不匹配
+//                ResponseCodeEnum.RXH00022.getCode(),
+//                format("%s-->商户号：%s；终端号：%s；错误信息: %s ；代码所在位置：%s",ipo.getBussType(),ipo.getMerId(),ipo.getTerMerId(),ResponseCodeEnum.RXH00022.getMsg(),localPoint),
+//                format(" %s",ResponseCodeEnum.RXH00022.getMsg()));
+//        return new Tuple2(productSettingTableList,channelInfoTableSet);
+//    }
 
 
     @Override

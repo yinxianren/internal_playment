@@ -53,11 +53,10 @@ public interface NewBondCardService extends CommonServiceInterface {
     /**
      *  保存绑卡申请记录
      * @param mbcaDTO
-     * @param channelInfoTable
      * @param ipo
      * @return
      */
-    MerchantCardTable saveCardInfoByB4(MerBondCardApplyDTO mbcaDTO, ChannelInfoTable channelInfoTable, RegisterCollectTable registerCollectTable, InnerPrintLogObject ipo) throws NewPayException;
+    MerchantCardTable saveCardInfoByB4(MerBondCardApplyDTO mbcaDTO,RegisterCollectTable registerCollectTable, InnerPrintLogObject ipo) throws NewPayException;
     /**
      *
      * @param merchantCardTable
@@ -98,7 +97,7 @@ public interface NewBondCardService extends CommonServiceInterface {
      * @param ipo
      * @return
      */
-    List<RegisterCollectTable> getRegCollectBySuccess(MerBondCardApplyDTO mbcaDTO, InnerPrintLogObject ipo) throws NewPayException;
+//    List<RegisterCollectTable> getRegCollectBySuccess(MerBondCardApplyDTO mbcaDTO, InnerPrintLogObject ipo) throws NewPayException;
 
     /**
      *
@@ -106,7 +105,7 @@ public interface NewBondCardService extends CommonServiceInterface {
      * @param ipo
      * @return
      */
-    ChannelInfoTable getChannelInfoByRegCollect(List<RegisterCollectTable> registerCollectTableList, InnerPrintLogObject ipo) throws NewPayException;
+//    ChannelInfoTable getChannelInfoByRegCollect(List<RegisterCollectTable> registerCollectTableList, InnerPrintLogObject ipo) throws NewPayException;
 
     /**
      *
@@ -115,7 +114,7 @@ public interface NewBondCardService extends CommonServiceInterface {
      * @param ipo
      * @return
      */
-    RegisterCollectTable filterRegCollectByChannelId(List<RegisterCollectTable> registerCollectTableList, String channelId, InnerPrintLogObject ipo) throws NewPayException;
+//    RegisterCollectTable filterRegCollectByChannelId(List<RegisterCollectTable> registerCollectTableList, String channelId, InnerPrintLogObject ipo) throws NewPayException;
 
     /**
      *
@@ -123,7 +122,7 @@ public interface NewBondCardService extends CommonServiceInterface {
      * @param ipo
      * @return
      */
-    List<MerchantCardTable> getMerCartInfoBySuccess(MerBondCardApplyDTO mbcaDTO, InnerPrintLogObject ipo) throws NewPayException;
+//    List<MerchantCardTable> getMerCartInfoBySuccess(MerBondCardApplyDTO mbcaDTO, InnerPrintLogObject ipo) throws NewPayException;
 
     /**
      *
@@ -132,7 +131,7 @@ public interface NewBondCardService extends CommonServiceInterface {
      * @param ipo
      * @return
      */
-    List<RegisterCollectTable> filterRegCollectByBondCardSuccess(List<RegisterCollectTable> registerCollectTableList, List<MerchantCardTable> merchantCardTableList, InnerPrintLogObject ipo) throws NewPayException;
+//    List<RegisterCollectTable> filterRegCollectByBondCardSuccess(List<RegisterCollectTable> registerCollectTableList, List<MerchantCardTable> merchantCardTableList, InnerPrintLogObject ipo) throws NewPayException;
 
     /**
      *
@@ -143,4 +142,10 @@ public interface NewBondCardService extends CommonServiceInterface {
      * @param ipo
      */
     void updateByBondCardInfoByB6(CrossResponseMsgDTO crossResponseMsgDTO, String crossResponseMsg, MerchantCardTable merchantCardTable, MerchantCardTable merchantCardTable_old, InnerPrintLogObject ipo) throws NewPayException;
+
+    /**
+     *
+     * @param merchantCardTable
+     */
+    void checkSuccessBondCardInfo(MerchantCardTable merchantCardTable,InnerPrintLogObject ipo) throws NewPayException;
 }

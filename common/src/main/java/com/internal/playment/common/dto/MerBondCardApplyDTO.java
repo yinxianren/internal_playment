@@ -18,6 +18,7 @@ public class MerBondCardApplyDTO implements Serializable {
     private String signType;//	签名类型	固定为MD5
     private String merId;//	商户号	我司分配给接入方的唯一编码
     private String merOrderId;//	商户订单号	要求唯一
+    private String platformOrderId;//
     private String cardHolderName;//持卡人姓名
     private String identityType;//证件类型	1身份证、2护照、3港澳回乡证、4台胞证、5军官证、
     private String identityNum;//证件号码

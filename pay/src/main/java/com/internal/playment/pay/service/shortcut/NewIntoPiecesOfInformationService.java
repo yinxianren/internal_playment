@@ -57,7 +57,7 @@ public interface NewIntoPiecesOfInformationService  extends CommonServiceInterfa
      * @param ipo
      * @return
      */
-    Tuple2<List<ProductSettingTable>,Set<ChannelInfoTable>> filtrationChannelInfoByProductType(List<ChannelInfoTable> list, String productType, InnerPrintLogObject ipo) throws NewPayException;
+//    Tuple2<List<ProductSettingTable>,Set<ChannelInfoTable>> filtrationChannelInfoByProductType(List<ChannelInfoTable> list, String productType, InnerPrintLogObject ipo) throws NewPayException;
 
     /**
      *  获取子商户成功进件的所有记录

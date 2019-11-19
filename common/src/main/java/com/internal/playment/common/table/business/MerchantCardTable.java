@@ -23,8 +23,6 @@ public class MerchantCardTable  implements Serializable,Cloneable{
 	@TableId(type= IdType.INPUT)
 	private Long id;//表主键
 	private String organizationId;
-	private String channelId;
-	private String productId;
 	private String platformOrderId;//平台订单号
 	private String registerCollectPlatformOrderId;//进件附属表的流水号
 	private String merchantId;//商户号
@@ -112,18 +110,9 @@ public class MerchantCardTable  implements Serializable,Cloneable{
 		return this;
 	}
 
-	public MerchantCardTable setChannelId(String channelId) {
-		this.channelId = channelId;
-		return this;
-	}
 
 	public MerchantCardTable setOrganizationId(String organizationId) {
 		this.organizationId = organizationId;
-		return this;
-	}
-
-	public MerchantCardTable setProductId(String productId) {
-		this.productId = productId;
 		return this;
 	}
 
