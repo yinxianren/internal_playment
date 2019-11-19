@@ -40,14 +40,14 @@ public abstract class CommonServiceAbstract implements NewPayAssert, PayUtil {
     @Autowired
     protected Md5Component md5Component;
 
-
-
     public List<MerchantSettingTable> getMerchantSetting(InnerPrintLogObject ipo) throws NewPayException {
         final String localPoint="getMerchantSetting";
         List<MerchantSettingTable> list =null;
         try {
             list = dbCommonRPCComponent.apiMerchantSettingService.getList(
-                    new MerchantSettingTable().setMerchantId(ipo.getMerId())
+                    new MerchantSettingTable()
+                            .setStatus(StatusEnum._0.getStatus())
+                            .setMerchantId(ipo.getMerId())
             );
         }catch (Exception e){
             e.printStackTrace();

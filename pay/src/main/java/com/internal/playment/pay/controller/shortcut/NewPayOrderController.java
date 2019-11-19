@@ -1,6 +1,6 @@
 package com.internal.playment.pay.controller.shortcut;
 
-import com.alibaba.dubbo.common.json.JSON;
+import com.alibaba.fastjson.JSON;
 import com.internal.playment.common.dto.CrossResponseMsgDTO;
 import com.internal.playment.common.dto.MerPayOrderApplyDTO;
 import com.internal.playment.common.dto.MerPayOrderConfirmDTO;
@@ -80,7 +80,7 @@ public class NewPayOrderController extends NewAbstractCommonController {
             //0.解析 以及 获取SystemOrderTrackTable对象
             sotTable = this.getSystemOrderTrackTable(request,param,bussType);
             //类型转换
-            merPayOrderApplyDTO = JSON.parse(sotTable.getRequestMsg(), MerPayOrderApplyDTO.class);
+            merPayOrderApplyDTO = JSON.parseObject(sotTable.getRequestMsg(), MerPayOrderApplyDTO.class);
             sotTable.setMerId(merPayOrderApplyDTO.getMerId())
                     .setMerOrderId(merPayOrderApplyDTO.getMerOrderId())
                     .setReturnUrl(merPayOrderApplyDTO.getReturnUrl())
@@ -119,16 +119,26 @@ public class NewPayOrderController extends NewAbstractCommonController {
             MerchantCardTable merchantCardTable;
             //没有通道使用记录
             if(isNull(channelHistoryTable)){
-                //获取成功进件记录
-                List<RegisterCollectTable> registerCollectTableList = newPayOrderService.getSuccessRegisterInfo(ipo,merPayOrderApplyDTO.getMerId(),merPayOrderApplyDTO.getTerMerId(),merPayOrderApplyDTO.getProductType());
-                //根据商户配置信息
+                //根据商户配置信息,并且进行二次过滤，主要根据本次交易的产品类型
                 List<MerchantSettingTable> merchantSettingTableList = newPayOrderService.getMerchantSetting(ipo);
+                merchantSettingTableList = newPayOrderService
+                        .filterMerchantSettingTableByProductType(merchantSettingTableList,merPayOrderApplyDTO.getProductType(),ipo);
+                //获取成功进件记录
+                List<RegisterCollectTable> registerCollectTableList = newPayOrderService.getSuccessRegisterInfo(new RegisterCollectTable()
+                        .setMerchantId(merPayOrderApplyDTO.getMerId())
+                        .setTerminalMerId(merPayOrderApplyDTO.getTerMerId())
+                        .setBussType(BusinessTypeEnum.b3.getBusiType())
+                        .setStatus(StatusEnum._0.getStatus()),ipo);
                 //根据配置通道信息过滤可用的进件信息
                 registerCollectTableList = newPayOrderService.filterRegCollectByMerSet(registerCollectTableList,merchantSettingTableList,ipo);
                 //根据进件信息获取邦卡记录
                 List<MerchantCardTable> merchantCardTableList = newPayOrderService.getSuccessMerchantCardInfo(registerCollectTableList, ipo);
                 //根据收单的信息过滤出绑卡信息
-                merchantCardTableList= newPayOrderService.filterMerCardByPaymentMsg(merchantCardTableList,ipo,merPayOrderApplyDTO.getBankCardNum(),merPayOrderApplyDTO.getBankCardPhone());
+                merchantCardTableList= newPayOrderService.filterMerCardByPaymentMsg(
+                        merchantCardTableList,
+                        ipo,
+                        merPayOrderApplyDTO.getBankCardNum(),
+                        merPayOrderApplyDTO.getBankCardPhone());
                 //根据进件信息和绑卡信息过滤进件信息,  merchantCardTableList,registerCollectTableList 有共同的组织机构
                 registerCollectTableList  = newPayOrderService.filterRegCollectInfoByMerCard(registerCollectTableList,merchantCardTableList,ipo);
                 //获取可行的通道
@@ -144,6 +154,8 @@ public class NewPayOrderController extends NewAbstractCommonController {
                 channelInfoTable = newPayOrderService.getChannelInfoByChannelHistory(channelHistoryTable,ipo);
                 //根据商户配置信息
                 List<MerchantSettingTable> merchantSettingTableList = newPayOrderService.getMerchantSetting(ipo);
+                merchantSettingTableList = newPayOrderService
+                        .filterMerchantSettingTableByProductType(merchantSettingTableList,merPayOrderApplyDTO.getProductType(),ipo);
                 //判断商户是否该通道,如果该channelInfoTable没在merchantSettingTableList列表中，则制空
                 channelInfoTable = newPayOrderService.judgeThisChannelUsable(channelInfoTable,merchantSettingTableList);
                 //备份一个通道信息
@@ -158,17 +170,26 @@ public class NewPayOrderController extends NewAbstractCommonController {
                 //如果该通道从商户配置中删除，则该通道为null,需要重新获取一次
                 if(isNull(channelInfoTable)){
                     //获取成功进件记录
-                    List<RegisterCollectTable> registerCollectTableList = newPayOrderService.getSuccessRegisterInfo(ipo,merPayOrderApplyDTO.getMerId(),merPayOrderApplyDTO.getTerMerId(),merPayOrderApplyDTO.getProductType());
+                    List<RegisterCollectTable> registerCollectTableList = newPayOrderService.getSuccessRegisterInfo(new RegisterCollectTable()
+                            .setMerchantId(merPayOrderApplyDTO.getMerId())
+                            .setTerminalMerId(merPayOrderApplyDTO.getTerMerId())
+                            .setBussType(BusinessTypeEnum.b3.getBusiType())
+                            .setStatus(StatusEnum._0.getStatus()),ipo);
                     //根据配置通道信息过滤可用的进件信息
                     registerCollectTableList = newPayOrderService.filterRegCollectByMerSet(registerCollectTableList,merchantSettingTableList,ipo);
                     //根据进件信息获取邦卡记录
                     List<MerchantCardTable> merchantCardTableList = newPayOrderService.getSuccessMerchantCardInfo(registerCollectTableList, ipo);
                     //根据收单的信息过滤出绑卡信息
-                    merchantCardTableList= newPayOrderService.filterMerCardByPaymentMsg(merchantCardTableList,ipo,merPayOrderApplyDTO.getBankCardNum(),merPayOrderApplyDTO.getBankCardPhone());
+                    merchantCardTableList= newPayOrderService.filterMerCardByPaymentMsg(
+                            merchantCardTableList,
+                            ipo,
+                            merPayOrderApplyDTO.getBankCardNum(),
+                            merPayOrderApplyDTO.getBankCardPhone());
                     //根据进件信息和绑卡信息过滤进件信息,  merchantCardTableList,registerCollectTableList 有共同的组织机构
                     registerCollectTableList  = newPayOrderService.filterRegCollectInfoByMerCard(registerCollectTableList,merchantCardTableList,ipo);
                     //获取可行的通道
-                    List<ChannelInfoTable> channelInfoTableList = newPayOrderService.getAllUsableChannelList(registerCollectTableList,ipo,merPayOrderApplyDTO.getProductType(),BusinessTypeEnum.PAY.getBusiType());
+                    List<ChannelInfoTable> channelInfoTableList = newPayOrderService
+                            .getAllUsableChannelList(registerCollectTableList,ipo,merPayOrderApplyDTO.getProductType(),BusinessTypeEnum.PAY.getBusiType());
                     //去除前面备份的通道
                     channelInfoTableList = newPayOrderService.subtractUnableChanInfo(channelInfoTableList,channelInfoTable_back,ipo);
                     //获取最终可用的通道
@@ -181,7 +202,12 @@ public class NewPayOrderController extends NewAbstractCommonController {
                     //获取进件信息
                     registerCollectTable = newPayOrderService.getSuccessRegInfoByChanInfo(channelInfoTable, ipo);
                     //获取绑卡信息
-                    merchantCardTable = newPayOrderService.getMerCardByChanAndReg(channelInfoTable, registerCollectTable, ipo, merPayOrderApplyDTO.getBankCardNum(),merPayOrderApplyDTO.getBankCardPhone());
+                    merchantCardTable = newPayOrderService.getMerCardByChanAndReg(
+                            channelInfoTable,
+                            registerCollectTable,
+                            ipo,
+                            merPayOrderApplyDTO.getBankCardNum(),
+                            merPayOrderApplyDTO.getBankCardPhone());
                 }
             }
             //获取组织机构信息
@@ -251,7 +277,7 @@ public class NewPayOrderController extends NewAbstractCommonController {
             //解析 以及 获取SystemOrderTrackTable对象
             sotTable = this.getSystemOrderTrackTable(request,param,bussType);
             //类型转换
-            merPayOrderConfirmDTO = JSON.parse(sotTable.getRequestMsg(), MerPayOrderConfirmDTO.class);
+            merPayOrderConfirmDTO = JSON.parseObject(sotTable.getRequestMsg(), MerPayOrderConfirmDTO.class);
             sotTable.setMerId(merPayOrderConfirmDTO.getMerId())
                     .setPlatformOrderId(merPayOrderConfirmDTO.getPlatformOrderId());
             //创建日志打印对象
@@ -342,7 +368,7 @@ public class NewPayOrderController extends NewAbstractCommonController {
             //解析 以及 获取SystemOrderTrackTable对象
             sotTable = this.getSystemOrderTrackTable(request,param,bussType);
             //类型转换
-            merPayOrderConfirmDTO = JSON.parse(sotTable.getRequestMsg(), MerPayOrderConfirmDTO.class);
+            merPayOrderConfirmDTO = JSON.parseObject(sotTable.getRequestMsg(), MerPayOrderConfirmDTO.class);
             sotTable.setMerId(merPayOrderConfirmDTO.getMerId())
                     .setPlatformOrderId(merPayOrderConfirmDTO.getPlatformOrderId());
             //创建日志打印对象

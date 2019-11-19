@@ -1,6 +1,6 @@
 package com.internal.playment.pay.controller.shortcut;
 
-import com.alibaba.dubbo.common.json.JSON;
+import com.alibaba.fastjson.JSON;
 import com.internal.playment.common.dto.CrossResponseMsgDTO;
 import com.internal.playment.common.dto.MerNoAuthPayOrderApplyDTO;
 import com.internal.playment.common.dto.RequestCrossMsgDTO;
@@ -81,7 +81,7 @@ public class NewNoAuthenticationPayOrderController  extends NewAbstractCommonCon
             //0.解析 以及 获取SystemOrderTrackTable对象
             sotTable = this.getSystemOrderTrackTable(request,param,bussType);
             //类型转换
-            merNoAuthPayOrderApplyDTO = JSON.parse(sotTable.getRequestMsg(), MerNoAuthPayOrderApplyDTO.class);
+            merNoAuthPayOrderApplyDTO = JSON.parseObject(sotTable.getRequestMsg(), MerNoAuthPayOrderApplyDTO.class);
             sotTable.setMerId(merNoAuthPayOrderApplyDTO.getMerId())
                     .setAmount( new BigDecimal(merNoAuthPayOrderApplyDTO.getAmount()) )
                     .setMerOrderId(merNoAuthPayOrderApplyDTO.getMerOrderId())
@@ -122,16 +122,28 @@ public class NewNoAuthenticationPayOrderController  extends NewAbstractCommonCon
             Tuple2<RiskQuotaTable,RiskQuotaTable> channelRiskQuota = null;
             //没有通道使用记录
             if(isNull(channelHistoryTable)){
-                //获取成功进件记录
-                List<RegisterCollectTable> registerCollectTableList = newPayOrderService.getSuccessRegisterInfo(ipo, merNoAuthPayOrderApplyDTO.getMerId(),merNoAuthPayOrderApplyDTO.getTerMerId(),merNoAuthPayOrderApplyDTO.getProductType());
-                //根据商户配置信息
+                //根据商户配置信息,并且进行二次过滤，主要根据本次交易的产品类型
                 List<MerchantSettingTable> merchantSettingTableList = newPayOrderService.getMerchantSetting(ipo);
+                merchantSettingTableList = newPayOrderService
+                        .filterMerchantSettingTableByProductType(merchantSettingTableList,merNoAuthPayOrderApplyDTO.getProductType(),ipo);
+                //获取成功进件记录
+                List<RegisterCollectTable> registerCollectTableList = newPayOrderService.getSuccessRegisterInfo(new RegisterCollectTable()
+                        .setMerchantId(merNoAuthPayOrderApplyDTO.getMerId())
+                        .setTerminalMerId(merNoAuthPayOrderApplyDTO.getTerMerId())
+                        .setBussType(BusinessTypeEnum.b3.getBusiType())
+                        .setStatus(StatusEnum._0.getStatus()),ipo);
                 //根据配置通道信息过滤可用的进件信息
-                registerCollectTableList = newPayOrderService.filterRegCollectByMerSet(registerCollectTableList,merchantSettingTableList,ipo);
+                registerCollectTableList = newPayOrderService
+                        .filterRegCollectByMerSet(registerCollectTableList,merchantSettingTableList,ipo);
                 //根据进件信息获取邦卡记录
-                List<MerchantCardTable> merchantCardTableList = newPayOrderService.getSuccessMerchantCardInfo(registerCollectTableList, ipo);
+                List<MerchantCardTable> merchantCardTableList = newPayOrderService
+                        .getSuccessMerchantCardInfo(registerCollectTableList, ipo);
                 //根据收单的信息过滤出绑卡信息
-                merchantCardTableList= newPayOrderService.filterMerCardByPaymentMsg(merchantCardTableList,ipo,merNoAuthPayOrderApplyDTO.getBankCardNum(),merNoAuthPayOrderApplyDTO.getBankCardPhone());
+                merchantCardTableList= newPayOrderService.filterMerCardByPaymentMsg(
+                        merchantCardTableList,
+                        ipo,
+                        merNoAuthPayOrderApplyDTO.getBankCardNum(),
+                        merNoAuthPayOrderApplyDTO.getBankCardPhone());
                 //根据进件信息和绑卡信息过滤进件信息,  merchantCardTableList,registerCollectTableList 有共同的组织机构
                 registerCollectTableList  = newPayOrderService.filterRegCollectInfoByMerCard(registerCollectTableList,merchantCardTableList,ipo);
                 //获取可行的通道
@@ -147,6 +159,8 @@ public class NewNoAuthenticationPayOrderController  extends NewAbstractCommonCon
                 channelInfoTable = newPayOrderService.getChannelInfoByChannelHistory(channelHistoryTable,ipo);
                 //根据商户配置信息
                 List<MerchantSettingTable> merchantSettingTableList = newPayOrderService.getMerchantSetting(ipo);
+                merchantSettingTableList = newPayOrderService
+                        .filterMerchantSettingTableByProductType(merchantSettingTableList,merNoAuthPayOrderApplyDTO.getProductType(),ipo);
                 //判断商户是否该通道,如果该channelInfoTable没在merchantSettingTableList列表中，则制空
                 channelInfoTable = newPayOrderService.judgeThisChannelUsable(channelInfoTable,merchantSettingTableList);
                 //备份一个通道信息
@@ -161,7 +175,12 @@ public class NewNoAuthenticationPayOrderController  extends NewAbstractCommonCon
                 //如果该通道从商户配置中删除，则该通道为null,需要重新获取一次
                 if(isNull(channelInfoTable)){
                     //获取成功进件记录
-                    List<RegisterCollectTable> registerCollectTableList = newPayOrderService.getSuccessRegisterInfo(ipo, merNoAuthPayOrderApplyDTO.getMerId(),merNoAuthPayOrderApplyDTO.getTerMerId(),merNoAuthPayOrderApplyDTO.getProductType());
+                    //获取成功进件记录
+                    List<RegisterCollectTable> registerCollectTableList = newPayOrderService.getSuccessRegisterInfo(new RegisterCollectTable()
+                            .setMerchantId(merNoAuthPayOrderApplyDTO.getMerId())
+                            .setTerminalMerId(merNoAuthPayOrderApplyDTO.getTerMerId())
+                            .setBussType(BusinessTypeEnum.b3.getBusiType())
+                            .setStatus(StatusEnum._0.getStatus()),ipo);
                     //根据配置通道信息过滤可用的进件信息
                     registerCollectTableList = newPayOrderService.filterRegCollectByMerSet(registerCollectTableList,merchantSettingTableList,ipo);
                     //根据进件信息获取邦卡记录

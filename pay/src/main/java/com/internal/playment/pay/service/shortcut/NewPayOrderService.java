@@ -62,10 +62,10 @@ public interface NewPayOrderService extends CommonServiceInterface {
     /**
      *  获取成功进件记录
      * @param ipo
-     * @param  args  MerchantId  TerminalMerId ProductId
+     * @param
      * @return
      */
-    List<RegisterCollectTable> getSuccessRegisterInfo(InnerPrintLogObject ipo, String... args) throws NewPayException;
+    List<RegisterCollectTable> getSuccessRegisterInfo(RegisterCollectTable registerCollectTable,InnerPrintLogObject ipo) throws NewPayException;
 
     /**
      * 根据进件信息获取邦卡记录
@@ -83,13 +83,6 @@ public interface NewPayOrderService extends CommonServiceInterface {
      */
     ChannelHistoryTable getChannelHistoryInfo(InnerPrintLogObject ipo, String... strings) throws NewPayException;
 
-    /**
-     * 判断该卡是否进行绑卡操作
-     * @param merchantCardTableList
-     * @param merPayOrderApplyDTO
-     * @param ipo
-     */
-    void checkBondCardByCardNum(List<MerchantCardTable> merchantCardTableList, MerPayOrderApplyDTO merPayOrderApplyDTO, InnerPrintLogObject ipo) throws NewPayException;
 
     /**
      *  获取风控交易量统计数据
@@ -139,14 +132,6 @@ public interface NewPayOrderService extends CommonServiceInterface {
      */
     ChannelInfoTable executeChannelRisk(ChannelInfoTable channelInfoTable, Tuple2<RiskQuotaTable, RiskQuotaTable> channelRiskQuota, InnerPrintLogObject ipo, String... args) throws NewPayException;
 
-    /**
-     * 获取商户可用支付的所有通道
-     * @param merPayOrderApplyDTO
-     * @param channelHistoryTable
-     * @param ipo
-     * @return
-     */
-    List<ChannelInfoTable> getAllUsableChannel(MerPayOrderApplyDTO merPayOrderApplyDTO, ChannelHistoryTable channelHistoryTable, InnerPrintLogObject ipo) throws NewPayException;
 
     /**
      *  获取一个可行性的通道
@@ -156,14 +141,6 @@ public interface NewPayOrderService extends CommonServiceInterface {
      */
     ChannelInfoTable getFeasibleChannel(List<ChannelInfoTable> channelInfoTableList, InnerPrintLogObject ipo, String... args) throws NewPayException;
 
-    /**
-     * 保存订单信息
-     * @param merPayOrderApplyDTO
-     * @param channelInfoTable
-     * @param ipo
-     * @return
-     */
-    PayOrderInfoTable savePayOrderInfo(MerchantInfoTable merInfoTable, MerPayOrderApplyDTO merPayOrderApplyDTO, ChannelInfoTable channelInfoTable, InnerPrintLogObject ipo) throws NewPayException;
 
     /**
      *  更新订单结果
@@ -370,4 +347,13 @@ public interface NewPayOrderService extends CommonServiceInterface {
      * @param ipo
      */
     void checkProductTypeByB7(MerPayOrderApplyDTO merPayOrderApplyDTO, InnerPrintLogObject ipo) throws NewPayException;
+
+    /**
+     *
+     * @param merchantSettingTableList
+     * @param productType
+     * @param ipo
+     * @return
+     */
+    List<MerchantSettingTable> filterMerchantSettingTableByProductType(List<MerchantSettingTable> merchantSettingTableList, String productType, InnerPrintLogObject ipo) throws NewPayException;
 }

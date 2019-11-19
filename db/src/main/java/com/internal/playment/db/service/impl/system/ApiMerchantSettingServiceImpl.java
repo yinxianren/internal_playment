@@ -30,10 +30,8 @@ public class ApiMerchantSettingServiceImpl implements ApiMerchantSettingService,
     @Override
     public List<MerchantSettingTable> getList(MerchantSettingTable mst) {
         if(isNull(mst)) return null;
-        LambdaQueryWrapper<MerchantSettingTable> lambdaQueryWrapper = new QueryWrapper<MerchantSettingTable>()
-                .lambda()
-                .eq(MerchantSettingTable::getStatus, StatusEnum._0.getStatus()); //默认取可用的
-
+        LambdaQueryWrapper<MerchantSettingTable> lambdaQueryWrapper = new QueryWrapper<MerchantSettingTable>().lambda();
+        if( !isNull(mst.getStatus()))  lambdaQueryWrapper .eq(MerchantSettingTable::getStatus, mst.getStatus());
         if( !isBlank(mst.getMerchantId()) ) lambdaQueryWrapper.eq(MerchantSettingTable::getMerchantId,mst.getMerchantId());
         lambdaQueryWrapper.orderByAsc(MerchantSettingTable::getStatus);
         return merchantSettingDbService.list(lambdaQueryWrapper);
