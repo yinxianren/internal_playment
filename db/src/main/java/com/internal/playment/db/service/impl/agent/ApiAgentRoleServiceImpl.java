@@ -43,6 +43,7 @@ public class ApiAgentRoleServiceImpl implements ApiAgentRoleService, NewPayAsser
     public List<AgentRoleTable> getList(AgentRoleTable agentRoleTable) {
         if (isNull(agentRoleTable)) return agentRoleDBService.list();
         LambdaQueryWrapper<AgentRoleTable> queryWrapper = new LambdaQueryWrapper<>();
+        if (!isBlank(agentRoleTable.getBelongto())) queryWrapper.eq(AgentRoleTable::getBelongto,agentRoleTable.getBelongto());
         return agentRoleDBService.list(queryWrapper);
     }
 }

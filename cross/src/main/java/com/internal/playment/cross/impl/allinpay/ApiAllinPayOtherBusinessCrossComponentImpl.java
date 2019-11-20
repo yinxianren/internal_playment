@@ -259,7 +259,8 @@ public class ApiAllinPayOtherBusinessCrossComponentImpl implements ApiAllinPayOt
             bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
             bankResult.setErrorMsg(ResponseCodeEnum.RXH99999.getMsg());
         }
-//        bankResult.setCrossStatusCode(SystemConstant.BANK_STATUS_FAIL);
+//        bankResult.setCrossStatusCode(StatusEnum._0.getStatus());
+//        bankResult.setCrossStatusMsg(StatusEnum._0.getRemark());
 //        bankResult.setCrossResponseMsg("交易成功");
 //        bankResult.setChannelResponseMsg(content);
         return bankResult;
