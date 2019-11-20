@@ -29,6 +29,7 @@ public class AllinPayChannelHandlePortServiceImpl extends ChannelCommonServiceAb
         AsyncNotifyTable asyncNotifyTable = packageAsyncNotifyTable(payOrderInfoTable,StatusEnum._0.getStatus());
         //保存信息
         dbCommonRPCComponent.apiAsyncNotifyService.save(asyncNotifyTable);
+        super.updatePayOrderNotifyStatus(payOrderInfoTable);
         //放到队列执行
         activeMqOrderProducerComponent.sendMessage(asyncNotify,asyncNotifyTable);
     }
@@ -43,6 +44,7 @@ public class AllinPayChannelHandlePortServiceImpl extends ChannelCommonServiceAb
         AsyncNotifyTable asyncNotifyTable = packageAsyncNotifyTable(transOrderInfoTable,StatusEnum._0.getStatus());
         //保存信息
         dbCommonRPCComponent.apiAsyncNotifyService.save(asyncNotifyTable);
+        super.updateTransOrderNotifyStatus(transOrderInfoTable);
         //放到队列执行
         activeMqOrderProducerComponent.sendMessage(asyncNotify,asyncNotifyTable);
     }
@@ -94,6 +96,7 @@ public class AllinPayChannelHandlePortServiceImpl extends ChannelCommonServiceAb
         AsyncNotifyTable asyncNotifyTable = packageAsyncNotifyTable(payOrderInfoTable, StatusEnum._1.getStatus());
         //保存信息
         dbCommonRPCComponent.apiAsyncNotifyService.save(asyncNotifyTable);
+        super.updatePayOrderNotifyStatus(payOrderInfoTable);
         //放到队列执行
         activeMqOrderProducerComponent.sendMessage(asyncNotify, asyncNotifyTable);
 
@@ -109,6 +112,7 @@ public class AllinPayChannelHandlePortServiceImpl extends ChannelCommonServiceAb
         AsyncNotifyTable asyncNotifyTable = packageAsyncNotifyTable(transOrderInfoTable, StatusEnum._1.getStatus());
         //保存信息
         dbCommonRPCComponent.apiAsyncNotifyService.save(asyncNotifyTable);
+        super.updateTransOrderNotifyStatus(transOrderInfoTable);
         //放到队列执行
         activeMqOrderProducerComponent.sendMessage(asyncNotify, asyncNotifyTable);
     }
