@@ -35,6 +35,9 @@ public class ApiAgentUserServiceImpl implements ApiAgentUserService, NewPayAsser
     public IPage page(AgentUserTable agentUserTable, PageDTO pageDTO) {
         if (isNull(agentUserTable)) return new Page();
         LambdaQueryWrapper<AgentUserTable> queryWrapper = new LambdaQueryWrapper<>();
+        if (!isBlank(agentUserTable.getBelongto())) queryWrapper.eq(AgentUserTable::getBelongto,agentUserTable.getBelongto());
+        if (!isBlank(agentUserTable.getUserName())) queryWrapper.eq(AgentUserTable::getUserName,agentUserTable.getUserName());
+        queryWrapper.orderByDesc(AgentUserTable::getCreateTime);
         IPage iPage = new Page(pageDTO.getPageNum(),pageDTO.getPaegSize());
         return agentUserDBService.page(iPage,queryWrapper);
     }
@@ -43,6 +46,9 @@ public class ApiAgentUserServiceImpl implements ApiAgentUserService, NewPayAsser
     public List<AgentUserTable> getList(AgentUserTable agentUserTable) {
         if (isNull(agentUserTable)) return agentUserDBService.list();
         LambdaQueryWrapper<AgentUserTable> queryWrapper = new LambdaQueryWrapper<>();
+        if (!isBlank(agentUserTable.getBelongto())) queryWrapper.eq(AgentUserTable::getBelongto,agentUserTable.getBelongto());
+        if (!isBlank(agentUserTable.getUserName())) queryWrapper.eq(AgentUserTable::getUserName,agentUserTable.getUserName());
+        queryWrapper.orderByDesc(AgentUserTable::getCreateTime);
         return agentUserDBService.list(queryWrapper);
     }
 }

@@ -44,7 +44,7 @@ public class AgentUserTable implements Serializable {
 
 	private String sessionId; //会话ID
 
-	private Integer available; //是否可用
+	private Integer status; //是否可用
 
 	private String remark; //备注
 
