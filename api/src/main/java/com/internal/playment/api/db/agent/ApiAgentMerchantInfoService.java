@@ -17,4 +17,6 @@ public interface ApiAgentMerchantInfoService {
 
     Boolean delByIds(List<String> ids);
 
+    List<AgentMerchantInfoTable> listByIds(List<Long> ids);
+
 }

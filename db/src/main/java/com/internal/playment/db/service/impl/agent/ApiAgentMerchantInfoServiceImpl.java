@@ -8,6 +8,7 @@ import com.internal.playment.common.table.agent.AgentMerchantInfoTable;
 import com.internal.playment.db.service.db.agent.AgentMerchantInfoDbService;
 import lombok.AllArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 import com.alibaba.dubbo.config.annotation.Service;
 /**
@@ -58,5 +59,13 @@ public class ApiAgentMerchantInfoServiceImpl implements ApiAgentMerchantInfoServ
     public Boolean delByIds(List<String> ids) {
         if (isHasNotElement(ids)) return false;
         return agentMerchantInfoDbService.removeByIds(ids);
+    }
+
+    @Override
+    public List<AgentMerchantInfoTable> listByIds(List<Long> ids) {
+        if (isHasNotElement(ids)) return new ArrayList<>() ;
+        LambdaQueryWrapper<AgentMerchantInfoTable> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.in(AgentMerchantInfoTable::getId,ids);
+        return agentMerchantInfoDbService.list(queryWrapper);
     }
 }
