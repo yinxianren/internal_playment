@@ -1142,6 +1142,7 @@ public class NewPayOrderServiceImpl  extends CommonServiceAbstract implements Ne
                 .setMerRate( merchantRateTable.getRateFee())                                .setMerFee(merFree)
                 .setPlatformIncome(platformIncome)                                          .setSettleCycle(merchantRateTable.getSettleCycle())
                 .setSettleStatus(1)                                                         .setStatus(StatusEnum._2.getStatus())
+                .setNotifyStatus(1)
                 .setChannelRespResult(null)                                                 .setCrossRespResult(null)
                 .setNotifyUrl(merNoAuthPayOrderApplyDTO.getNoticeUrl())                     .setReturnUrl(merNoAuthPayOrderApplyDTO.getReturnUrl())
                 .setCreateTime(new Date())                                                  .setUpdateTime(new Date());
@@ -1398,6 +1399,7 @@ public class NewPayOrderServiceImpl  extends CommonServiceAbstract implements Ne
                 .setMerRate( merchantRateTable.getRateFee())                                .setMerFee(merFree)
                 .setPlatformIncome(platformIncome)                                          .setSettleCycle(merchantRateTable.getSettleCycle())
                 .setSettleStatus(1)                                                         .setStatus(StatusEnum._2.getStatus())
+                .setNotifyStatus(1)
                 .setChannelRespResult(null)                                                 .setCrossRespResult(null)
                 .setNotifyUrl(merPayOrderApplyDTO.getNoticeUrl())                           .setReturnUrl(merPayOrderApplyDTO.getReturnUrl())
                 .setCreateTime(new Date())                                                  .setUpdateTime(new Date());

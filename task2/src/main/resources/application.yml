@@ -9,6 +9,10 @@ application:
   queue:
     pay-order: @application.queue.pay-order@
     trans-order: @application.queue.trans-order@
+  async-query:
+    pay-order: @order.queue.async.query.pay-order@
+    trans-order: @order.queue.async.query.trans-order@
+
 dubbo:
   application:
     #应用名称，每个dubbo应用的名称都是唯一的

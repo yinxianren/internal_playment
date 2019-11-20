@@ -6,14 +6,15 @@ server:
 application:
   #版本号
   version: @application.version@
+  async-notify:
+    order: @order.queue.async.notify@
   queue:
     pay-order: @application.queue.pay-order@
     trans-order: @application.queue.trans-order@
   async-query:
     pay-order: @order.queue.async.query.pay-order@
     trans-order: @order.queue.async.query.trans-order@
-  async-notify:
-    order: @order.queue.async.notify@
+
 
 
 dubbo:

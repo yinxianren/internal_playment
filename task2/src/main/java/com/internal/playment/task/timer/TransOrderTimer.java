@@ -30,7 +30,7 @@ public class TransOrderTimer  extends  AbstractTimer{
     public void task(){
         final String bussType = "【代付补漏任务】";
         log.info("\n================================================================\n" +
-                "====代付定时任务开始执行，本次定时任务查询是否漏单，并放到队列执行====\n"+
+                "===代付定时任务开始执行，本次定时任务查询是否漏单，并放到队列执行==\n"+
                 "================================================================\n" );
         try{
             SimpleDateFormat formatter=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -49,13 +49,15 @@ public class TransOrderTimer  extends  AbstractTimer{
                     format("%s-->%s",bussType,RXH_INNER_CODE_M01._2), RXH_INNER_CODE_M01._2);
             log.info("{}--->有{}个漏单对象！",bussType,transOrderInfoTableList.size());
             int index = 0;
+            StringBuilder sb = new StringBuilder();
             for(TransOrderInfoTable toi : transOrderInfoTableList ){
-                log.info("{}----第[{}]个---[{}]",bussType,++index,toi.toString());
+                sb.append(format("\n{%s}----第[%s]个---[%s]\n",bussType,++index,toi.toString()));
                 ThreadPoolExecutorComponent.executorService.submit(()->activeMqOrderProducerComponent.sendMessage(transOrder,toi));
             }
-            log.info("\n================================================================\n" +
+            log.info(sb.toString());
+            log.info("\n=====================================================================\n" +
                     "=本次代付定时任务已结束，本次定时任务查询[{}]个漏单对象，已放入队列执行=\n"+
-                    "================================================================\n" ,transOrderInfoTableList.size());
+                    "=====================================================================\n" ,transOrderInfoTableList.size());
         }catch (Exception e){
             if(e instanceof NewPayException){
                 NewPayException nep = (NewPayException) e;

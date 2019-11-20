@@ -1,10 +1,12 @@
 package com.internal.playment.inward.service.channel.impl;
 
 import com.internal.playment.common.dto.RequestCrossMsgDTO;
+import com.internal.playment.common.enums.StatusEnum;
 import com.internal.playment.common.inner.PayTreeMap;
 import com.internal.playment.common.table.business.MerchantCardTable;
 import com.internal.playment.common.table.business.PayOrderInfoTable;
 import com.internal.playment.common.table.business.RegisterCollectTable;
+import com.internal.playment.common.table.business.TransOrderInfoTable;
 import com.internal.playment.common.table.channel.ChannelInfoTable;
 import com.internal.playment.common.table.merchant.MerchantInfoTable;
 import com.internal.playment.common.table.system.AsyncNotifyTable;
@@ -16,6 +18,7 @@ import com.internal.playment.inward.component.mq.ActiveMqOrderProducerComponent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
+import java.util.Date;
 import java.util.Map;
 
 public abstract class ChannelCommonServiceAbstract {
@@ -35,8 +38,7 @@ public abstract class ChannelCommonServiceAbstract {
     protected String asyncQueryPayOrder;
     @Value("${application.async-query.trans-order}")
     protected String asyncQueryTransOrder;
-
-    @Value("${application.sync-notify.oder}")
+    @Value("${application.async-notify.order}")
     protected String asyncNotify;
 
 
@@ -63,6 +65,19 @@ public abstract class ChannelCommonServiceAbstract {
                 .setMerchantCardTable(tuple4._2)
                 .setChannelInfoTable(tuple4._3)
                 .setPayOrderInfoTable(tuple4._4);
+    }
+
+
+    protected  boolean updatePayOrderNotifyStatus(PayOrderInfoTable poi){
+        return dbCommonRPCComponent.apiPayOrderInfoService.updateByPrimaryKey(poi
+                .setUpdateTime(new Date())
+                .setNotifyStatus(StatusEnum._0.getStatus()));
+    }
+
+    protected  boolean updateTransOrderNotifyStatus(TransOrderInfoTable toi){
+        return dbCommonRPCComponent.apiTransOrderInfoService.updateById(toi
+                .setUpdateTime(new Date())
+                .setNotifyStatus(StatusEnum._0.getStatus()));
     }
 
 }
