@@ -56,6 +56,7 @@ public class ApiTransOrderInfoServiceImpl implements ApiTransOrderInfoService, N
         if( !isBlank(tit.getBeginTime())) lambdaQueryWrapper.ge(TransOrderInfoTable::getUpdateTime,tit.getBeginTime());
         if( !isBlank(tit.getEndTime())) lambdaQueryWrapper.le(TransOrderInfoTable::getUpdateTime,tit.getEndTime());
         if( isHasElement(tit.getStatusCollect())) lambdaQueryWrapper.in(TransOrderInfoTable::getStatus,tit.getStatusCollect());
+        if( !isNull(tit.getNotifyStatus()) ) lambdaQueryWrapper.eq(TransOrderInfoTable::getNotifyStatus,tit.getNotifyStatus());
         return transOrderInfoDBService.list(lambdaQueryWrapper);
     }
 
