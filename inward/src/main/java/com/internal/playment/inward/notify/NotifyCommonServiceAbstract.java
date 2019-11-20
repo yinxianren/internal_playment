@@ -21,8 +21,7 @@ public abstract class NotifyCommonServiceAbstract implements PayUtil, NewPayAsse
     protected DbCommonRPCComponent dbCommonRPCComponent;
     @Autowired
     protected Md5Component md5Component;
-
-    @Value("${application.sync-notify}")
+    @Value("${application.async-notify.order}")
     protected String asyncNotify;
 
 

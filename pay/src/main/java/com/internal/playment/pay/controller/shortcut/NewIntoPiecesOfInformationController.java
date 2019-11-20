@@ -102,9 +102,6 @@ public class NewIntoPiecesOfInformationController extends NewAbstractCommonContr
             //过滤所支持的通道
             Set<ChannelInfoTable> channelInfoTableSet = newIntoPiecesOfInformationService
                     .filtrationChannelInfo(productGroupTypeTableList,channelInfoTableList,ipo);
-//            //根据产品类型进行过滤
-//            Tuple2<List<ProductSettingTable>,Set<ChannelInfoTable>> tuple2=newIntoPiecesOfInformationService
-//                    .filtrationChannelInfoByProductType(channelInfoTableList,mbirDTO.getProductType(),ipo);
             //获取商户成功进件的信息
             List<RegisterCollectTable>  registerCollectTableList = newIntoPiecesOfInformationService
                     .getRegisterCollectOnSuccess(ipo);
@@ -114,7 +111,6 @@ public class NewIntoPiecesOfInformationController extends NewAbstractCommonContr
             //获取星级最高的通道，如果相同，取最后一个
             ChannelInfoTable channelInfoTable = newIntoPiecesOfInformationService
                     .filtrationChannelInfoByLevel(channelInfoTablesList,ipo);
-
             //获取进件附属通道
             ChannelExtraInfoTable extraInfoTable = newIntoPiecesOfInformationService
                     .getAddCusChannelExtraInfo(channelInfoTable,ipo);
@@ -201,7 +197,8 @@ public class NewIntoPiecesOfInformationController extends NewAbstractCommonContr
             //获取必要参数
             Map<String, ParamRule> paramRuleMap =newIntoPiecesOfInformationService.getParamMapByB2();
             //判断平台订单号是否存在
-            registerCollectTable = newIntoPiecesOfInformationService.getRegisterCollectTable(mbcbDTO.getPlatformOrderId(), BusinessTypeEnum.b1.getBusiType(),ipo);
+            registerCollectTable = newIntoPiecesOfInformationService
+                    .getRegisterCollectTable(mbcbDTO.getPlatformOrderId(), BusinessTypeEnum.b1.getBusiType(),ipo);
             sotTable.setMerOrderId(registerCollectTable.getMerOrderId());
             //验证是否重复操作
             newIntoPiecesOfInformationService.checkRepetitionOperation(registerCollectTable,BusinessTypeEnum.b2.getBusiType(),ipo);

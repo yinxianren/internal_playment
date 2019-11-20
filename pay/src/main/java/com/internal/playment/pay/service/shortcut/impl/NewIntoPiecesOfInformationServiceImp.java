@@ -19,9 +19,11 @@ import com.internal.playment.common.tuple.Tuple2;
 import com.internal.playment.common.tuple.Tuple3;
 import com.internal.playment.pay.service.CommonServiceAbstract;
 import com.internal.playment.pay.service.shortcut.NewIntoPiecesOfInformationService;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -157,7 +159,7 @@ public class NewIntoPiecesOfInformationServiceImp extends CommonServiceAbstract 
                     .setUpdateTime(new Date());
 
             RegisterCollectTable registerCollectTable = new RegisterCollectTable()
-                    .setPlatformOrderId(mbirDTO.getProductGroupType())          .setRitId(registerInfoTable.getId())
+                    .setProductGroupId(mbirDTO.getProductGroupType())           .setRitId(registerInfoTable.getId())
                     .setOrganizationId(channelInfoTable.getOrganizationId())    .setMerchantId(mbirDTO.getMerId())
                     .setTerminalMerId(mbirDTO.getTerMerId())                    .setMerOrderId(mbirDTO.getMerOrderId())
                     .setCategory(mbirDTO.getCategory())                         .setMiMerCertPic1(mbirDTO.getMiMerCertPic1())
@@ -170,9 +172,10 @@ public class NewIntoPiecesOfInformationServiceImp extends CommonServiceAbstract 
                     .setCreateTime(new Date())                                  .setBussType(BusinessTypeEnum.b1.getBusiType()) //基础信息登记
                     .setUpdateTime(new Date());
             synchronized (this) {
+
                 registerCollectTable
                         .setId(System.currentTimeMillis())
-                        .setPlatformOrderId("RXH" + new Random(System.currentTimeMillis()).nextInt(1000000) + "-B1" + System.currentTimeMillis());
+                        .setPlatformOrderId(("RXH" + new Random(System.currentTimeMillis()).nextInt(1000000) + "-B1-" + System.currentTimeMillis()));
             }
             //保持或更新
             dbCommonRPCComponent.apiRegisterInfoService.saveOrUpdate(registerInfoTable);
@@ -398,7 +401,7 @@ public class NewIntoPiecesOfInformationServiceImp extends CommonServiceAbstract 
             synchronized (this){
                 registerCollectTable
                         .setId(System.currentTimeMillis())
-                        .setPlatformOrderId("RXH" + new Random(System.currentTimeMillis()).nextInt(1000000) + "-B2" + System.currentTimeMillis());
+                        .setPlatformOrderId("RXH" + new Random(System.currentTimeMillis()).nextInt(1000000) + "-B2-" + System.currentTimeMillis());
             }
 
 
@@ -430,7 +433,7 @@ public class NewIntoPiecesOfInformationServiceImp extends CommonServiceAbstract 
         synchronized (this){
             registerCollectTable
                     .setId(System.currentTimeMillis())
-                    .setPlatformOrderId("RXH" + new Random(System.currentTimeMillis()).nextInt(1000000) + "-B3" + System.currentTimeMillis());
+                    .setPlatformOrderId("RXH" + new Random(System.currentTimeMillis()).nextInt(1000000) + "-B3-" + System.currentTimeMillis());
         }
         registerCollectTable
                 .setBussType(BusinessTypeEnum.b3.getBusiType())

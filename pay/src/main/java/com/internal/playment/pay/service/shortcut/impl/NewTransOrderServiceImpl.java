@@ -568,7 +568,7 @@ public class NewTransOrderServiceImpl extends CommonServiceAbstract implements N
             synchronized (this){
                 transOrderInfoTable
                         .setId(System.currentTimeMillis())
-                        .setPlatformOrderId("RXH" + new Random(System.currentTimeMillis()).nextInt(1000000) + "-B11" + System.currentTimeMillis());
+                        .setPlatformOrderId("RXH" + new Random(System.currentTimeMillis()).nextInt(1000000) + "-B11-" + System.currentTimeMillis());
             }
             dbCommonRPCComponent.apiTransOrderInfoService.save(transOrderInfoTable);
         }catch (Exception e){

@@ -85,7 +85,7 @@ public class NewBondCardServiceImpl extends CommonServiceAbstract implements New
             synchronized (this){
                 merchantCardTable
                         .setId(System.currentTimeMillis())
-                        .setPlatformOrderId("RXH" + new Random(System.currentTimeMillis()).nextInt(1000000) + "-B4" + System.currentTimeMillis());
+                        .setPlatformOrderId("RXH" + new Random(System.currentTimeMillis()).nextInt(1000000) + "-B4-" + System.currentTimeMillis());
             }
             dbCommonRPCComponent.apiMerchantCardService.save(merchantCardTable);
         }catch (Exception e){
@@ -121,7 +121,7 @@ public class NewBondCardServiceImpl extends CommonServiceAbstract implements New
             synchronized (this){
                 merchantCardTable
                         .setId(System.currentTimeMillis())
-                        .setPlatformOrderId("RXH" + new Random(System.currentTimeMillis()).nextInt(1000000) + "-B5" + System.currentTimeMillis());
+                        .setPlatformOrderId("RXH" + new Random(System.currentTimeMillis()).nextInt(1000000) + "-B5-" + System.currentTimeMillis());
             }
             dbCommonRPCComponent.apiMerchantCardService.save(merchantCardTable);
         }catch (Exception e){
@@ -161,7 +161,7 @@ public class NewBondCardServiceImpl extends CommonServiceAbstract implements New
             synchronized (this){
                 merchantCardTable
                         .setId(System.currentTimeMillis())
-                        .setPlatformOrderId("RXH" + new Random(System.currentTimeMillis()).nextInt(1000000) + "-B5" + System.currentTimeMillis());
+                        .setPlatformOrderId("RXH" + new Random(System.currentTimeMillis()).nextInt(1000000) + "-B6-" + System.currentTimeMillis());
             }
             dbCommonRPCComponent.apiMerchantCardService.save(merchantCardTable);
         }catch (Exception e){

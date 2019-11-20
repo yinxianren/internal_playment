@@ -16,9 +16,14 @@ public class OrderConsumerComponent {
     private final PayWalletComponent payWalletComponent;
 
 
-    @JmsListener(destination="application.queue.async.notify",  containerFactory="jmsListenerContainerQueue")
+    @JmsListener(destination="order.queue.payOrderInfoTable",  containerFactory="jmsListenerContainerQueue")
     public void receiveQueueByPayOrder(PayOrderInfoTable payOrderInfoTable){
         payWalletComponent.payOrderWallet(payOrderInfoTable);
+    }
+
+    @JmsListener(destination="order.queue.transOrderInfoTable",  containerFactory="jmsListenerContainerQueue")
+    public void receiveQueueByTransOrder(TransOrderInfoTable transOrderInfoTable){
+        payWalletComponent.transOrderWallet(transOrderInfoTable);
     }
 
 }

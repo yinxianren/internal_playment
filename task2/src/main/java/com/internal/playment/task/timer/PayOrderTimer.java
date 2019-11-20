@@ -60,7 +60,8 @@ public class PayOrderTimer  extends  AbstractTimer {
             int index = 0;
             for(PayOrderInfoTable pot : payOrderInfoTableList ){
                 log.info("{}----第[{}]个---[{}]",bussType,++index,pot.toString());
-                ThreadPoolExecutorComponent.executorService.submit(()->activeMqOrderProducerComponent.sendMessage(payOrder,pot));
+                ThreadPoolExecutorComponent.executorService.submit(
+                        ()->activeMqOrderProducerComponent.sendMessage(payOrder,pot));
             }
             log.info("\n================================================================\n" +
                     "=本次收单定时任务已结束，本次定时任务查询[{}]个漏单对象，已放入队列执行=\n"+

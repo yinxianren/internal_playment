@@ -1,12 +1,10 @@
 package com.internal.playment.inward.service.channel.impl;
 
-import com.internal.playment.common.dto.CrossResponseMsgDTO;
 import com.internal.playment.common.dto.RequestCrossMsgDTO;
 import com.internal.playment.common.inner.PayTreeMap;
 import com.internal.playment.common.table.business.MerchantCardTable;
 import com.internal.playment.common.table.business.PayOrderInfoTable;
 import com.internal.playment.common.table.business.RegisterCollectTable;
-import com.internal.playment.common.table.business.TransOrderInfoTable;
 import com.internal.playment.common.table.channel.ChannelInfoTable;
 import com.internal.playment.common.table.merchant.MerchantInfoTable;
 import com.internal.playment.common.table.system.AsyncNotifyTable;
@@ -38,7 +36,7 @@ public abstract class ChannelCommonServiceAbstract {
     @Value("${application.async-query.trans-order}")
     protected String asyncQueryTransOrder;
 
-    @Value("${application.sync-notify}")
+    @Value("${application.sync-notify.oder}")
     protected String asyncNotify;
 
 

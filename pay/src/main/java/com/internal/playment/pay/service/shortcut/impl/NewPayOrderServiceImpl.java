@@ -1149,7 +1149,7 @@ public class NewPayOrderServiceImpl  extends CommonServiceAbstract implements Ne
         try {
             synchronized (this){
                 payOrderInfoTable
-                        .setPlatformOrderId("RXH" + new Random(System.currentTimeMillis()).nextInt(1000000) + "-B10" + System.currentTimeMillis())
+                        .setPlatformOrderId("RXH" + new Random(System.currentTimeMillis()).nextInt(1000000) + "-B10-" + System.currentTimeMillis())
                         .setId(System.currentTimeMillis());
             }
             dbCommonRPCComponent.apiPayOrderInfoService.save(payOrderInfoTable);
@@ -1405,7 +1405,7 @@ public class NewPayOrderServiceImpl  extends CommonServiceAbstract implements Ne
         try {
             synchronized (this){
                 payOrderInfoTable
-                        .setPlatformOrderId("RXH" + new Random(System.currentTimeMillis()).nextInt(1000000) + "-B7" + System.currentTimeMillis())
+                        .setPlatformOrderId("RXH" + new Random(System.currentTimeMillis()).nextInt(1000000) + "-B7-" + System.currentTimeMillis())
                         .setId(System.currentTimeMillis());
             }
             dbCommonRPCComponent.apiPayOrderInfoService.save(payOrderInfoTable);

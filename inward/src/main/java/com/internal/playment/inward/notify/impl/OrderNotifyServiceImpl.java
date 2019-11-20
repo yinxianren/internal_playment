@@ -6,6 +6,7 @@ import com.internal.playment.common.table.merchant.MerchantInfoTable;
 import com.internal.playment.common.table.system.AsyncNotifyTable;
 import com.internal.playment.inward.notify.NotifyCommonServiceAbstract;
 import com.internal.playment.inward.notify.OrderNotifyService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -13,6 +14,9 @@ import java.util.Map;
 
 @Service
 public class OrderNotifyServiceImpl extends NotifyCommonServiceAbstract implements OrderNotifyService {
+
+
+
 
     @Override
     public void orderNotify(AsyncNotifyTable asyncNotifyTable) {

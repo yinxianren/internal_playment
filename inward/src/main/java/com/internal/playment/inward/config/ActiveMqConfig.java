@@ -2,6 +2,7 @@ package com.internal.playment.inward.config;
 
 
 import org.apache.activemq.ActiveMQConnectionFactory;
+import org.apache.activemq.command.ActiveMQTopic;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +13,7 @@ import org.springframework.jms.core.JmsMessagingTemplate;
 import org.springframework.jms.core.JmsTemplate;
 
 import javax.jms.ConnectionFactory;
+import javax.jms.Topic;
 
 @EnableJms  //activemq
 @Configuration
@@ -19,6 +21,12 @@ public class ActiveMqConfig {
 
     @Value("${spring.activemq.broker-url}")
     private String brokerURL;
+
+
+    @Bean("payMsgTopic")
+    public Topic payMsgTopic(){
+        return new ActiveMQTopic("pay.msg.topic");
+    }
 
     @Bean
     public ConnectionFactory connectionFactory() {
