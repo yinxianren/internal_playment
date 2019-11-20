@@ -59,7 +59,8 @@ public class ApiAllinPayOtherBusinessCrossComponentImpl implements ApiAllinPayOt
             bankTime = payOrder.getUpdateTime();
         }
         String date = dateFormat2.format(bankTime);
-        String trxid = bankInfo.get("trxid").toString();//银行流水号
+        String trxid = null;
+        if (null != (bankInfo.get("trxid"))) trxid = bankInfo.get("trxid").toString();//银行流水号
         String version = "11";//版本号
         String randomstr = AllinPayUtils.getRandomSecretkey();//随机字符串
 
@@ -71,7 +72,7 @@ public class ApiAllinPayOtherBusinessCrossComponentImpl implements ApiAllinPayOt
 
         treeMap.put("cusid", cusid);
         treeMap.put("orderid", orderid);
-        treeMap.put("trxid", trxid);
+        if (null != trxid)  treeMap.put("trxid", trxid);
         treeMap.put("date", date);
         treeMap.put("key", key);
         treeMap.put("sign", AllinPayUtils.getMd5Sign(treeMap));
@@ -259,7 +260,8 @@ public class ApiAllinPayOtherBusinessCrossComponentImpl implements ApiAllinPayOt
             bankResult.setErrorCode(ResponseCodeEnum.RXH99999.getCode());
             bankResult.setErrorMsg(ResponseCodeEnum.RXH99999.getMsg());
         }
-//        bankResult.setCrossStatusCode(SystemConstant.BANK_STATUS_FAIL);
+//        bankResult.setCrossStatusCode(StatusEnum._0.getStatus());
+//        bankResult.setCrossStatusMsg(StatusEnum._0.getRemark());
 //        bankResult.setCrossResponseMsg("交易成功");
 //        bankResult.setChannelResponseMsg(content);
         return bankResult;
@@ -278,7 +280,8 @@ public class ApiAllinPayOtherBusinessCrossComponentImpl implements ApiAllinPayOt
         String appid = json.get("appid").toString();//APPID
         String key = json.get("key").toString();
         String cusid = registerInfo.getString("cusid"); //商户号
-        Date bankTime = transOrder.getUpdateTime();
+        Date bankTime = transOrder.getCreateTime();
+        if (null != transOrder.getUpdateTime()) bankTime = transOrder.getUpdateTime();
         String date = dateFormat2.format(bankTime);
         String orderid = transOrder.getPlatformOrderId();
         String version = "11";
