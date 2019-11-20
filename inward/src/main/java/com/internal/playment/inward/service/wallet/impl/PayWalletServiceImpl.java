@@ -366,6 +366,7 @@ public class PayWalletServiceImpl extends CommonServiceAbstract implements PayWa
         //通道费率
         BigDecimal chanRateFee = cit.getChannelRateFee().divide(new BigDecimal(100));
         BigDecimal singleFee = cit.getChannelSingleFee();
+        if(  poi.getBussType().equalsIgnoreCase(BusinessTypeEnum.b12.getBusiType()) )  singleFee = singleFee.multiply(new BigDecimal(-1));
         //通道费用
         BigDecimal chanFee = amount.multiply(chanRateFee).setScale(2,BigDecimal.ROUND_UP);
         chanFee = chanFee.add(singleFee);
@@ -677,6 +678,8 @@ public class PayWalletServiceImpl extends CommonServiceAbstract implements PayWa
         chRateFee = null == chRateFee ? new BigDecimal(0) : chRateFee;
         chRateFee = chRateFee.divide(new BigDecimal(100));
         BigDecimal chSingleFee = cit.getChannelSingleFee();
+        chSingleFee = null == chSingleFee ? new BigDecimal(0) : chSingleFee;
+        if( toit.getBusiType().equalsIgnoreCase(BusinessTypeEnum.b13.getBusiType()) ) chSingleFee = chSingleFee.multiply(new BigDecimal(-1));
         BigDecimal chFee = amount.multiply(chRateFee).setScale(2,BigDecimal.ROUND_UP);
         BigDecimal totalSingleFee =chFee.add(chSingleFee);
         //商户费率
@@ -760,6 +763,8 @@ public class PayWalletServiceImpl extends CommonServiceAbstract implements PayWa
         agentRateFee = agentRateFee.divide(new BigDecimal(100));
         BigDecimal agentFee = amount.multiply(agentRateFee).setScale(2,BigDecimal.ROUND_UP);
         BigDecimal agentSingleFee = ams.getSingleFee();
+        agentSingleFee = null == agentSingleFee ? new BigDecimal(0) : agentSingleFee;
+        if( toit.getBusiType().equalsIgnoreCase(BusinessTypeEnum.b13.getBusiType()) ) agentSingleFee = agentSingleFee.multiply(new BigDecimal(-1));
         BigDecimal totalSingleFee = agentFee.add(agentSingleFee);
         //总入账金额
         BigDecimal totalInAmount = amw.getIncomeAmount();
