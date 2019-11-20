@@ -35,8 +35,7 @@ public abstract class ChannelCommonServiceAbstract {
     protected String asyncQueryPayOrder;
     @Value("${application.async-query.trans-order}")
     protected String asyncQueryTransOrder;
-
-    @Value("${application.sync-notify.oder}")
+    @Value("${application.async-notify.order}")
     protected String asyncNotify;
 
 

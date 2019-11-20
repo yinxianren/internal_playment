@@ -66,6 +66,7 @@ public class PayOrderInfoTable implements Serializable,Cloneable {
     private Integer     settleStatus;// 结算状态，0：已经结算，1：未结算,
     private String  channelRespResult;// 通道响应结果,
     private String  crossRespResult;// cross响应结果,
+    private Integer notifyStatus;
     private Integer status;// 状态 0：success,1:fail,
     private String notifyUrl;
     private String returnUrl;
@@ -79,7 +80,6 @@ public class PayOrderInfoTable implements Serializable,Cloneable {
     @TableField(exist = false)
     private Collection<Integer> statusCollect; //支持多状态查找
 
-
     @TableField(exist = false)
     private String beginTime; //查询开始时间
     @TableField(exist = false)
@@ -87,7 +87,6 @@ public class PayOrderInfoTable implements Serializable,Cloneable {
 
     @TableField(exist = false)
     private String organizationId;
-
 
     //分页参数
     @TableField(exist = false)
@@ -97,6 +96,11 @@ public class PayOrderInfoTable implements Serializable,Cloneable {
 
     public PayOrderInfoTable setNotifyUrl(String notifyUrl) {
         this.notifyUrl = notifyUrl;
+        return this;
+    }
+
+    public PayOrderInfoTable setNotifyStatus(Integer notifyStatus) {
+        this.notifyStatus = notifyStatus;
         return this;
     }
 

@@ -561,6 +561,7 @@ public class NewTransOrderServiceImpl extends CommonServiceAbstract implements N
                     .setSettleCycle(merchantRateTable.getSettleCycle())                           .setSettleStatus(StatusEnum._2.getStatus())
                     .setChannelRespResult(null)                                                   .setCrossRespResult(null)
                     .setStatus(StatusEnum._2.getStatus())
+                    .setNotifyStatus(1)
                     .setNotifyUrl(merTransOrderApplyDTO.getNoticeUrl())                           .setReturnUrl(merTransOrderApplyDTO.getReturnUrl())
                     .setRegPlatformOrderId(registerCollectTable.getPlatformOrderId())             .setCardPlatformOrderId(merchantCardTable.getPlatformOrderId())
                     .setCreateTime(new Date())                                                    .setUpdateTime(new Date());

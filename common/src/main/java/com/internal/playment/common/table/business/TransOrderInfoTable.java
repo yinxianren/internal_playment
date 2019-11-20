@@ -62,6 +62,7 @@ public class TransOrderInfoTable implements Serializable,Cloneable {
     private Integer  settleStatus;//结算状态，0：已经结算，1：未结算
     private String channelRespResult;//通道响应结果
     private String crossRespResult;//cross响应结果
+    private Integer notifyStatus;
     private Integer  status;//状态 0：success1:fail
     private String notifyUrl;
     private String returnUrl;
@@ -94,6 +95,11 @@ public class TransOrderInfoTable implements Serializable,Cloneable {
 
     public TransOrderInfoTable setCardPlatformOrderId(String cardPlatformOrderId) {
         this.cardPlatformOrderId = cardPlatformOrderId;
+        return this;
+    }
+
+    public TransOrderInfoTable setNotifyStatus(Integer notifyStatus) {
+        this.notifyStatus = notifyStatus;
         return this;
     }
 

@@ -41,8 +41,6 @@ public class AllinPayChannelHandlePortComponentImpl implements AllinPayChannelHa
     @Value("${application.async-query.trans-order}")
     private String asyncQueryTransOrder;
 
-
-
     @Reference(version = "${application.version}", group = "allinPay", timeout = 30000)
     private ApiBondCardCrossComponent apiBondCardCrossComponent;
     @Reference(version = "${application.version}", group = "allinPay", timeout = 30000)
@@ -122,7 +120,7 @@ public class AllinPayChannelHandlePortComponentImpl implements AllinPayChannelHa
         PayOrderInfoTable payOrderInfoTable = requestCrossMsgDTO.getPayOrderInfoTable();
         //向上游异步查询
         ThreadPoolExecutorComponent.executorService.submit(()->
-                ActiveMqOrderProducerComponent.delaySend(asyncQueryPayOrder,payOrderInfoTable,10000L));
+                ActiveMqOrderProducerComponent.delaySend(asyncQueryPayOrder,payOrderInfoTable,5000L));
         //钱包处理
         if(crossResponseMsgDTO.getCrossStatusCode() == StatusEnum._0.getStatus())
             ThreadPoolExecutorComponent.executorService.submit( ()->
@@ -134,7 +132,7 @@ public class AllinPayChannelHandlePortComponentImpl implements AllinPayChannelHa
         TransOrderInfoTable transOrderInfoTable = requestCrossMsgDTO.getTransOrderInfoTable();
         //向上游异步查询
         ThreadPoolExecutorComponent.executorService.submit(()->
-                ActiveMqOrderProducerComponent.delaySend(asyncQueryTransOrder,transOrderInfoTable,10000l));
+                ActiveMqOrderProducerComponent.delaySend(asyncQueryTransOrder,transOrderInfoTable,5000L));
         //钱包处理
         if(crossResponseMsgDTO.getCrossStatusCode() == StatusEnum._0.getStatus())
             ThreadPoolExecutorComponent.executorService.submit( ()->
