@@ -60,7 +60,7 @@ public class ApiAgentMerchantSettingServiceImpl implements ApiAgentMerchantSetti
     }
 
     @Override
-    public boolean delByAgentIds(List<Long> agentIds) {
+    public boolean delByAgentIds(List<String> agentIds) {
         if (isHasNotElement(agentIds)) return false;
         LambdaQueryWrapper<AgentMerchantSettingTable> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.in(AgentMerchantSettingTable::getAgentMerchantId,agentIds);
