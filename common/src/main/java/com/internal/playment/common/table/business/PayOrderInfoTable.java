@@ -79,15 +79,14 @@ public class PayOrderInfoTable implements Serializable,Cloneable {
     private Collection<String> merOrderIdCollect; //支持多订单查找
     @TableField(exist = false)
     private Collection<Integer> statusCollect; //支持多状态查找
-
+    @TableField(exist = false)
+    private Collection<String> bussTypeCollect;
     @TableField(exist = false)
     private String beginTime; //查询开始时间
     @TableField(exist = false)
     private String endTime; //查询结束时间
-
     @TableField(exist = false)
     private String organizationId;
-
     //分页参数
     @TableField(exist = false)
     private Integer pageNum;
@@ -121,6 +120,11 @@ public class PayOrderInfoTable implements Serializable,Cloneable {
 
     public PayOrderInfoTable setSmsCode(String smsCode) {
         this.smsCode = smsCode;
+        return this;
+    }
+
+    public PayOrderInfoTable setBussTypeCollect(Collection<String> bussTypeCollect) {
+        this.bussTypeCollect = bussTypeCollect;
         return this;
     }
 

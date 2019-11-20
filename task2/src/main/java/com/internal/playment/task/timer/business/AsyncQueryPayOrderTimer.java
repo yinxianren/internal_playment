@@ -1,5 +1,6 @@
 package com.internal.playment.task.timer.business;
 
+import com.internal.playment.common.enums.BusinessTypeEnum;
 import com.internal.playment.common.enums.StatusEnum;
 import com.internal.playment.common.inner.NewPayException;
 import com.internal.playment.common.table.business.PayOrderInfoTable;
@@ -45,6 +46,7 @@ public class AsyncQueryPayOrderTimer  extends AbstractTimer {
             List<PayOrderInfoTable> payOrderInfoTableList = dbCommonRPCComponent.apiPayOrderInfoService.getList(
                     new PayOrderInfoTable()
                             .setNotifyStatus(StatusEnum._1.getStatus())
+                            .setBussTypeCollect(Arrays.asList(BusinessTypeEnum.b9.getBusiType(),BusinessTypeEnum.b10.getBusiType()))
                             .setBeginTime(beginTime)
                             .setEndTime(endTime)
             );
