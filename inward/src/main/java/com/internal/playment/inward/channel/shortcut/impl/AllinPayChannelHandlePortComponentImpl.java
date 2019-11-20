@@ -1,7 +1,6 @@
 package com.internal.playment.inward.channel.shortcut.impl;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.alibaba.dubbo.config.annotation.Service;
 import com.internal.playment.api.cross.allinpay.ApiAllinPayOtherBusinessCrossComponent;
 import com.internal.playment.common.dto.CrossResponseMsgDTO;
 import com.internal.playment.common.dto.RequestCrossMsgDTO;
@@ -17,6 +16,7 @@ import com.internal.playment.inward.channel.shortcut.AllinPayChannelHandlePortCo
 import com.internal.playment.inward.component.DbCommonRPCComponent;
 import com.internal.playment.inward.service.channel.AllinPayChannelHandlePortService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class AllinPayChannelHandlePortComponentImpl implements AllinPayChannelHandlePortComponent {

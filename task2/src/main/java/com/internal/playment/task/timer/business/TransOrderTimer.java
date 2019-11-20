@@ -1,10 +1,10 @@
-package com.internal.playment.task.timer;
+package com.internal.playment.task.timer.business;
 
 import com.internal.playment.common.enums.StatusEnum;
 import com.internal.playment.common.inner.NewPayException;
-import com.internal.playment.common.table.business.PayOrderInfoTable;
 import com.internal.playment.common.table.business.TransOrderInfoTable;
 import com.internal.playment.task.component.ThreadPoolExecutorComponent;
+import com.internal.playment.task.timer.AbstractTimer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -18,7 +18,7 @@ import java.util.List;
 
 @Slf4j
 @Component
-public class TransOrderTimer  extends  AbstractTimer{
+public class TransOrderTimer  extends AbstractTimer {
 
 
     @Value("${application.queue.trans-order}")

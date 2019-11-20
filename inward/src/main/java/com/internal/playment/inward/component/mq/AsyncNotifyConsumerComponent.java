@@ -13,7 +13,7 @@ public class AsyncNotifyConsumerComponent {
 
     private final OrderNotifyService orderNotifyService;
 
-    @JmsListener(destination="order.queue.async.notify",  containerFactory="jmsListenerContainerQueue")
+    @JmsListener(destination="order.queue.async.asyncNotifyTable",  containerFactory="jmsListenerContainerQueue")
     public void receiveQueueByPayOrder(AsyncNotifyTable asyncNotifyTable){
         orderNotifyService.orderNotify(asyncNotifyTable);
     }

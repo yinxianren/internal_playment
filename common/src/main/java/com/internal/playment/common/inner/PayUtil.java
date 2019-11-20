@@ -45,5 +45,27 @@ public interface PayUtil {
         return str;
     }
 
+    /**
+     *  第一字符转小写
+     * @param s
+     * @return
+     */
+    default String toLowerCaseFirstOne(String s){
+        if(Character.isLowerCase(s.charAt(0)))
+            return s;
+        else
+            return (new StringBuilder()).append(Character.toLowerCase(s.charAt(0))).append(s.substring(1)).toString();
+    }
 
+    /**
+     *   第一字符转大写
+     * @param s
+     * @return
+     */
+    default String toUpperCaseFirstOne(String s){
+        if(Character.isUpperCase(s.charAt(0)))
+            return s;
+        else
+            return (new StringBuilder()).append(Character.toUpperCase(s.charAt(0))).append(s.substring(1)).toString();
+    }
 }
