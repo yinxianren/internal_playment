@@ -17,4 +17,6 @@ public interface ApiAgentMerchantSettingService {
 
     List<AgentMerchantSettingTable> list(AgentMerchantSettingTable agentMerchantSettingTable);
 
+    boolean delByAgentIds(List<Long> agentIds);
+
 }

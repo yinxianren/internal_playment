@@ -58,4 +58,12 @@ public class ApiAgentMerchantSettingServiceImpl implements ApiAgentMerchantSetti
         if (!isBlank(agentMerchantSettingTable.getAgentMerchantId())) queryWrapper.eq(AgentMerchantSettingTable::getAgentMerchantId,agentMerchantSettingTable.getAgentMerchantId());
         return agentMerchantSettingDBService.list(queryWrapper);
     }
+
+    @Override
+    public boolean delByAgentIds(List<Long> agentIds) {
+        if (isHasNotElement(agentIds)) return false;
+        LambdaQueryWrapper<AgentMerchantSettingTable> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.in(AgentMerchantSettingTable::getAgentMerchantId,agentIds);
+        return agentMerchantSettingDBService.remove(queryWrapper);
+    }
 }
