@@ -41,6 +41,7 @@ public class ApiMerchantRoleServiceImpl implements ApiMerchantRoleService, NewPa
     public List<MerchantRoleTable> getList(MerchantRoleTable merchantRoleTable) {
         if (isNull(merchantRoleTable)) return merchantRoleDBService.list();
         LambdaQueryWrapper<MerchantRoleTable> queryWrapper = new LambdaQueryWrapper<>();
+        if (!isBlank(merchantRoleTable.getBelongto())) queryWrapper.eq(MerchantRoleTable::getBelongto,merchantRoleTable.getBelongto());
         return merchantRoleDBService.list(queryWrapper);
     }
 }

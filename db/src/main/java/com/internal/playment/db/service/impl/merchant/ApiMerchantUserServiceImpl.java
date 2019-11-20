@@ -34,6 +34,8 @@ public class ApiMerchantUserServiceImpl implements ApiMerchantUserService, NewPa
     @Override
     public IPage page(MerchantUserTable merchantUserTable, PageDTO pageDTO) {
         LambdaQueryWrapper<MerchantUserTable> queryWrapper = new LambdaQueryWrapper<>();
+        if (!isBlank(merchantUserTable.getBelongto())) queryWrapper.eq(MerchantUserTable::getBelongto,merchantUserTable.getBelongto());
+        if (!isBlank(merchantUserTable.getUserName())) queryWrapper.eq(MerchantUserTable::getUserName,merchantUserTable.getUserName());
         IPage iPage = new Page(pageDTO.getPageNum(),pageDTO.getPaegSize());
         return merchantUserDBService.page(iPage,queryWrapper);
     }
@@ -42,6 +44,9 @@ public class ApiMerchantUserServiceImpl implements ApiMerchantUserService, NewPa
     public List<MerchantUserTable> getList(MerchantUserTable merchantUserTable) {
         if (isNull(merchantUserTable)) return merchantUserDBService.list();
         LambdaQueryWrapper<MerchantUserTable> queryWrapper = new LambdaQueryWrapper<>();
+        if (!isBlank(merchantUserTable.getBelongto())) queryWrapper.eq(MerchantUserTable::getBelongto,merchantUserTable.getBelongto());
+        if (!isBlank(merchantUserTable.getUserName())) queryWrapper.eq(MerchantUserTable::getUserName,merchantUserTable.getUserName());
+        queryWrapper.orderByDesc(MerchantUserTable::getCreateTime);
         return merchantUserDBService.list(queryWrapper);
     }
 }
