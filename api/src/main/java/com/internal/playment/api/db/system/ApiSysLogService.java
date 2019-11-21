@@ -6,5 +6,7 @@ import com.internal.playment.common.table.system.SysLogTable;
 
 public interface ApiSysLogService {
 
+    boolean saveOrUpdate(SysLogTable sysLogTable);
+
     IPage page(SysLogTable sysLogTable, PageDTO pageDTO);
 }
