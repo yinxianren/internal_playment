@@ -75,7 +75,7 @@ public abstract class ChannelCommonServiceAbstract {
     }
 
     protected  boolean updateTransOrderNotifyStatus(TransOrderInfoTable toi){
-        return dbCommonRPCComponent.apiTransOrderInfoService.updateById(toi
+        return dbCommonRPCComponent.apiTransOrderInfoService.updateByWhereCondition(toi
                 .setUpdateTime(new Date())
                 .setNotifyStatus(StatusEnum._0.getStatus()));
     }

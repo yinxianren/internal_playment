@@ -16,6 +16,8 @@ public interface ApiTransOrderInfoService {
 
     boolean updateById(TransOrderInfoTable tit);
 
+    boolean updateByWhereCondition(TransOrderInfoTable tit);
+
     IPage page(TransOrderInfoTable transOrderInfoTable);
 
 }

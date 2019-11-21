@@ -2,6 +2,8 @@ package com.internal.playment.db.service.impl.business;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.internal.playment.api.db.business.ApiTransOrderInfoService;
@@ -70,6 +72,18 @@ public class ApiTransOrderInfoServiceImpl implements ApiTransOrderInfoService, N
     public boolean updateById(TransOrderInfoTable tit) {
         if(isNull(tit)) return false;
         return transOrderInfoDBService.updateById(tit);
+    }
+
+    @Override
+    public boolean updateByWhereCondition(TransOrderInfoTable tit) {
+        if(isNull(tit)) return false;
+        LambdaUpdateWrapper<TransOrderInfoTable> updateWrapper = new UpdateWrapper<TransOrderInfoTable>().lambda();
+        //set
+        if( !isNull(tit.getNotifyStatus()) )  updateWrapper.set( TransOrderInfoTable::getNotifyStatus,tit.getNotifyStatus() );
+        if( !isNull(tit.getUpdateTime()) )  updateWrapper.set( TransOrderInfoTable::getUpdateTime,tit.getUpdateTime() );
+        //where
+        if( !isNull(tit.getId()) )  updateWrapper.eq( TransOrderInfoTable::getId,tit.getId() );
+        return transOrderInfoDBService.update(updateWrapper);
     }
 
     @Override
