@@ -62,7 +62,7 @@ public class ChannelFacadeComponent implements NewPayAssert, PayUtil {
 
             OrganizationInfoTable organizationInfoTable = dbCommonRPCComponent.apiOrganizationInfoService.getOne(
                     new OrganizationInfoTable()
-                            .setOrganizationId( transOrderInfoTable.getOrganizationId() ));
+                            .setOrganizationId( channelInfoTable.getOrganizationId() ));
             if(isNull(organizationInfoTable))
                 throw new Exception(format("代付异步查询，发现组织机构ID为%s,该对象在数据库中未能找到，无法处理！",channelInfoTable.getOrganizationId()));
             String appClassObj = organizationInfoTable.getApplicationClassObj();

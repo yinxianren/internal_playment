@@ -274,7 +274,7 @@ public abstract class CommonServiceAbstract implements NewPayAssert, PayUtil {
         try {
             ResponseEntity responseEntity = new ResponseEntity()
                     .setMerId( null !=merInfoTable ? merInfoTable.getMerchantId() : null)
-                    .setTerMerId(ipo.getTerMerId())
+                    .setTerMerId(  null !=ipo ? ipo.getTerMerId() : null )
                     .setStatus( null != crossResponseMsgDTO ? crossResponseMsgDTO.getCrossStatusCode() :  StatusEnum._1.getStatus() )
                     .setMsg( null != crossResponseMsgDTO ? crossResponseMsgDTO.getCrossStatusMsg() : StatusEnum._1.getRemark())
                     .setMerOrderId( args[0] )

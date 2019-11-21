@@ -1,6 +1,6 @@
 package com.internal.playment.pay.controller.shortcut;
 
-import com.alibaba.dubbo.common.json.JSON;
+import com.alibaba.fastjson.JSON;
 import com.internal.playment.common.dto.CrossResponseMsgDTO;
 import com.internal.playment.common.dto.MerTransOrderApplyDTO;
 import com.internal.playment.common.dto.RequestCrossMsgDTO;
@@ -78,9 +78,8 @@ public class NewTransOrderController extends NewAbstractCommonController {
             //0.解析 以及 获取SystemOrderTrackTable对象
             sotTable = this.getSystemOrderTrackTable(request,param,bussType);
             //类型转换
-            merTransOrderApplyDTO = JSON.parse(sotTable.getRequestMsg(), MerTransOrderApplyDTO.class);
+            merTransOrderApplyDTO = JSON.parseObject(sotTable.getRequestMsg(), MerTransOrderApplyDTO.class);
             sotTable.setMerId(merTransOrderApplyDTO.getMerId())
-                    .setAmount( new BigDecimal(merTransOrderApplyDTO.getAmount()) )
                     .setMerOrderId(merTransOrderApplyDTO.getMerOrderId())
                     .setReturnUrl(merTransOrderApplyDTO.getReturnUrl())
                     .setNoticeUrl(merTransOrderApplyDTO.getNoticeUrl());
@@ -142,7 +141,9 @@ public class NewTransOrderController extends NewAbstractCommonController {
             newTransOrderService.isSuccess(crossResponseMsgDTO,ipo);
             //封装放回结果  // merInfoTable, ipo, crossResponseMsgDTO,merOrderId,platformOrderId,amount,errorCode,errorMsg,channelTab
             respResult = newTransOrderService.responseMsg(merInfoTable,ipo,crossResponseMsgDTO,merTransOrderApplyDTO.getMerOrderId(),transOrderInfoTable.getPlatformOrderId(),merTransOrderApplyDTO.getAmount(),null,null);
-            sotTable.setPlatformPrintLog(StatusEnum.remark(crossResponseMsgDTO.getCrossStatusCode())).setTradeCode( crossResponseMsgDTO.getCrossStatusCode() );
+            sotTable.setPlatformPrintLog(StatusEnum.remark(crossResponseMsgDTO.getCrossStatusCode()))
+                    .setAmount( transOrderInfoTable.getAmount() )
+                    .setTradeCode( crossResponseMsgDTO.getCrossStatusCode() );
         }catch (Exception e){
             if(e instanceof NewPayException){
                 NewPayException npe = (NewPayException) e;
