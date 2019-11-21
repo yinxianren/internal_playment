@@ -20,7 +20,7 @@ public class ApiSysPrivilegesServiceImpl implements ApiSysPrivilegesService, New
     public List<SysPrivilegesTable> getList(SysPrivilegesTable sysPrivilegesTable) {
         if (isNull(sysPrivilegesTable)) return sysPrivilegesDBService.list();
         LambdaQueryWrapper<SysPrivilegesTable> queryWrapper = new LambdaQueryWrapper();
-        if (isHasNotElement(sysPrivilegesTable.getIds())) queryWrapper.in(SysPrivilegesTable::getId,sysPrivilegesTable.getIds());
+        if (isHasElement(sysPrivilegesTable.getIds())) queryWrapper.in(SysPrivilegesTable::getId,sysPrivilegesTable.getIds());
         return sysPrivilegesDBService.list(queryWrapper);
     }
 }

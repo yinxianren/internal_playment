@@ -51,6 +51,8 @@ public class ApiSysConstantServiceImpl implements ApiSysConstantService, NewPayA
         LambdaQueryWrapper<SysConstantTable> queryWrapper = new LambdaQueryWrapper<SysConstantTable>();
         if (!isBlank(sysConstantTable.getGroupCode())) queryWrapper.eq(SysConstantTable::getGroupCode,sysConstantTable.getGroupCode());
         if (!isBlank(sysConstantTable.getId())) queryWrapper.eq(SysConstantTable::getId,sysConstantTable.getId());
+        if (!isBlank(sysConstantTable.getName())) queryWrapper.eq(SysConstantTable::getName,sysConstantTable.getName());
+        if (!isBlank(sysConstantTable.getFirstValue())) queryWrapper.eq(SysConstantTable::getFirstValue,sysConstantTable.getFirstValue());
         return sysConstantDBService.list(queryWrapper);
     }
 }
