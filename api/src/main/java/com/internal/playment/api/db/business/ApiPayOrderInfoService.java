@@ -15,5 +15,7 @@ public interface ApiPayOrderInfoService {
 
     boolean updateByPrimaryKey(PayOrderInfoTable pit);
 
+    boolean updateByWhereCondition(PayOrderInfoTable pit);
+
     IPage page(PayOrderInfoTable pit);
 }

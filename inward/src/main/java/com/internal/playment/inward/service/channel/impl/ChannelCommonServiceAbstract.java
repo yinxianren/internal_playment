@@ -69,7 +69,7 @@ public abstract class ChannelCommonServiceAbstract {
 
 
     protected  boolean updatePayOrderNotifyStatus(PayOrderInfoTable poi){
-        return dbCommonRPCComponent.apiPayOrderInfoService.updateByPrimaryKey(poi
+        return dbCommonRPCComponent.apiPayOrderInfoService.updateByWhereCondition(poi
                 .setUpdateTime(new Date())
                 .setNotifyStatus(StatusEnum._0.getStatus()));
     }

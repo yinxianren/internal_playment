@@ -2,6 +2,8 @@ package com.internal.playment.db.service.impl.business;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.internal.playment.api.db.business.ApiPayOrderInfoService;
@@ -67,6 +69,18 @@ public class ApiPayOrderInfoServiceImpl implements ApiPayOrderInfoService, NewPa
     public boolean updateByPrimaryKey(PayOrderInfoTable pit) {
         if(isNull(pit)) return false;
         return payOrderInfoDBService.updateById(pit);
+    }
+
+    @Override
+    public boolean updateByWhereCondition(PayOrderInfoTable pit) {
+        if(isNull(pit)) return false;
+        LambdaUpdateWrapper<PayOrderInfoTable> updateWrapper = new UpdateWrapper<PayOrderInfoTable>().lambda();
+        //set
+        if( !isNull(pit.getNotifyStatus()) ) updateWrapper.set(PayOrderInfoTable::getNotifyStatus,pit.getNotifyStatus());
+        if( !isNull(pit.getUpdateTime())) updateWrapper.set(PayOrderInfoTable::getUpdateTime,pit.getUpdateTime());
+        //where
+        if( !isNull(pit.getId()) )  updateWrapper.eq( PayOrderInfoTable::getId,pit.getId() );
+        return payOrderInfoDBService.update(updateWrapper);
     }
 
     @Override
