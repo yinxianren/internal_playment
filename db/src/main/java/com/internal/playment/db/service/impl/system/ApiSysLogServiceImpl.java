@@ -19,6 +19,12 @@ public class ApiSysLogServiceImpl implements ApiSysLogService, NewPayAssert {
     private SysLogDBService sysLogDBService;
 
     @Override
+    public boolean saveOrUpdate(SysLogTable sysLogTable) {
+        if (isNull(sysLogTable)) return false;
+        return sysLogDBService.saveOrUpdate(sysLogTable);
+    }
+
+    @Override
     public IPage page(SysLogTable sysLogTable, PageDTO pageDTO) {
         if (isNull(sysLogTable)) return new Page();
         LambdaQueryWrapper queryWrapper = new LambdaQueryWrapper();
