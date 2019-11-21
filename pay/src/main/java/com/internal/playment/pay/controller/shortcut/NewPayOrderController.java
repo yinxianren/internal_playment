@@ -159,7 +159,7 @@ public class NewPayOrderController extends NewAbstractCommonController {
                 //判断商户是否该通道,如果该channelInfoTable没在merchantSettingTableList列表中，则制空
                 channelInfoTable = newPayOrderService.judgeThisChannelUsable(channelInfoTable,merchantSettingTableList);
                 //备份一个通道信息
-                ChannelInfoTable channelInfoTable_back = channelInfoTable;
+                ChannelInfoTable channelInfoTable_back = (ChannelInfoTable) channelInfoTable.clone();
                 //执行通道风控
                 if(!isNull(channelInfoTable)){
                     //获取该通道历史统计交易量

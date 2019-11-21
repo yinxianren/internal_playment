@@ -13,7 +13,7 @@ import java.util.Date;
 
 @Getter
 @TableName("5_channel_info_table")
-public class ChannelInfoTable implements Serializable {
+public class ChannelInfoTable implements Serializable,Cloneable{
     @TableId(type= IdType.AUTO)
     private Long id;//表主键,
     private String channelId;//通道id,
@@ -159,5 +159,11 @@ public class ChannelInfoTable implements Serializable {
 
     public void setBankStatus(Integer bankStatus) {
         this.bankStatus = bankStatus;
+    }
+
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }

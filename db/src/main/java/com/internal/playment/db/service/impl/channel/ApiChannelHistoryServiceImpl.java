@@ -30,6 +30,7 @@ public class ApiChannelHistoryServiceImpl implements ApiChannelHistoryService, N
         if(isNull(ch)) return null;
         LambdaQueryWrapper<ChannelHistoryTable> lambdaQueryWrapper = new QueryWrapper<ChannelHistoryTable>().lambda();
         if( !isBlank(ch.getMerchantId()) ) lambdaQueryWrapper.eq(ChannelHistoryTable::getMerchantId,ch.getMerchantId());
+        if( !isBlank(ch.getProductId()) ) lambdaQueryWrapper.eq(ChannelHistoryTable::getProductId,ch.getProductId());
         if( !isBlank(ch.getTerminalMerId()) ) lambdaQueryWrapper.eq(ChannelHistoryTable::getTerminalMerId,ch.getTerminalMerId());
         if( !isNull(ch.getCreateTime()) ) lambdaQueryWrapper.eq(ChannelHistoryTable::getCreateTime,ch.getCreateTime());
         return channelHistoryDbService.getOne(lambdaQueryWrapper);
