@@ -27,7 +27,7 @@ public class ApiSysConstantServiceImpl implements ApiSysConstantService, NewPayA
 
     @Override
     public boolean delByIds(List<String> ids) {
-        if (isHasElement(ids)) return false;
+        if (isHasNotElement(ids)) return false;
         return sysConstantDBService.removeByIds(ids);
     }
 
