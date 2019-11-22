@@ -551,13 +551,18 @@ public class NewPayOrderServiceImpl  extends CommonServiceAbstract implements Ne
     @Override
     public PayOrderInfoTable updateByPayOrderInfo(CrossResponseMsgDTO crossResponseMsgDTO, String crossResponseMsg, PayOrderInfoTable payOrderInfoTable, InnerPrintLogObject ipo) throws NewPayException {
         final String localPoint="updateByPayOrderInfo";
-        payOrderInfoTable.setCrossRespResult(crossResponseMsg)
+        PayOrderInfoTable poi = new PayOrderInfoTable()
+                //where
+                .setPlatformIncome(payOrderInfoTable.getPlatformIncome())
+                //set
+                .setCrossRespResult(crossResponseMsg)
                 .setChannelRespResult(crossResponseMsgDTO.getChannelResponseMsg())
                 .setChannelOrderId(crossResponseMsgDTO.getChannelOrderId())
+                .setUpdateTime(new Date())
                 .setStatus(crossResponseMsgDTO.getCrossStatusCode());
 
         try {
-            dbCommonRPCComponent.apiPayOrderInfoService.updateByPrimaryKey(payOrderInfoTable);
+            dbCommonRPCComponent.apiPayOrderInfoService.updateByWhereCondition(poi);
         }catch (Exception e){
             e.printStackTrace();
             throw new NewPayException(
@@ -896,10 +901,14 @@ public class NewPayOrderServiceImpl  extends CommonServiceAbstract implements Ne
     @Override
     public PayOrderInfoTable updateByPayOrderInfoByBefore(PayOrderInfoTable payOrderInfoTable, InnerPrintLogObject ipo, String  ...args) throws NewPayException {
         final String localPoint="updateByPayOrderInfoByB9";
-        payOrderInfoTable.setBussType(args[0])
+        PayOrderInfoTable poi = new PayOrderInfoTable()
+                //where
+                .setPlatformOrderId(payOrderInfoTable.getPlatformOrderId())
+                //set
+                .setBussType(args[0])
                 .setStatus(StatusEnum._3.getStatus());
         try {
-            dbCommonRPCComponent.apiPayOrderInfoService.updateByPrimaryKey(payOrderInfoTable);
+            dbCommonRPCComponent.apiPayOrderInfoService.updateByWhereCondition(poi);
         }catch (Exception e){
             e.printStackTrace();
             throw new NewPayException(
@@ -936,18 +945,26 @@ public class NewPayOrderServiceImpl  extends CommonServiceAbstract implements Ne
     @Override
     public PayOrderInfoTable updateByPayOrderInfoByB9After(CrossResponseMsgDTO crossResponseMsgDTO, String crossResponseMsg, PayOrderInfoTable payOrderInfoTable, InnerPrintLogObject ipo) throws NewPayException {
         final String localPoint="updateByPayOrderInfoByB9After";
-        payOrderInfoTable.setCrossRespResult(crossResponseMsg)
+        payOrderInfoTable
+                .setCrossRespResult(crossResponseMsg)
                 .setChannelRespResult(crossResponseMsgDTO.getChannelResponseMsg())
                 .setChannelOrderId(crossResponseMsgDTO.getChannelOrderId())
                 .setStatus(crossResponseMsgDTO.getCrossStatusCode());
 
-        if(crossResponseMsgDTO.getCrossStatusCode() == StatusEnum._0.getStatus()){
+        if(crossResponseMsgDTO.getCrossStatusCode() == StatusEnum._0.getStatus()) {
             payOrderInfoTable.setStatus(StatusEnum._7.getStatus());
             return payOrderInfoTable;
         }
-
         try {
-            dbCommonRPCComponent.apiPayOrderInfoService.updateByPrimaryKey(payOrderInfoTable);
+            dbCommonRPCComponent.apiPayOrderInfoService.updateByWhereCondition(new PayOrderInfoTable()
+                    //where
+                    .setPlatformOrderId(payOrderInfoTable.getPlatformOrderId())
+                    //set
+                    .setCrossRespResult(crossResponseMsg)
+                    .setChannelRespResult(crossResponseMsgDTO.getChannelResponseMsg())
+                    .setChannelOrderId(crossResponseMsgDTO.getChannelOrderId())
+                    .setUpdateTime(new Date())
+                    .setStatus(crossResponseMsgDTO.getCrossStatusCode()));
         }catch (Exception e){
             e.printStackTrace();
             throw new NewPayException(
@@ -1149,9 +1166,13 @@ public class NewPayOrderServiceImpl  extends CommonServiceAbstract implements Ne
 
         try {
             synchronized (this){
-                payOrderInfoTable
-                        .setPlatformOrderId("RXH" + new Random(System.currentTimeMillis()).nextInt(1000000) + "-B10-" + System.currentTimeMillis())
-                        .setId(System.currentTimeMillis());
+                StringBuilder sb = new StringBuilder();
+                sb
+                        .append("RXH")
+                        .append(new Random(System.currentTimeMillis()).nextInt(1000000))
+                        .append("-B10-")
+                        .append(System.nanoTime());
+                payOrderInfoTable.setPlatformOrderId(sb.toString());
             }
             dbCommonRPCComponent.apiPayOrderInfoService.save(payOrderInfoTable);
         }catch (Exception e){
@@ -1406,9 +1427,13 @@ public class NewPayOrderServiceImpl  extends CommonServiceAbstract implements Ne
 
         try {
             synchronized (this){
-                payOrderInfoTable
-                        .setPlatformOrderId("RXH" + new Random(System.currentTimeMillis()).nextInt(1000000) + "-B7-" + System.currentTimeMillis())
-                        .setId(System.currentTimeMillis()+new Random(System.currentTimeMillis()).nextInt(1000000));
+                StringBuilder sb = new StringBuilder();
+                sb
+                        .append("RXH")
+                        .append(new Random(System.currentTimeMillis()).nextInt(1000000))
+                        .append("-B7-")
+                        .append(System.nanoTime());
+                payOrderInfoTable.setPlatformOrderId(sb.toString());
             }
             dbCommonRPCComponent.apiPayOrderInfoService.save(payOrderInfoTable);
         }catch (Exception e){

@@ -26,7 +26,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class PayOrderInfoTable implements Serializable,Cloneable {
 
-    @TableId(type= IdType.INPUT)
+    @TableId(type= IdType.AUTO)
     private Long id ;// 表主键,
     private String platformOrderId;// 平台订单号,
     private String channelOrderId;//通道订单号

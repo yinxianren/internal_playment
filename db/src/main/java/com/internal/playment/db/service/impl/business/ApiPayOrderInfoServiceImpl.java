@@ -78,8 +78,14 @@ public class ApiPayOrderInfoServiceImpl implements ApiPayOrderInfoService, NewPa
         //set
         if( !isNull(pit.getNotifyStatus()) ) updateWrapper.set(PayOrderInfoTable::getNotifyStatus,pit.getNotifyStatus());
         if( !isNull(pit.getUpdateTime())) updateWrapper.set(PayOrderInfoTable::getUpdateTime,pit.getUpdateTime());
+        if( !isBlank(pit.getCrossRespResult()))   updateWrapper.set(PayOrderInfoTable::getCrossRespResult,pit.getCrossRespResult());
+        if( !isBlank(pit.getChannelRespResult()))   updateWrapper.set(PayOrderInfoTable::getChannelRespResult,pit.getChannelRespResult());
+        if( !isBlank(pit.getChannelOrderId()))   updateWrapper.set(PayOrderInfoTable::getChannelOrderId,pit.getChannelOrderId());
+        if( !isBlank(pit.getBussType()))   updateWrapper.set(PayOrderInfoTable::getBussType,pit.getBussType());
+        if( !isNull(pit.getStatus()))   updateWrapper.set(PayOrderInfoTable::getStatus,pit.getStatus());
         //where
         if( !isNull(pit.getId()) )  updateWrapper.eq( PayOrderInfoTable::getId,pit.getId() );
+        if( !isBlank(pit.getPlatformOrderId()))   updateWrapper.set(PayOrderInfoTable::getPlatformOrderId,pit.getPlatformOrderId());
         return payOrderInfoDBService.update(updateWrapper);
     }
 

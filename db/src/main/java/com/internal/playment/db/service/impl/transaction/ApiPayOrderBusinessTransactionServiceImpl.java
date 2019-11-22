@@ -1,6 +1,8 @@
 package com.internal.playment.db.service.impl.transaction;
 
 import com.alibaba.dubbo.config.annotation.Service;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.internal.playment.api.db.transaction.ApiPayOrderBusinessTransactionService;
 import com.internal.playment.common.table.agent.AgentMerchantWalletTable;
 import com.internal.playment.common.table.agent.AgentMerchantsDetailsTable;
@@ -68,7 +70,8 @@ public class ApiPayOrderBusinessTransactionServiceImpl implements ApiPayOrderBus
     public void updateByPayOrderCorrelationInfo(PayOrderInfoTable pit, ChannelHistoryTable cht, Set<RiskQuotaTable> rqtSet) {
         channelHistoryDbService.saveOrUpdate(cht);
         riskQuotaDBService.saveOrUpdateBatch(rqtSet);
-        payOrderInfoDBService.updateById(pit);
+        payOrderInfoDBService.update(pit,
+                new UpdateWrapper<PayOrderInfoTable>().lambda().eq(PayOrderInfoTable::getPlatformOrderId,pit.getPlatformOrderId()));
     }
 
     @Override
