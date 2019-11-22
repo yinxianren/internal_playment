@@ -1,6 +1,8 @@
 package com.internal.playment.db.service.impl.transaction;
 
 import com.alibaba.dubbo.config.annotation.Service;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.internal.playment.api.db.business.ApiTransOrderInfoService;
 import com.internal.playment.api.db.transaction.ApiTransOrderBusinessTransactionService;
 import com.internal.playment.common.table.business.PayOrderInfoTable;
 import com.internal.playment.common.table.business.TransOrderInfoTable;
@@ -25,10 +27,11 @@ public class ApiTransOrderBusinessTransactionServiceImpl implements ApiTransOrde
 
     private final PayOrderInfoDBService payOrderInfoDBService;
     private final TransOrderInfoDBService transOrderInfoDBService;
-
+    private final ApiTransOrderInfoService apiTransOrderInfoService;
     @Override
     public void updateByPayOrderCorrelationInfo(TransOrderInfoTable transOrderInfoTable, List<PayOrderInfoTable> payOrderInfoTableList) {
-        transOrderInfoDBService.updateById(transOrderInfoTable);
+
+        apiTransOrderInfoService.updateByWhereCondition(transOrderInfoTable);
         payOrderInfoDBService.updateBatchById(payOrderInfoTableList);
     }
 

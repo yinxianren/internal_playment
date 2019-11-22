@@ -124,7 +124,7 @@ public class NewTransOrderController extends NewAbstractCommonController {
             crossResponseMsgDTO = commonChannelHandlePortComponent.payment(requestCrossMsgDTO,ipo);
             String crossResponseMsg = null == crossResponseMsgDTO ? null : crossResponseMsgDTO.toString();
             //更新订单信息
-            transOrderInfoTable = newTransOrderService.updateOrder(transOrderInfoTable,crossResponseMsg,crossResponseMsgDTO,ipo);
+            TransOrderInfoTable UpdateTransOrderInfoTable = newTransOrderService.updateOrder(transOrderInfoTable,crossResponseMsg,crossResponseMsgDTO,ipo);
             //状态为成功是才执行以下操作
             if(crossResponseMsgDTO.getCrossStatusCode().equals(StatusEnum._0.getStatus())){
                 /**
@@ -133,7 +133,7 @@ public class NewTransOrderController extends NewAbstractCommonController {
                 //修改收单订单状体为 -->代付处理中,移除不必要的数据
                 payOrderInfoTableList =  newTransOrderService.updatePayOrderStatus(payOrderInfoTableList);
                 //执行事务
-                newTransOrderService.batchUpdateTransOderCorrelationInfo(transOrderInfoTable,payOrderInfoTableList,ipo);
+                newTransOrderService.batchUpdateTransOderCorrelationInfo(UpdateTransOrderInfoTable,payOrderInfoTableList,ipo);
             }
             //通道差异化处理
             commonChannelHandlePortComponent.channelDifferBusinessHandleByTransOrder(requestCrossMsgDTO,crossResponseMsgDTO);

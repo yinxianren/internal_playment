@@ -89,8 +89,11 @@ public class PayWalletComponentComponentImpl implements PayWalletComponent, NewP
         }catch (Exception e){
             e.printStackTrace();
             if( !isNull(poi) ){
-                poi = poi.setStatus(StatusEnum._8.getStatus());
-                dbCommonRPCComponent.apiPayOrderInfoService.updateByPrimaryKey(poi);
+                dbCommonRPCComponent.apiPayOrderInfoService.updateByWhereCondition(new PayOrderInfoTable()
+                        .setUpdateTime(new Date())
+                        .setPlatformOrderId(poi.getPlatformOrderId())
+                        .setStatus(StatusEnum._8.getStatus()));
+
                 dbCommonRPCComponent.apiSystemOrderTrackService.save( new SystemOrderTrackTable()
                         .setRequestPath(bussType)
                         .setPlatformPrintLog( e instanceof NewPayException ? ((NewPayException)e).getInnerPrintMsg() : e.getMessage())
@@ -156,8 +159,11 @@ public class PayWalletComponentComponentImpl implements PayWalletComponent, NewP
         }catch (Exception e){
             e.printStackTrace();
             if( !isNull(toit) ){
-                toit = toit.setStatus(StatusEnum._8.getStatus());
-                dbCommonRPCComponent.apiTransOrderInfoService.updateById(toit);
+                dbCommonRPCComponent.apiTransOrderInfoService.updateByWhereCondition(new TransOrderInfoTable()
+                        .setPlatformOrderId(toit.getPlatformOrderId())
+                        .setUpdateTime(new Date())
+                        .setStatus(StatusEnum._8.getStatus()));
+
                 dbCommonRPCComponent.apiSystemOrderTrackService.save( new SystemOrderTrackTable()
                         .setRequestPath(bussType)
                         .setPlatformPrintLog( e instanceof NewPayException ? ((NewPayException)e).getInnerPrintMsg() : e.getMessage())

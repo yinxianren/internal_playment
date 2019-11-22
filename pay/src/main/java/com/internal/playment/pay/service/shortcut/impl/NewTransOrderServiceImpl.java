@@ -613,14 +613,16 @@ public class NewTransOrderServiceImpl extends CommonServiceAbstract implements N
             return transOrderInfoTable;
         }
 
+        TransOrderInfoTable updateTransOrderInfoTable =  new TransOrderInfoTable()
+                .setPlatformIncome(transOrderInfoTable.getPlatformIncome())
+                .setUpdateTime(transOrderInfoTable.getUpdateTime())
+                .setCrossRespResult(crossResponseMsg)
+                .setChannelRespResult(crossResponseMsgDTO.getChannelResponseMsg())
+                .setChannelOrderId(crossResponseMsgDTO.getChannelOrderId())
+                .setStatus(crossResponseMsgDTO.getCrossStatusCode());
+
         try {
-            dbCommonRPCComponent.apiTransOrderInfoService.updateByWhereCondition( new TransOrderInfoTable()
-                    .setPlatformIncome(transOrderInfoTable.getPlatformIncome())
-                    .setUpdateTime(transOrderInfoTable.getUpdateTime())
-                    .setCrossRespResult(crossResponseMsg)
-                    .setChannelRespResult(crossResponseMsgDTO.getChannelResponseMsg())
-                    .setChannelOrderId(crossResponseMsgDTO.getChannelOrderId())
-                    .setStatus(crossResponseMsgDTO.getCrossStatusCode()));
+            dbCommonRPCComponent.apiTransOrderInfoService.updateByWhereCondition(updateTransOrderInfoTable );
 
         }catch (Exception e){
             e.printStackTrace();
@@ -631,7 +633,7 @@ public class NewTransOrderServiceImpl extends CommonServiceAbstract implements N
                     format(" %s", ResponseCodeEnum.RXH99999.getMsg())
             );
         }
-        return  transOrderInfoTable;
+        return  updateTransOrderInfoTable;
     }
 
     @Override
