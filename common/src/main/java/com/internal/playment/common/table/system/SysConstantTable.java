@@ -1,6 +1,9 @@
 package com.internal.playment.common.table.system;
 
 import java.io.Serializable;
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.util.Date;
@@ -16,6 +19,7 @@ import java.util.Date;
 public class SysConstantTable  implements Serializable {
 
 
+	@TableId(type = IdType.UUID)
 	private String id;
 
 	private String name; //常量名称
