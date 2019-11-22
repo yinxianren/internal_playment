@@ -9,6 +9,7 @@ import com.internal.playment.common.enums.*;
 import com.internal.playment.common.inner.InnerPrintLogObject;
 import com.internal.playment.common.inner.NewPayException;
 import com.internal.playment.common.inner.ParamRule;
+import com.internal.playment.common.inner.UUID;
 import com.internal.playment.common.table.agent.AgentMerchantSettingTable;
 import com.internal.playment.common.table.business.MerchantCardTable;
 import com.internal.playment.common.table.business.PayOrderInfoTable;
@@ -30,6 +31,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**
@@ -42,6 +44,8 @@ import java.util.stream.Collectors;
 @Service
 public class NewPayOrderServiceImpl  extends CommonServiceAbstract implements NewPayOrderService {
 
+    private final static Object lock = new Object();
+    private static AtomicInteger count = new AtomicInteger(0) ;
     @Override
     public RequestCrossMsgDTO getRequestCrossMsgDTO(Tuple2 tuple) {
         Tuple4<ChannelInfoTable, PayOrderInfoTable, RegisterCollectTable, MerchantCardTable> tuple4 = (Tuple4<ChannelInfoTable, PayOrderInfoTable, RegisterCollectTable, MerchantCardTable>) tuple;
@@ -1240,6 +1244,7 @@ public class NewPayOrderServiceImpl  extends CommonServiceAbstract implements Ne
         AgentMerchantSettingTable agentMerchantSettingTable;
         MerchantRateTable merchantRateTable;
         BankRateTable  bankRateTable = null;
+
         try {
             agentMerchantSettingTable = dbCommonRPCComponent.apiAgentMerchantSettingService.getOne(new AgentMerchantSettingTable()
                     .setAgentMerchantId(merInfoTable.getAgentMerchantId())
@@ -1400,6 +1405,15 @@ public class NewPayOrderServiceImpl  extends CommonServiceAbstract implements Ne
                 format(" %s",ResponseCodeEnum.RXH00044.getMsg()));
 
         PayOrderInfoTable payOrderInfoTable = new PayOrderInfoTable();
+        synchronized (lock) {
+            StringBuilder sb = new StringBuilder()
+                    .append("B7RXH")
+                    .append(count.incrementAndGet())
+                    .append(".")
+                    .append(java.util.UUID.randomUUID().toString().replaceAll("-", ""))
+                    .append(System.currentTimeMillis());
+            payOrderInfoTable.setPlatformOrderId(sb.toString());
+        }
         payOrderInfoTable
                 .setMerOrderId(merPayOrderApplyDTO.getMerOrderId())
                 .setMerchantId(merPayOrderApplyDTO.getMerId())                              .setTerminalMerId(merPayOrderApplyDTO.getTerMerId())
@@ -1424,17 +1438,7 @@ public class NewPayOrderServiceImpl  extends CommonServiceAbstract implements Ne
                 .setChannelRespResult(null)                                                 .setCrossRespResult(null)
                 .setNotifyUrl(merPayOrderApplyDTO.getNoticeUrl())                           .setReturnUrl(merPayOrderApplyDTO.getReturnUrl())
                 .setCreateTime(new Date())                                                  .setUpdateTime(new Date());
-
         try {
-            synchronized (this){
-                StringBuilder sb = new StringBuilder();
-                sb
-                        .append("RXH")
-                        .append(new Random(System.currentTimeMillis()).nextInt(1000000))
-                        .append("-B7-")
-                        .append(System.nanoTime());
-                payOrderInfoTable.setPlatformOrderId(sb.toString());
-            }
             dbCommonRPCComponent.apiPayOrderInfoService.save(payOrderInfoTable);
         }catch (Exception e){
             e.printStackTrace();
