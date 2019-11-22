@@ -38,6 +38,7 @@ public class ApiAgentMerchantsDetailsServiceImpl implements ApiAgentMerchantsDet
         if (!isBlank(amd.getProductId())) queryWrapper.eq(AgentMerchantsDetailsTable::getProductId,amd.getProductId());
         if (!isNull(amd.getBeginTime())) queryWrapper.gt(AgentMerchantsDetailsTable::getUpdateTime,amd.getBeginTime());
         if (!isNull(amd.getEndTime())) queryWrapper.lt(AgentMerchantsDetailsTable::getUpdateTime,amd.getEndTime());
+        queryWrapper.orderByDesc(AgentMerchantsDetailsTable::getTimestamp);
         IPage iPage = new Page(amd.getPageNum(),amd.getPageSize());
 
         return agentMerchantsDetailsDBService.page(iPage,queryWrapper);
