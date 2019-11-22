@@ -30,5 +30,8 @@ public class SysPrivilegesTable implements Serializable {
 	private Integer status;//是否可用
 	@TableField(exist = false)
 	private List<Long> ids;
+	// 子菜单
+	@TableField(exist = false)
+	private List<SysPrivilegesTable> submenu;
 
 }
