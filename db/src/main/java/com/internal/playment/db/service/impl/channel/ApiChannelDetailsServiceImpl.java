@@ -48,6 +48,7 @@ public class ApiChannelDetailsServiceImpl implements ApiChannelDetailsService, N
         if (!isBlank(cdt.getProductId())) queryWrapper.eq(ChannelDetailsTable::getProductId,cdt.getProductId());
         if (!isNull(cdt.getBeginTime())) queryWrapper.gt(ChannelDetailsTable::getUpdateTime,cdt.getBeginTime());
         if (!isNull(cdt.getEndTime())) queryWrapper.lt(ChannelDetailsTable::getUpdateTime,cdt.getEndTime());
+        queryWrapper.orderByDesc(ChannelDetailsTable::getTimestamp);
         IPage iPage = new Page(cdt.getPageNum(),cdt.getPageSize());
         return channelDetailsDbService.page(iPage,queryWrapper);
     }

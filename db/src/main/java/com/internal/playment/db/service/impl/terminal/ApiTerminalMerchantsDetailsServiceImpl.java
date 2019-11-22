@@ -43,6 +43,7 @@ public class ApiTerminalMerchantsDetailsServiceImpl implements ApiTerminalMercha
         if (!isBlank(terminalMerchantsDetailsTable.getProductId())) queryWrapper.eq(TerminalMerchantsDetailsTable::getProductId,terminalMerchantsDetailsTable.getProductId());
         if (!isNull(terminalMerchantsDetailsTable.getBeginTime())) queryWrapper.gt(TerminalMerchantsDetailsTable::getUpdateTime,terminalMerchantsDetailsTable.getBeginTime());
         if (!isNull(terminalMerchantsDetailsTable.getEndTime())) queryWrapper.lt(TerminalMerchantsDetailsTable::getUpdateTime,terminalMerchantsDetailsTable.getEndTime());
+        queryWrapper.orderByDesc(TerminalMerchantsDetailsTable::getTimestamp);
         return terminalMerchantsDetailsDBService.page(iPage,queryWrapper);
     }
 

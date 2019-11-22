@@ -40,6 +40,7 @@ public class ApiMerchantsDetailsServiceImpl implements ApiMerchantsDetailsServic
         if (!isBlank(merchantsDetailsTable.getProductId())) queryWrapper.eq(MerchantsDetailsTable::getProductId,merchantsDetailsTable.getProductId());
         if (!isNull(merchantsDetailsTable.getBeginTime())) queryWrapper.gt(MerchantsDetailsTable::getUpdateTime,merchantsDetailsTable.getBeginTime());
         if (!isNull(merchantsDetailsTable.getEndTime())) queryWrapper.lt(MerchantsDetailsTable::getUpdateTime,merchantsDetailsTable.getEndTime());
+        queryWrapper.orderByDesc(MerchantsDetailsTable::getTimestamp);
         return merchantsDetailsDBService.page(iPage,queryWrapper);
     }
 }
