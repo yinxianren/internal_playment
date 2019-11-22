@@ -14,4 +14,6 @@ public interface ApiRegisterCollectService {
     boolean save(RegisterCollectTable rct);
 
     boolean updateByPrimaryKey(RegisterCollectTable rct);
+
+    boolean updateByWhereCondition(RegisterCollectTable rct);
 }

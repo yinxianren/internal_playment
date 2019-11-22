@@ -20,8 +20,9 @@ import java.util.Date;
 @TableName("6_register_info_table")
 @Getter
 public class RegisterInfoTable implements Serializable {
-    @TableId(type= IdType.INPUT)
+    @TableId(type= IdType.AUTO)
     private Long id ;//表主键,
+    private String platformOrderId;//平台订单号',
     private String merchantId ;// 商户号,
     private String terminalMerId;// 终端商户号,
     private String terminalMerName ;// 终端商户名,
@@ -41,6 +42,11 @@ public class RegisterInfoTable implements Serializable {
 
     public RegisterInfoTable setId(Long id) {
         this.id = id;
+        return this;
+    }
+
+    public RegisterInfoTable setPlatformOrderId(String platformOrderId) {
+        this.platformOrderId = platformOrderId;
         return this;
     }
 

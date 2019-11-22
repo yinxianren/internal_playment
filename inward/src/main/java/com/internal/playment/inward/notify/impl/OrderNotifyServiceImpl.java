@@ -37,7 +37,7 @@ public class OrderNotifyServiceImpl extends NotifyCommonServiceAbstract implemen
                         .setRespResult(content)
                         .setUpdateTime(new Date())
                         .setStatus(StatusEnum._0.getStatus());//结束通知
-                dbCommonRPCComponent.apiAsyncNotifyService.updateByKey(asyncNotifyTable);
+                dbCommonRPCComponent.apiAsyncNotifyService.updateByWhereCondition(asyncNotifyTable);
                 return;
             }
             int count = asyncNotifyTable.getNotifyCount() + 1;
@@ -48,7 +48,7 @@ public class OrderNotifyServiceImpl extends NotifyCommonServiceAbstract implemen
                     .setNotifyCount( count )
                     .setRespResult( isBlank(content) ? content :
                             content.length() >1024 ? content.substring(0,1024) : content);
-            dbCommonRPCComponent.apiAsyncNotifyService.updateByKey(asyncNotifyTable);
+            dbCommonRPCComponent.apiAsyncNotifyService.updateByWhereCondition(asyncNotifyTable);
             if(count == 2)
                 activeMqOrderProducerComponent.delaySend(asyncNotify,asyncNotifyTable,5*60*1000L);
             else if(count == 3)

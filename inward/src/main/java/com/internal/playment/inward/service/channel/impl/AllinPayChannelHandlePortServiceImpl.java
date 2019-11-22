@@ -228,7 +228,7 @@ public class AllinPayChannelHandlePortServiceImpl extends ChannelCommonServiceAb
                 .setMerchantId( obj instanceof PayOrderInfoTable ? payOrderInfoTable.getMerchantId() : transOrderInfoTable.getMerchantId())
                 .setTerminalMerId( obj instanceof PayOrderInfoTable ? payOrderInfoTable.getTerminalMerId() : transOrderInfoTable.getTerminalMerId())
                 .setMerOrderId( obj instanceof PayOrderInfoTable ? payOrderInfoTable.getMerOrderId() : transOrderInfoTable.getMerOrderId())
-                .setPlatformOrderId(obj instanceof PayOrderInfoTable ? payOrderInfoTable.getCardPlatformOrderId() : transOrderInfoTable.getCardPlatformOrderId())
+                .setPlatformOrderId(obj instanceof PayOrderInfoTable ? payOrderInfoTable.getPlatformOrderId() : transOrderInfoTable.getPlatformOrderId())
                 .setAmount(obj instanceof PayOrderInfoTable ? payOrderInfoTable.getAmount() :  transOrderInfoTable.getAmount())
                 .setNotifyUrl(obj instanceof PayOrderInfoTable ? payOrderInfoTable.getNotifyUrl() : transOrderInfoTable.getNotifyUrl())
                 .setOrderStatus(status)

@@ -24,7 +24,7 @@ import java.util.Date;
 @TableName("6_register_collect_table")
 @Getter
 public class RegisterCollectTable implements Serializable {
-    @TableId(type= IdType.INPUT)
+    @TableId(type= IdType.AUTO)
     private Long id ;//表主键',
     private String platformOrderId;//平台订单号',
     private Long  ritId;//主表id',

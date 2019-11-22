@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**
@@ -33,6 +34,9 @@ import java.util.stream.Collectors;
  */
 @Service
 public class NewTransOrderServiceImpl extends CommonServiceAbstract implements NewTransOrderService {
+
+    private final static Object b11 = new Object();
+    private static AtomicInteger count = new AtomicInteger(0);
 
     @Override
     public RequestCrossMsgDTO getRequestCrossMsgDTO(Tuple2 tuple) throws NewPayException {
@@ -567,9 +571,15 @@ public class NewTransOrderServiceImpl extends CommonServiceAbstract implements N
                     .setCreateTime(new Date())                                                    .setUpdateTime(new Date());
 
             synchronized (this){
-                transOrderInfoTable
-                        .setId(System.currentTimeMillis())
-                        .setPlatformOrderId("RXH" + new Random(System.currentTimeMillis()).nextInt(1000000) + "-B11-" + System.currentTimeMillis());
+                synchronized (b11) {
+                    StringBuilder sb = new StringBuilder()
+                            .append("B11RXH")
+                            .append(count.incrementAndGet())
+                            .append("*")
+                            .append(java.util.UUID.randomUUID().toString().replaceAll("-", ""))
+                            .append(System.currentTimeMillis());
+                    registerCollectTable.setPlatformOrderId(sb.toString());
+                }
             }
             dbCommonRPCComponent.apiTransOrderInfoService.save(transOrderInfoTable);
         }catch (Exception e){
@@ -592,7 +602,9 @@ public class NewTransOrderServiceImpl extends CommonServiceAbstract implements N
     @Override
     public TransOrderInfoTable updateOrder(TransOrderInfoTable transOrderInfoTable, String crossResponseMsg, CrossResponseMsgDTO crossResponseMsgDTO, InnerPrintLogObject ipo) throws NewPayException {
         final String localPoint="updateOrder";
+
         transOrderInfoTable.setCrossRespResult(crossResponseMsg)
+                .setUpdateTime(new Date())
                 .setChannelRespResult(crossResponseMsgDTO.getChannelResponseMsg())
                 .setChannelOrderId(crossResponseMsgDTO.getChannelOrderId())
                 .setStatus(crossResponseMsgDTO.getCrossStatusCode());
@@ -600,8 +612,16 @@ public class NewTransOrderServiceImpl extends CommonServiceAbstract implements N
             transOrderInfoTable.setStatus(StatusEnum._7.getStatus());
             return transOrderInfoTable;
         }
+
         try {
-            dbCommonRPCComponent.apiTransOrderInfoService.updateById(transOrderInfoTable);
+            dbCommonRPCComponent.apiTransOrderInfoService.updateByWhereCondition( new TransOrderInfoTable()
+                    .setPlatformIncome(transOrderInfoTable.getPlatformIncome())
+                    .setUpdateTime(transOrderInfoTable.getUpdateTime())
+                    .setCrossRespResult(crossResponseMsg)
+                    .setChannelRespResult(crossResponseMsgDTO.getChannelResponseMsg())
+                    .setChannelOrderId(crossResponseMsgDTO.getChannelOrderId())
+                    .setStatus(crossResponseMsgDTO.getCrossStatusCode()));
+
         }catch (Exception e){
             e.printStackTrace();
             throw new NewPayException(

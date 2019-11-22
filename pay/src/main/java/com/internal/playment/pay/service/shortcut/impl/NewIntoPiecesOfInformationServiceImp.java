@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**
@@ -37,7 +38,12 @@ import java.util.stream.Collectors;
 @Service
 public class NewIntoPiecesOfInformationServiceImp extends CommonServiceAbstract implements NewIntoPiecesOfInformationService {
 
-
+    private final static Object b1 = new Object();
+    private final static Object b = new Object();
+    private final static Object b2 = new Object();
+    private final static Object b3 = new Object();
+    private static AtomicInteger count = new AtomicInteger(0);
+    private static AtomicInteger count2 = new AtomicInteger(0);
     @Override
     public List<RegisterCollectTable> getRegisterCollectOnSuccess(InnerPrintLogObject ipo) throws NewPayException {
         final String localPoint = "getRegisterCollectOnSuccess(InnerPrintLogObject ipo)";
@@ -143,9 +149,15 @@ public class NewIntoPiecesOfInformationServiceImp extends CommonServiceAbstract 
                             .setIdentityNum(mbirDTO.getIdentityNum()));
 
             if (null == registerInfoTable) {
-                synchronized (this) {
+                synchronized (b) {
+                    StringBuilder sb = new StringBuilder()
+                            .append("RXH")
+                            .append(count2.incrementAndGet())
+                            .append("*")
+                            .append(java.util.UUID.randomUUID().toString().replaceAll("-", ""))
+                            .append(System.currentTimeMillis());
                     registerInfoTable = new RegisterInfoTable()
-                            .setId(System.currentTimeMillis())
+                            .setPlatformOrderId(sb.toString())
                             .setCreateTime(new Date());
                 }
             }
@@ -171,11 +183,14 @@ public class NewIntoPiecesOfInformationServiceImp extends CommonServiceAbstract 
                     .setStatus(StatusEnum._3.getStatus())                       .setMerchantRateTableCollect(merchantRateTableList)
                     .setCreateTime(new Date())                                  .setBussType(BusinessTypeEnum.b1.getBusiType()) //基础信息登记
                     .setUpdateTime(new Date());
-            synchronized (this) {
-
-                registerCollectTable
-                        .setId(System.currentTimeMillis())
-                        .setPlatformOrderId(("RXH" + new Random(System.currentTimeMillis()).nextInt(1000000) + "-B1-" + System.currentTimeMillis()));
+            synchronized (b1) {
+                StringBuilder sb = new StringBuilder()
+                        .append("B1RXH")
+                        .append(count.incrementAndGet())
+                        .append("*")
+                        .append(java.util.UUID.randomUUID().toString().replaceAll("-", ""))
+                        .append(System.currentTimeMillis());
+                registerCollectTable.setPlatformOrderId(sb.toString());
             }
             //保持或更新
             dbCommonRPCComponent.apiRegisterInfoService.saveOrUpdate(registerInfoTable);
@@ -216,7 +231,12 @@ public class NewIntoPiecesOfInformationServiceImp extends CommonServiceAbstract 
                 .setUpdateTime(new Date())
                 .setChannelRespResult( null== crossResponseMsgDTO ?  null : crossResponseMsgDTO.getChannelResponseMsg() );
         try {
-            dbCommonRPCComponent.apiRegisterCollectService.updateByPrimaryKey(registerCollectTable);
+            dbCommonRPCComponent.apiRegisterCollectService.updateByWhereCondition(new RegisterCollectTable()
+                    .setStatus(registerCollectTable.getStatus() )
+                    .setCrossRespResult(crossResponseMsg)
+                    .setUpdateTime(registerCollectTable.getUpdateTime())
+                    .setPlatformOrderId(registerCollectTable.getPlatformOrderId())
+                    .setChannelRespResult( registerCollectTable.getChannelRespResult() ));
         }catch (Exception e){
             e.printStackTrace();
             throw new NewPayException(
@@ -329,13 +349,13 @@ public class NewIntoPiecesOfInformationServiceImp extends CommonServiceAbstract 
         RegisterCollectTable  rct2= null;
         try {
             rct2 = dbCommonRPCComponent.apiRegisterCollectService.getOne(new RegisterCollectTable()
-                    .setMerchantId(ipo.getMerId())
-                    .setTerminalMerId(ipo.getTerMerId())
-                    .setBussType(busiType)
-                    .setStatus(StatusEnum._0.getStatus())
+                            .setMerchantId(ipo.getMerId())
+                            .setTerminalMerId(ipo.getTerMerId())
+                            .setBussType(busiType)
+                            .setStatus(StatusEnum._0.getStatus())
 //                    .setChannelId(rct.getChannelId())
-                    .setBankCardNum(rct.getBankCardNum())
-                    .setBankCardPhone(rct.getBankCardPhone())
+                            .setBankCardNum(rct.getBankCardNum())
+                            .setBankCardPhone(rct.getBankCardPhone())
             );
         }catch (Exception e){
             e.printStackTrace();
@@ -385,6 +405,7 @@ public class NewIntoPiecesOfInformationServiceImp extends CommonServiceAbstract 
                     .setCity(mbcbDTO.getCity())
                     .setUpdateTime(new Date());
             registerCollectTable
+                    .setId(null)
                     .setStatus(StatusEnum._3.getStatus())
                     .setBankAccountProp(Integer.valueOf(mbcbDTO.getBankAccountProp()))
                     .setBankCode(mbcbDTO.getBankCode())
@@ -398,10 +419,14 @@ public class NewIntoPiecesOfInformationServiceImp extends CommonServiceAbstract 
                     .setUpdateTime(new Date())
                     .setCrossRespResult(null)
                     .setChannelRespResult(null);
-            synchronized (this){
-                registerCollectTable
-                        .setId(System.currentTimeMillis())
-                        .setPlatformOrderId("RXH" + new Random(System.currentTimeMillis()).nextInt(1000000) + "-B2-" + System.currentTimeMillis());
+            synchronized (b2) {
+                StringBuilder sb = new StringBuilder()
+                        .append("B2RXH")
+                        .append(count.incrementAndGet())
+                        .append("*")
+                        .append(java.util.UUID.randomUUID().toString().replaceAll("-", ""))
+                        .append(System.currentTimeMillis());
+                registerCollectTable.setPlatformOrderId(sb.toString());
             }
 
 
@@ -430,10 +455,14 @@ public class NewIntoPiecesOfInformationServiceImp extends CommonServiceAbstract 
     @Override
     public RegisterCollectTable saveRegisterCollectTableByB3(RegisterCollectTable registerCollectTable, InnerPrintLogObject ipo) throws NewPayException {
         final String localPoint="saveRegisterCollectTableByB3";
-        synchronized (this){
-            registerCollectTable
-                    .setId(System.currentTimeMillis())
-                    .setPlatformOrderId("RXH" + new Random(System.currentTimeMillis()).nextInt(1000000) + "-B3-" + System.currentTimeMillis());
+        synchronized (b3) {
+            StringBuilder sb = new StringBuilder()
+                    .append("B3RXH")
+                    .append(count.incrementAndGet())
+                    .append("*")
+                    .append(java.util.UUID.randomUUID().toString().replaceAll("-", ""))
+                    .append(System.currentTimeMillis());
+            registerCollectTable.setPlatformOrderId(sb.toString());
         }
         registerCollectTable
                 .setBussType(BusinessTypeEnum.b3.getBusiType())

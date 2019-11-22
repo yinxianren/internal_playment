@@ -2,6 +2,8 @@ package com.internal.playment.db.service.impl.business;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.internal.playment.api.db.business.ApiRegisterCollectService;
 import com.internal.playment.common.inner.NewPayAssert;
 import com.internal.playment.common.table.business.RegisterCollectTable;
@@ -66,4 +68,18 @@ public class ApiRegisterCollectServiceImpl implements ApiRegisterCollectService,
         return registerCollectDbService.updateById(rct);
     }
 
+    @Override
+    public boolean updateByWhereCondition(RegisterCollectTable rct) {
+        if(isNull(rct)) return false;
+        LambdaUpdateWrapper<RegisterCollectTable> updateWrapper =  new UpdateWrapper<RegisterCollectTable>().lambda();
+        //set
+        if( !isNull(rct.getStatus()) )  updateWrapper.set(RegisterCollectTable::getStatus,rct.getStatus());
+        if( !isBlank(rct.getCrossRespResult()) )  updateWrapper.set(RegisterCollectTable::getCrossRespResult,rct.getCrossRespResult());
+        if( !isBlank(rct.getChannelRespResult()) )  updateWrapper.set(RegisterCollectTable::getChannelRespResult,rct.getChannelRespResult());
+        if( !isNull(rct.getUpdateTime()) )  updateWrapper.set(RegisterCollectTable::getUpdateTime,rct.getUpdateTime());
+        //where
+        if( !isBlank(rct.getPlatformOrderId())) updateWrapper.eq(RegisterCollectTable::getPlatformOrderId,rct.getPlatformOrderId());
+        if( !isNull(rct.getId()) )  updateWrapper.eq(RegisterCollectTable::getId,rct.getId());
+        return registerCollectDbService.update(updateWrapper);
+    }
 }

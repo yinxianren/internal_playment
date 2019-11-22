@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created with IntelliJ IDEA.
@@ -31,6 +32,10 @@ import java.util.*;
 @Service
 public class NewBondCardServiceImpl extends CommonServiceAbstract implements NewBondCardService {
 
+    private final static Object b4 = new Object();
+    private final static Object b5 = new Object();
+    private final static Object b6 = new Object();
+    private static AtomicInteger count = new AtomicInteger(0);
 
     @Override
     public void multipleOrder(String merOrderId, InnerPrintLogObject ipo) throws NewPayException {
@@ -82,10 +87,14 @@ public class NewBondCardServiceImpl extends CommonServiceAbstract implements New
                 .setBussType(BusinessTypeEnum.b4.getBusiType())
                 .setStatus(StatusEnum._3.getStatus()).setCreateTime(new Date()).setUpdateTime(new Date());
         try {
-            synchronized (this){
-                merchantCardTable
-                        .setId(System.currentTimeMillis())
-                        .setPlatformOrderId("RXH" + new Random(System.currentTimeMillis()).nextInt(1000000) + "-B4-" + System.currentTimeMillis());
+            synchronized (b4) {
+                StringBuilder sb = new StringBuilder()
+                        .append("B4RXH")
+                        .append(count.incrementAndGet())
+                        .append("*")
+                        .append(java.util.UUID.randomUUID().toString().replaceAll("-", ""))
+                        .append(System.currentTimeMillis());
+                registerCollectTable.setPlatformOrderId(sb.toString());
             }
             dbCommonRPCComponent.apiMerchantCardService.save(merchantCardTable);
         }catch (Exception e){
@@ -103,6 +112,7 @@ public class NewBondCardServiceImpl extends CommonServiceAbstract implements New
     public MerchantCardTable saveCardInfoByB5(MerchantCardTable merchantCardTable, MerReGetBondCodeDTO mrgbcDTO, InnerPrintLogObject ipo) throws NewPayException {
         final String localPoint="saveCardInfoByB5";
         merchantCardTable
+                .setId(null)
                 .setTerminalMerId(mrgbcDTO.getTerMerId())
                 .setCardHolderName(mrgbcDTO.getCardHolderName())
                 .setIdentityType(Integer.valueOf(mrgbcDTO.getIdentityType()))
@@ -118,10 +128,14 @@ public class NewBondCardServiceImpl extends CommonServiceAbstract implements New
                 .setStatus(StatusEnum._3.getStatus()).setCreateTime(new Date()).setUpdateTime(new Date());
 
         try {
-            synchronized (this){
-                merchantCardTable
-                        .setId(System.currentTimeMillis())
-                        .setPlatformOrderId("RXH" + new Random(System.currentTimeMillis()).nextInt(1000000) + "-B5-" + System.currentTimeMillis());
+            synchronized (b5) {
+                StringBuilder sb = new StringBuilder()
+                        .append("B2RXH")
+                        .append(count.incrementAndGet())
+                        .append("*")
+                        .append(java.util.UUID.randomUUID().toString().replaceAll("-", ""))
+                        .append(System.currentTimeMillis());
+                merchantCardTable.setPlatformOrderId(sb.toString());
             }
             dbCommonRPCComponent.apiMerchantCardService.save(merchantCardTable);
         }catch (Exception e){
@@ -139,6 +153,7 @@ public class NewBondCardServiceImpl extends CommonServiceAbstract implements New
     public MerchantCardTable saveCardInfoByB6(MerchantCardTable merchantCardTable, MerConfirmBondCardDTO mcbcDTO, InnerPrintLogObject ipo) throws NewPayException {
         final String localPoint="saveCardInfoByB6";
         merchantCardTable
+                .setId(null)
                 .setTerminalMerId(mcbcDTO.getTerMerId())
                 .setCardHolderName(mcbcDTO.getCardHolderName())
                 .setIdentityType(Integer.valueOf(mcbcDTO.getIdentityType()))
@@ -158,10 +173,14 @@ public class NewBondCardServiceImpl extends CommonServiceAbstract implements New
                 .setBackCardPhone(mcbcDTO.getBackCardPhone())
                 .setStatus(StatusEnum._3.getStatus()).setCreateTime(new Date()).setUpdateTime(new Date());
         try {
-            synchronized (this){
-                merchantCardTable
-                        .setId(System.currentTimeMillis())
-                        .setPlatformOrderId("RXH" + new Random(System.currentTimeMillis()).nextInt(1000000) + "-B6-" + System.currentTimeMillis());
+            synchronized (b6) {
+                StringBuilder sb = new StringBuilder()
+                        .append("B2RXH")
+                        .append(count.incrementAndGet())
+                        .append("*")
+                        .append(java.util.UUID.randomUUID().toString().replaceAll("-", ""))
+                        .append(System.currentTimeMillis());
+                merchantCardTable.setPlatformOrderId(sb.toString());
             }
             dbCommonRPCComponent.apiMerchantCardService.save(merchantCardTable);
         }catch (Exception e){
@@ -178,11 +197,20 @@ public class NewBondCardServiceImpl extends CommonServiceAbstract implements New
     @Override
     public void updateByBondCardInfo(CrossResponseMsgDTO crossResponseMsgDTO, String crossResponseMsg, MerchantCardTable merchantCardTable, InnerPrintLogObject ipo) throws NewPayException {
         final String localPoint="updateByBondCardInfo";
-        merchantCardTable.setCrossRespResult(crossResponseMsg)
+        merchantCardTable
+                .setCrossRespResult(crossResponseMsg)
+                .setUpdateTime(new Date())
                 .setChannelRespResult( null == crossResponseMsgDTO ? null  : crossResponseMsgDTO.getChannelResponseMsg() )
                 .setStatus( null == crossResponseMsgDTO ? StatusEnum._1.getStatus() : crossResponseMsgDTO.getCrossStatusCode() );
         try {
-            dbCommonRPCComponent.apiMerchantCardService.updateById(merchantCardTable);
+
+            dbCommonRPCComponent.apiMerchantCardService.updateByWhereCondition(new MerchantCardTable()
+                    .setPlatformOrderId(merchantCardTable.getPlatformOrderId())
+                    .setCrossRespResult(crossResponseMsg)
+                    .setUpdateTime(merchantCardTable.getUpdateTime())
+                    .setChannelRespResult( merchantCardTable.getChannelRespResult() )
+                    .setStatus( merchantCardTable.getStatus() ));
+
         }catch (Exception e){
             e.printStackTrace();
             throw new NewPayException(
@@ -249,16 +277,29 @@ public class NewBondCardServiceImpl extends CommonServiceAbstract implements New
     @Override
     public void updateByBondCardInfoByB6(CrossResponseMsgDTO crossResponseMsgDTO, String crossResponseMsg, MerchantCardTable merchantCardTable, MerchantCardTable merchantCardTable_old, InnerPrintLogObject ipo) throws NewPayException {
         final String localPoint="updateByBondCardInfoByB6";
-        merchantCardTable.setCrossRespResult(crossResponseMsg)
-                .setChannelRespResult( null == crossResponseMsgDTO ? null  : crossResponseMsgDTO.getChannelResponseMsg() )
-                .setStatus( null == crossResponseMsgDTO ? StatusEnum._1.getStatus() : crossResponseMsgDTO.getCrossStatusCode() );
 
-        merchantCardTable_old.setStatus(StatusEnum._5.getStatus());
-
-        List<MerchantCardTable> list = new ArrayList<>(2);
-        list.add(merchantCardTable);
-        list.add(merchantCardTable_old);
         try {
+            MerchantCardTable  merchantCardTable2 = dbCommonRPCComponent.apiMerchantCardService.getOne(new MerchantCardTable()
+                    .setPlatformOrderId(merchantCardTable.getPlatformOrderId())
+                    .setTerminalMerId(merchantCardTable.getTerminalMerId())
+                    .setMerchantId(merchantCardTable.getMerchantId()));
+
+            isNull(merchantCardTable2,
+                    ResponseCodeEnum.RXH99996.getCode(),
+                    format("%s-->商户号：%s；终端号：%s；错误信息: %s ；代码所在位置：%s;可能存在的原因：根据平台订单号获取绑卡信息，得到的结果为null",
+                            ipo.getBussType(),ipo.getMerId(),ipo.getTerMerId(),ResponseCodeEnum.RXH99996.getMsg(),localPoint),
+                    format(" %s",ResponseCodeEnum.RXH99996.getMsg()));
+
+            merchantCardTable2.setCrossRespResult(crossResponseMsg)
+                    .setUpdateTime(new Date())
+                    .setChannelRespResult( null == crossResponseMsgDTO ? null  : crossResponseMsgDTO.getChannelResponseMsg() )
+                    .setStatus( null == crossResponseMsgDTO ? StatusEnum._1.getStatus() : crossResponseMsgDTO.getCrossStatusCode() );
+
+            merchantCardTable_old.setStatus(StatusEnum._5.getStatus());
+
+            List<MerchantCardTable> list = new ArrayList<>(2);
+            list.add(merchantCardTable2);
+            list.add(merchantCardTable_old);
             dbCommonRPCComponent.apiMerchantCardService.bachUpdateById(list);
         }catch (Exception e){
             e.printStackTrace();

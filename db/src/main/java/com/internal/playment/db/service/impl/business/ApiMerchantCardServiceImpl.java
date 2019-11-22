@@ -2,6 +2,8 @@ package com.internal.playment.db.service.impl.business;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.internal.playment.api.db.business.ApiMerchantCardService;
 import com.internal.playment.common.inner.NewPayAssert;
 import com.internal.playment.common.table.business.MerchantCardTable;
@@ -57,6 +59,21 @@ public class ApiMerchantCardServiceImpl implements ApiMerchantCardService, NewPa
     public boolean updateById(MerchantCardTable mct) {
         if(isNull(mct)) return false;
         return merchantCardDBService.updateById(mct);
+    }
+
+    @Override
+    public boolean updateByWhereCondition(MerchantCardTable mct) {
+        if(isNull(mct)) return false;
+        LambdaUpdateWrapper<MerchantCardTable> updateWrapper = new UpdateWrapper<MerchantCardTable>().lambda();
+        //set
+        if( !isNull(mct.getUpdateTime()) ) updateWrapper.set(MerchantCardTable::getUpdateTime,mct.getUpdateTime());
+        if( !isNull(mct.getStatus()) ) updateWrapper.set(MerchantCardTable::getStatus,mct.getStatus());
+        if( !isBlank(mct.getCrossRespResult()))  updateWrapper.set(MerchantCardTable::getCrossRespResult,mct.getCrossRespResult());
+        if( !isBlank(mct.getChannelRespResult()))  updateWrapper.set(MerchantCardTable::getChannelRespResult,mct.getChannelRespResult());
+        //where
+        if( !isBlank(mct.getPlatformOrderId()) )  updateWrapper.set(MerchantCardTable::getPlatformOrderId,mct.getPlatformOrderId());
+        if( !isNull(mct.getId()) ) updateWrapper.set(MerchantCardTable::getId,mct.getId());
+        return merchantCardDBService.update(updateWrapper);
     }
 
     public boolean bachUpdateById(List<MerchantCardTable> list){

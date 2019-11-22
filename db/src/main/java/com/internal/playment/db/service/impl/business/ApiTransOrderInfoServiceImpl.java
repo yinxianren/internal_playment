@@ -80,9 +80,14 @@ public class ApiTransOrderInfoServiceImpl implements ApiTransOrderInfoService, N
         LambdaUpdateWrapper<TransOrderInfoTable> updateWrapper = new UpdateWrapper<TransOrderInfoTable>().lambda();
         //set
         if( !isNull(tit.getNotifyStatus()) )  updateWrapper.set( TransOrderInfoTable::getNotifyStatus,tit.getNotifyStatus() );
+        if( !isNull(tit.getStatus()) )  updateWrapper.set( TransOrderInfoTable::getStatus,tit.getStatus() );
         if( !isNull(tit.getUpdateTime()) )  updateWrapper.set( TransOrderInfoTable::getUpdateTime,tit.getUpdateTime() );
+        if( !isBlank(tit.getCrossRespResult()))   updateWrapper.set( TransOrderInfoTable::getCrossRespResult,tit.getCrossRespResult() );
+        if( !isBlank(tit.getChannelRespResult()))   updateWrapper.set( TransOrderInfoTable::getChannelRespResult,tit.getChannelRespResult() );
+        if( !isBlank(tit.getChannelOrderId()))   updateWrapper.set( TransOrderInfoTable::getChannelOrderId,tit.getChannelOrderId() );
         //where
         if( !isNull(tit.getId()) )  updateWrapper.eq( TransOrderInfoTable::getId,tit.getId() );
+        if( !isBlank(tit.getPlatformOrderId()))   updateWrapper.eq( TransOrderInfoTable::getPlatformOrderId,tit.getPlatformOrderId() );
         return transOrderInfoDBService.update(updateWrapper);
     }
 

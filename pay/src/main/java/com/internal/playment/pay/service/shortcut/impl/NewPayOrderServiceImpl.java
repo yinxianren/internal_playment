@@ -44,7 +44,8 @@ import java.util.stream.Collectors;
 @Service
 public class NewPayOrderServiceImpl  extends CommonServiceAbstract implements NewPayOrderService {
 
-    private final static Object lock = new Object();
+    private final static Object b7 = new Object();
+    private final static Object b10 = new Object();
     private static AtomicInteger count = new AtomicInteger(0) ;
     @Override
     public RequestCrossMsgDTO getRequestCrossMsgDTO(Tuple2 tuple) {
@@ -555,10 +556,7 @@ public class NewPayOrderServiceImpl  extends CommonServiceAbstract implements Ne
     @Override
     public PayOrderInfoTable updateByPayOrderInfo(CrossResponseMsgDTO crossResponseMsgDTO, String crossResponseMsg, PayOrderInfoTable payOrderInfoTable, InnerPrintLogObject ipo) throws NewPayException {
         final String localPoint="updateByPayOrderInfo";
-        PayOrderInfoTable poi = new PayOrderInfoTable()
-                //where
-                .setPlatformIncome(payOrderInfoTable.getPlatformIncome())
-                //set
+        payOrderInfoTable
                 .setCrossRespResult(crossResponseMsg)
                 .setChannelRespResult(crossResponseMsgDTO.getChannelResponseMsg())
                 .setChannelOrderId(crossResponseMsgDTO.getChannelOrderId())
@@ -566,7 +564,16 @@ public class NewPayOrderServiceImpl  extends CommonServiceAbstract implements Ne
                 .setStatus(crossResponseMsgDTO.getCrossStatusCode());
 
         try {
-            dbCommonRPCComponent.apiPayOrderInfoService.updateByWhereCondition(poi);
+            dbCommonRPCComponent.apiPayOrderInfoService.updateByWhereCondition(new PayOrderInfoTable()
+                    //where
+                    .setPlatformIncome(payOrderInfoTable.getPlatformIncome())
+                    //set
+                    .setCrossRespResult(crossResponseMsg)
+                    .setChannelRespResult(crossResponseMsgDTO.getChannelResponseMsg())
+                    .setChannelOrderId(crossResponseMsgDTO.getChannelOrderId())
+                    .setUpdateTime(payOrderInfoTable.getUpdateTime())
+                    .setStatus(crossResponseMsgDTO.getCrossStatusCode())
+            );
         }catch (Exception e){
             e.printStackTrace();
             throw new NewPayException(
@@ -905,14 +912,18 @@ public class NewPayOrderServiceImpl  extends CommonServiceAbstract implements Ne
     @Override
     public PayOrderInfoTable updateByPayOrderInfoByBefore(PayOrderInfoTable payOrderInfoTable, InnerPrintLogObject ipo, String  ...args) throws NewPayException {
         final String localPoint="updateByPayOrderInfoByB9";
-        PayOrderInfoTable poi = new PayOrderInfoTable()
-                //where
-                .setPlatformOrderId(payOrderInfoTable.getPlatformOrderId())
-                //set
+        payOrderInfoTable
                 .setBussType(args[0])
+                .setUpdateTime(new Date())
                 .setStatus(StatusEnum._3.getStatus());
         try {
-            dbCommonRPCComponent.apiPayOrderInfoService.updateByWhereCondition(poi);
+            dbCommonRPCComponent.apiPayOrderInfoService.updateByWhereCondition(new PayOrderInfoTable()
+                    //where
+                    .setPlatformOrderId(payOrderInfoTable.getPlatformOrderId())
+                    //set
+                    .setBussType(args[0])
+                    .setUpdateTime(payOrderInfoTable.getUpdateTime())
+                    .setStatus(StatusEnum._3.getStatus()));
         }catch (Exception e){
             e.printStackTrace();
             throw new NewPayException(
@@ -1144,6 +1155,15 @@ public class NewPayOrderServiceImpl  extends CommonServiceAbstract implements Ne
                 format(" %s",ResponseCodeEnum.RXH00044.getMsg()));
 
         PayOrderInfoTable payOrderInfoTable = new PayOrderInfoTable();
+        synchronized (b10) {
+            StringBuilder sb = new StringBuilder()
+                    .append("B10RXH")
+                    .append(count.incrementAndGet())
+                    .append("*")
+                    .append(java.util.UUID.randomUUID().toString().replaceAll("-", ""))
+                    .append(System.currentTimeMillis());
+            payOrderInfoTable.setPlatformOrderId(sb.toString());
+        }
         payOrderInfoTable
                 .setMerOrderId(merNoAuthPayOrderApplyDTO.getMerOrderId())
                 .setMerchantId(merNoAuthPayOrderApplyDTO.getMerId())                              .setTerminalMerId(merNoAuthPayOrderApplyDTO.getTerMerId())
@@ -1169,15 +1189,7 @@ public class NewPayOrderServiceImpl  extends CommonServiceAbstract implements Ne
                 .setCreateTime(new Date())                                                  .setUpdateTime(new Date());
 
         try {
-            synchronized (this){
-                StringBuilder sb = new StringBuilder();
-                sb
-                        .append("RXH")
-                        .append(new Random(System.currentTimeMillis()).nextInt(1000000))
-                        .append("-B10-")
-                        .append(System.nanoTime());
-                payOrderInfoTable.setPlatformOrderId(sb.toString());
-            }
+
             dbCommonRPCComponent.apiPayOrderInfoService.save(payOrderInfoTable);
         }catch (Exception e){
             e.printStackTrace();
@@ -1405,10 +1417,11 @@ public class NewPayOrderServiceImpl  extends CommonServiceAbstract implements Ne
                 format(" %s",ResponseCodeEnum.RXH00044.getMsg()));
 
         PayOrderInfoTable payOrderInfoTable = new PayOrderInfoTable();
-        synchronized (lock) {
+        synchronized (b7) {
             StringBuilder sb = new StringBuilder()
                     .append("B7RXH")
                     .append(count.incrementAndGet())
+                    .append("*")
                     .append(java.util.UUID.randomUUID().toString().replaceAll("-", ""))
                     .append(System.currentTimeMillis());
             payOrderInfoTable.setPlatformOrderId(sb.toString());
