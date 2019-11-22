@@ -46,8 +46,6 @@ import java.util.*;
 @Service(version = "${application.version}", group = "sicPay"  , timeout = 30000 )
 public class SicPayApiIntoPiecesOfInformationCrossComponentImpl implements ApiIntoPiecesOfInformationCrossComponent {
 
-    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-
     @Override
     public CrossResponseMsgDTO addCusInfo(RequestCrossMsgDTO trade) throws Exception {
         //公钥
@@ -319,6 +317,7 @@ public class SicPayApiIntoPiecesOfInformationCrossComponentImpl implements ApiIn
                     case "000000":
                         String respDate = headMap.get("respDate");
                         String payMsgId = headMap.get("payMsgId");
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
                         bankResult.setChannelResponseTime(dateFormat.parse(respDate));
                         bankResult.setChannelOrderId(payMsgId);
                         bankResult.setCrossStatusCode(StatusEnum._0.getStatus());

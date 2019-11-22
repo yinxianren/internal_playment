@@ -35,8 +35,6 @@ import java.util.TreeMap;
 @Service(version = "${application.version}", group = "allinPay" , timeout = 30000 )
 public class AllinPayApiPayOrderCrossComponentImpl implements ApiPayOrderCrossComponent {
 
-    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-
     @Override
     public CrossResponseMsgDTO payApply(RequestCrossMsgDTO trade) throws ParseException {
         TreeMap<String, Object> params = getPayApplyParam(trade);
@@ -138,6 +136,7 @@ public class AllinPayApiPayOrderCrossComponentImpl implements ApiPayOrderCrossCo
                         if(sign.equalsIgnoreCase(sign)) {
                             String trxid = result.get("trxid").toString();
                             String fintime = result.get("fintime").toString();
+                            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
                             Date banktime = dateFormat.parse(fintime);
                             bankResult.setCrossStatusCode(StatusEnum._0.getStatus());
                             bankResult.setCrossStatusMsg(StatusEnum._0.getRemark());
@@ -389,6 +388,7 @@ public class AllinPayApiPayOrderCrossComponentImpl implements ApiPayOrderCrossCo
                     case "0000":
                         String fintime = json.getString("fintime");
                         String trxid = json.getString("trxid");
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
                         bankResult.setChannelResponseTime(dateFormat.parse(fintime));
                         bankResult.setChannelOrderId(trxid);
                         bankResult.setCrossStatusCode(StatusEnum._0.getStatus());

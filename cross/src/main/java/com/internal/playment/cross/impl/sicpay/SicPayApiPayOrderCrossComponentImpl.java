@@ -42,7 +42,6 @@ import java.util.*;
 @Service(version = "${application.version}", group = "sicPay"  , timeout = 30000 )
 public class SicPayApiPayOrderCrossComponentImpl implements ApiPayOrderCrossComponent {
 
-    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
     String[] type = new String[]{"1","2","4"};
     
     @Override
@@ -304,6 +303,7 @@ public class SicPayApiPayOrderCrossComponentImpl implements ApiPayOrderCrossComp
                 // 判断交易状态
                 String respCode = headMap.get("respCode");
                 String respDate = headMap.get("respDate");
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
                 bankResult.setChannelResponseTime(dateFormat.parse(respDate));
                 switch(respCode){
                     case "000000":
