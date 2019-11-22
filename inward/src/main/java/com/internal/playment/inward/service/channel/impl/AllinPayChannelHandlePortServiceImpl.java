@@ -237,9 +237,6 @@ public class AllinPayChannelHandlePortServiceImpl extends ChannelCommonServiceAb
                 .setRespResult(null)
                 .setUpdateTime(new Date())
                 .setCreateTime(new Date());
-        synchronized(this){
-            ant.setId(System.currentTimeMillis());
-        }
         return ant;
     }
 

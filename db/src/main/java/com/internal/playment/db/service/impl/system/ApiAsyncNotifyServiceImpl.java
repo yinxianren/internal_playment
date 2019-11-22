@@ -3,6 +3,8 @@ package com.internal.playment.db.service.impl.system;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.internal.playment.api.db.system.ApiAsyncNotifyService;
 import com.internal.playment.common.inner.NewPayAssert;
 import com.internal.playment.common.table.system.AsyncNotifyTable;
@@ -36,5 +38,13 @@ public class ApiAsyncNotifyServiceImpl implements ApiAsyncNotifyService, NewPayA
     public boolean updateByKey(AsyncNotifyTable ant) {
         if(isNull(ant)) return false;
         return asyncNotifyDbService.updateById(ant);
+    }
+
+    @Override
+    public boolean updateByWhereCondition(AsyncNotifyTable ant) {
+        if(isNull(ant)) return false;
+        LambdaUpdateWrapper<AsyncNotifyTable> updateWrapper = new UpdateWrapper<AsyncNotifyTable>().lambda();
+        updateWrapper.eq(AsyncNotifyTable::getPlatformOrderId,ant.getPlatformOrderId());
+        return asyncNotifyDbService.update(ant,updateWrapper);
     }
 }

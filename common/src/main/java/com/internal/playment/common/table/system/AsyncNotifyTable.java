@@ -13,7 +13,7 @@ import java.util.Date;
 @TableName( "1_async_notify_table" )
 @Getter
 public class AsyncNotifyTable implements Serializable {
-    @TableId(type= IdType.INPUT)
+    @TableId(type= IdType.AUTO)
     private Long id;// BIGINT(19) NOT NULL AUTO_INCREMENT COMMENT 表主键,
     private String merchantId;// VARCHAR(32) NOT NULL COMMENT 商户号,
     private String terminalMerId;// VARCHAR(64) NOT NULL COMMENT 终端商户号,

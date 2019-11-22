@@ -1409,7 +1409,6 @@ public class NewPayOrderServiceImpl  extends CommonServiceAbstract implements Ne
             StringBuilder sb = new StringBuilder()
                     .append("B7RXH")
                     .append(count.incrementAndGet())
-                    .append(".")
                     .append(java.util.UUID.randomUUID().toString().replaceAll("-", ""))
                     .append(System.currentTimeMillis());
             payOrderInfoTable.setPlatformOrderId(sb.toString());

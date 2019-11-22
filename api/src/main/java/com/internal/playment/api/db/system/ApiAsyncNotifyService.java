@@ -11,4 +11,6 @@ public interface ApiAsyncNotifyService {
     boolean save(AsyncNotifyTable ant);
 
     boolean updateByKey(AsyncNotifyTable ant);
+
+    boolean updateByWhereCondition(AsyncNotifyTable ant);
 }
