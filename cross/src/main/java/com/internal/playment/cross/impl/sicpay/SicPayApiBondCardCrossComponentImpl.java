@@ -42,8 +42,6 @@ import java.util.*;
 @Service(version = "${application.version}", group = "sicPay"  , timeout = 30000 )
 public class SicPayApiBondCardCrossComponentImpl implements ApiBondCardCrossComponent {
 
-    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-
     @Override
     public CrossResponseMsgDTO bondCardApply(RequestCrossMsgDTO trade) throws Exception {
         //公钥
@@ -363,6 +361,7 @@ public class SicPayApiBondCardCrossComponentImpl implements ApiBondCardCrossComp
                             case "000000":
                                 String respDate = headMap.get("respDate");
                                 String payMsgId = headMap.get("payMsgId");
+                                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
                                 bankResult.setChannelResponseTime(dateFormat.parse(respDate));
                                 bankResult.setChannelOrderId(payMsgId);
                                 bankResult.setCrossStatusCode(StatusEnum._0.getStatus());
@@ -404,6 +403,7 @@ public class SicPayApiBondCardCrossComponentImpl implements ApiBondCardCrossComp
                             case "000000":
                                 String respDate = headMap.get("respDate");
                                 String payMsgId = headMap.get("payMsgId");
+                                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
                                 bankResult.setChannelResponseTime(dateFormat.parse(respDate));
                                 bankResult.setChannelOrderId(payMsgId);
                                 bankResult.setCrossStatusCode(StatusEnum._0.getStatus());
@@ -458,6 +458,7 @@ public class SicPayApiBondCardCrossComponentImpl implements ApiBondCardCrossComp
                             case "000000":
                                 String respDate = headMap.get("respDate");
                                 String payMsgId = headMap.get("payMsgId");
+                                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
                                 bankResult.setChannelResponseTime(dateFormat.parse(respDate));
                                 bankResult.setChannelOrderId(payMsgId);
                                 bankResult.setCrossStatusCode(StatusEnum._0.getStatus());
@@ -509,6 +510,7 @@ public class SicPayApiBondCardCrossComponentImpl implements ApiBondCardCrossComp
                                 String respDate = headMap.get("respDate");
                                 String payMsgId = headMap.get("payMsgId");
                                 String bindId = headMap.get("bindId");
+                                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
                                 bankResult.setChannelResponseTime(dateFormat.parse(respDate));
                                 bankResult.setChannelOrderId(payMsgId);
                                 bankResult.setCrossStatusCode(StatusEnum._0.getStatus());
@@ -548,6 +550,7 @@ public class SicPayApiBondCardCrossComponentImpl implements ApiBondCardCrossComp
                             case "0000":
                                 String respDate = headMap.get("respDate");
                                 String payMsgId = headMap.get("payMsgId");
+                                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
                                 bankResult.setChannelResponseTime(dateFormat.parse(respDate));
                                 bankResult.setChannelOrderId(payMsgId);
                                 bankResult.setCrossStatusCode(StatusEnum._3.getStatus());
@@ -615,6 +618,7 @@ public class SicPayApiBondCardCrossComponentImpl implements ApiBondCardCrossComp
                                     bankResult.setErrorMsg(ResponseCodeEnum.RXH99999.getMsg());
                                     bankResult.setCrossStatusMsg(StatusEnum._1.getRemark());
                                 }
+                                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
                                 bankResult.setChannelResponseTime(dateFormat.parse(respDate));
                                 bankResult.setChannelResponseMsg(content);
                                 map.put("reqMsgId",headMap.get("reqMsgId"));

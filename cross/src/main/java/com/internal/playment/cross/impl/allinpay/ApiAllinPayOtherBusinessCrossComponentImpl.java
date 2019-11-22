@@ -36,9 +36,6 @@ import java.util.TreeMap;
 @Service(version = "${application.version}", group = "allinPay" , timeout = 30000 )
 public class ApiAllinPayOtherBusinessCrossComponentImpl implements ApiAllinPayOtherBusinessCrossComponent {
 
-    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-    private static SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyyMMdd");
-
     @Override
     public CrossResponseMsgDTO queryByPayOrder(RequestCrossMsgDTO trade) throws ParseException {
         RegisterCollectTable merchantRegisterCollect = trade.getRegisterCollectTable();
@@ -58,6 +55,7 @@ public class ApiAllinPayOtherBusinessCrossComponentImpl implements ApiAllinPayOt
         if (payOrder.getUpdateTime() != null){
             bankTime = payOrder.getUpdateTime();
         }
+        SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyyMMdd");
         String date = dateFormat2.format(bankTime);
         String trxid = null;
         if (null != (bankInfo.get("trxid"))) trxid = bankInfo.get("trxid").toString();//银行流水号
@@ -103,6 +101,7 @@ public class ApiAllinPayOtherBusinessCrossComponentImpl implements ApiAllinPayOt
                         String trxamt = result.get("trxamt").toString();
                         BigDecimal amount= new BigDecimal(trxamt).divide(new BigDecimal(100),2,BigDecimal.ROUND_HALF_UP);
                         String fintime = result.get("fintime").toString();
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
                         Date banktime = dateFormat.parse(fintime);
                         bankResult.setCrossStatusCode(StatusEnum._0.getStatus());
                         bankResult.setCrossStatusMsg(StatusEnum._0.getRemark());
@@ -282,6 +281,7 @@ public class ApiAllinPayOtherBusinessCrossComponentImpl implements ApiAllinPayOt
         String cusid = registerInfo.getString("cusid"); //商户号
         Date bankTime = transOrder.getCreateTime();
         if (null != transOrder.getUpdateTime()) bankTime = transOrder.getUpdateTime();
+        SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyyMMdd");
         String date = dateFormat2.format(bankTime);
         String orderid = transOrder.getPlatformOrderId();
         String version = "11";
