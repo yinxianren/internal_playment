@@ -28,6 +28,8 @@ public class ApiMerchantSysLogServiceImpl implements ApiMerchantSysLogService, N
         if (isNull(merchantSysLogTable)) return new Page();
         LambdaQueryWrapper<MerchantSysLogTable> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.orderByDesc(MerchantSysLogTable::getStartTime);
+        if (!isNull(pageDTO.getBeginTime())) queryWrapper.gt(MerchantSysLogTable::getStartTime,pageDTO.getBeginTime());
+        if (!isNull(pageDTO.getEndTime())) queryWrapper.lt(MerchantSysLogTable::getStartTime,pageDTO.getEndTime());
         IPage iPage = new Page(pageDTO.getPageNum(),pageDTO.getPaegSize());
         return merchantSysLogDBService.page(iPage,queryWrapper);
     }

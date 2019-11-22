@@ -28,6 +28,8 @@ public class ApiAgentSysLogServiceImpl implements ApiAgentSysLogService, NewPayA
     public IPage page(AgentSysLogTable agentSysLogTable, PageDTO pageDTO) {
         if (isNull(agentSysLogTable)) return new Page();
         LambdaQueryWrapper<AgentSysLogTable> queryWrapper = new LambdaQueryWrapper<>();
+        if (!isNull(pageDTO.getBeginTime())) queryWrapper.gt(AgentSysLogTable::getStartTime,pageDTO.getBeginTime());
+        if (!isNull(pageDTO.getEndTime())) queryWrapper.lt(AgentSysLogTable::getStartTime,pageDTO.getEndTime());
         queryWrapper.orderByDesc(AgentSysLogTable::getStartTime);
         IPage iPage = new Page(pageDTO.getPageNum(),pageDTO.getPaegSize());
         return agentSysLogDBService.page(iPage,queryWrapper);
