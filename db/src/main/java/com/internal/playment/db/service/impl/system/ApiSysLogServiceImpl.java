@@ -30,6 +30,8 @@ public class ApiSysLogServiceImpl implements ApiSysLogService, NewPayAssert {
         LambdaQueryWrapper<SysLogTable> queryWrapper = new LambdaQueryWrapper();
         IPage iPage = new Page(pageDTO.getPageNum(),pageDTO.getPaegSize());
         queryWrapper.orderByDesc(SysLogTable::getStartTime);
+        if (!isNull(pageDTO.getBeginTime())) queryWrapper.gt(SysLogTable::getStartTime,pageDTO.getBeginTime());
+        if (!isNull(pageDTO.getEndTime())) queryWrapper.lt(SysLogTable::getStartTime,pageDTO.getEndTime());
         return sysLogDBService.page(iPage,queryWrapper);
     }
 }
