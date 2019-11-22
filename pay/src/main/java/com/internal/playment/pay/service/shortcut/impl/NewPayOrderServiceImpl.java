@@ -1408,7 +1408,7 @@ public class NewPayOrderServiceImpl  extends CommonServiceAbstract implements Ne
             synchronized (this){
                 payOrderInfoTable
                         .setPlatformOrderId("RXH" + new Random(System.currentTimeMillis()).nextInt(1000000) + "-B7-" + System.currentTimeMillis())
-                        .setId(System.currentTimeMillis());
+                        .setId(System.currentTimeMillis()+new Random(System.currentTimeMillis()).nextInt(1000000));
             }
             dbCommonRPCComponent.apiPayOrderInfoService.save(payOrderInfoTable);
         }catch (Exception e){

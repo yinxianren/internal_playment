@@ -34,6 +34,7 @@ public class OrderNotifyServiceImpl extends NotifyCommonServiceAbstract implemen
             //判断 如果成功则结束通知
             if( !isBlank(content) && content.trim().equalsIgnoreCase("SUCCESS")){
                 asyncNotifyTable
+                        .setRespResult(content)
                         .setUpdateTime(new Date())
                         .setStatus(StatusEnum._0.getStatus());//结束通知
                 dbCommonRPCComponent.apiAsyncNotifyService.updateByKey(asyncNotifyTable);

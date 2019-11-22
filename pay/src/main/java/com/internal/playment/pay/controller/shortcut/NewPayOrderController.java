@@ -102,15 +102,24 @@ public class NewPayOrderController extends NewAbstractCommonController {
             newPayOrderService.checkProductTypeByB7(merPayOrderApplyDTO,ipo);
             //1.执行平台风控
             //获取商户风控表
-            MerchantQuotaRiskTable merchantQuotaRiskTable = newPayOrderService.getMerchantQuotaRiskByMerId(merInfoTable.getMerchantId(),ipo);
+            MerchantQuotaRiskTable merchantQuotaRiskTable;
+            synchronized (this) {
+                merchantQuotaRiskTable = newPayOrderService.getMerchantQuotaRiskByMerId(merInfoTable.getMerchantId(), ipo);
+            }
             //执行单笔风控
             newPayOrderService.checkSingleAmountRisk(merPayOrderApplyDTO.getAmount(),merchantQuotaRiskTable,ipo);
             //获取风控交易量统计数据
-            Tuple2<RiskQuotaTable,RiskQuotaTable> merRiskQuota = newPayOrderService.getRiskQuotaInfoByMer(merInfoTable,ipo);
+            Tuple2<RiskQuotaTable,RiskQuotaTable> merRiskQuota;
+            synchronized (this){
+                merRiskQuota = newPayOrderService.getRiskQuotaInfoByMer(merInfoTable,ipo);
+            }
             //执行风控控制
             newPayOrderService.executePlatformRisk(merPayOrderApplyDTO.getAmount(),merchantQuotaRiskTable,merRiskQuota,ipo);
             //2.查询通道使用记录
-            ChannelHistoryTable channelHistoryTable = newPayOrderService.getChannelHistoryInfo(ipo,merPayOrderApplyDTO.getMerId(),merPayOrderApplyDTO.getTerMerId(),merPayOrderApplyDTO.getProductType());
+            ChannelHistoryTable channelHistoryTable;
+            synchronized (this){
+                channelHistoryTable = newPayOrderService.getChannelHistoryInfo(ipo,merPayOrderApplyDTO.getMerId(),merPayOrderApplyDTO.getTerMerId(),merPayOrderApplyDTO.getProductType());
+            }
             //通道信息
             ChannelInfoTable channelInfoTable;
             //进件信息
@@ -163,7 +172,10 @@ public class NewPayOrderController extends NewAbstractCommonController {
                 //执行通道风控
                 if(!isNull(channelInfoTable)){
                     //获取该通道历史统计交易量
-                    Tuple2<RiskQuotaTable,RiskQuotaTable> channelRiskQuota = newPayOrderService.getRiskQuotaInfoByChannel(channelInfoTable,ipo);
+                    Tuple2<RiskQuotaTable,RiskQuotaTable> channelRiskQuota;
+                    synchronized (this) {
+                        channelRiskQuota = newPayOrderService.getRiskQuotaInfoByChannel(channelInfoTable, ipo);
+                    }
                     //执行通道风控
                     channelInfoTable = newPayOrderService.executeChannelRisk(channelInfoTable,channelRiskQuota,ipo,merPayOrderApplyDTO.getAmount());
                 }
@@ -414,19 +426,21 @@ public class NewPayOrderController extends NewAbstractCommonController {
                 /**
                  * 事务处理
                  */
-                MerPayOrderApplyDTO  merPayOrderApplyDTO = newPayOrderService.getMerPayOrderApplyDTO(payOrderInfoTable);
-                //查询通道使用记录  MerchantId  TerminalMerId ProductId
-                ChannelHistoryTable channelHistoryTable = newPayOrderService.getChannelHistoryInfo(ipo,merPayOrderApplyDTO.getMerId(),merPayOrderApplyDTO.getTerMerId(),merPayOrderApplyDTO.getProductType());
-                //更新通道历史使用记录 8_channel_history_table
-                ChannelHistoryTable  cht = newPayOrderService.updateByChannelHistoryInfo(channelHistoryTable,payOrderInfoTable);
-                //获取风控交易量统计数据
-                Tuple2<RiskQuotaTable,RiskQuotaTable> merRiskQuota = newPayOrderService.getRiskQuotaInfoByMer(merInfoTable,ipo);
-                //获取该通道历史统计交易量
-                Tuple2<RiskQuotaTable,RiskQuotaTable> channelRiskQuota = newPayOrderService.getRiskQuotaInfoByChannel(channelInfoTable,ipo);
-                //更新 商户和通道使用汇总情况 8_risk_quota_table
-                Set<RiskQuotaTable>   rqtSet = newPayOrderService.updateByRiskQuotaInfo(payOrderInfoTable,merRiskQuota,channelRiskQuota);
-                //执行事务更新操作
-                newPayOrderService.batchUpdatePayOderCorrelationInfo(payOrderInfoTable,cht,rqtSet,ipo);
+                synchronized (this) {
+                    MerPayOrderApplyDTO merPayOrderApplyDTO = newPayOrderService.getMerPayOrderApplyDTO(payOrderInfoTable);
+                    //查询通道使用记录  MerchantId  TerminalMerId ProductId
+                    ChannelHistoryTable channelHistoryTable = newPayOrderService.getChannelHistoryInfo(ipo, merPayOrderApplyDTO.getMerId(), merPayOrderApplyDTO.getTerMerId(), merPayOrderApplyDTO.getProductType());
+                    //更新通道历史使用记录 8_channel_history_table
+                    ChannelHistoryTable cht = newPayOrderService.updateByChannelHistoryInfo(channelHistoryTable, payOrderInfoTable);
+                    //获取风控交易量统计数据
+                    Tuple2<RiskQuotaTable, RiskQuotaTable> merRiskQuota = newPayOrderService.getRiskQuotaInfoByMer(merInfoTable, ipo);
+                    //获取该通道历史统计交易量
+                    Tuple2<RiskQuotaTable, RiskQuotaTable> channelRiskQuota = newPayOrderService.getRiskQuotaInfoByChannel(channelInfoTable, ipo);
+                    //更新 商户和通道使用汇总情况 8_risk_quota_table
+                    Set<RiskQuotaTable> rqtSet = newPayOrderService.updateByRiskQuotaInfo(payOrderInfoTable, merRiskQuota, channelRiskQuota);
+                    //执行事务更新操作
+                    newPayOrderService.batchUpdatePayOderCorrelationInfo(payOrderInfoTable, cht, rqtSet, ipo);
+                }
             }
             //通道差异化处理
             commonChannelHandlePortComponent.channelDifferBusinessHandleByPayOrder(requestCrossMsgDTO,crossResponseMsgDTO);
